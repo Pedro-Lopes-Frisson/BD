@@ -22,7 +22,7 @@ DROP TABLE RentaCar.Similariadade
 CREATE TABLE RentaCar.Aluguer(
 
  numero                                                   int                                        ,
- data                                                     date                                       ,
+ a_data                                                   date                                       ,
  duracao                                                  int                                        ,
  balcao_numero                                            int                                        not null,
  cliente_nif                                              char(9)                                    not null,
