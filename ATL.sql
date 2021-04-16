@@ -34,7 +34,7 @@ create table ATL.Professor(
     CC varchar(14) not null,
     Numero_funcionario int not null,
     Email varchar(30) not null,
-    Data_nascimento varchar(9) not null,
+    Data_nascimento date not null,
     Contacto_telefonico int(9) ,
     Morada varchar(100) ,
     Nome varchar(50) not null,
@@ -78,7 +78,7 @@ create table ATL.Turma_Atividades(
 
 create table ATL.Aluno(
     CC varchar(14) not null,
-    Data_nascimento varchar(9) not null,
+    Data_nascimento date not null,
     Nome varchar(50), not null,
     Morada varchar(50),
 
@@ -98,7 +98,7 @@ create table ATL.Relacao_com_aluno(
 create table ATL.Encarregado_Educacao(
     CC varchar(14) not null,
     Email varchar(30) not null,
-    Data_nascimento varchar(9) not null,
+    Data_nascimento date not null,
     Nome varchar(50), not null,
     Morada varchar(50),
     Contacto_telefonico int(9),
@@ -112,7 +112,7 @@ create table ATL.Encarregado_Educacao(
 create table ATL.Adulto_autorizado(
     CC varchar(14) not null,
     Email varchar(30) not null,
-    Data_nascimento varchar(9) not null,
+    Data_nascimento date not null,
     Nome varchar(50), not null,
     Morada varchar(50),
     Contacto_telefonico int(9),
