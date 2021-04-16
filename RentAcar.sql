@@ -20,21 +20,23 @@ DROP TABLE RentaCar.Similariadade
 
 
 CREATE TABLE RentaCar.Aluguer(
- numero                                                   int                                        not null,
- data                                                     date                                       not null,
- duracao                                                  int                                        not null,
+
+ numero                                                   int                                        ,
+ data                                                     date                                       ,
+ duracao                                                  int                                        ,
  balcao_numero                                            int                                        not null,
  cliente_nif                                              char(9)                                    not null,
- veiculo_matricula                                        char(6)                                    not null,
+ veiculo_matricula                                        char(8)                                    not null,
+
 primary key (numero),
 
 );
 
 
 CREATE TABLE RentaCar.Balcao(
- numero                                                  int                                        not null,
- endereco                                                varchar(30)                               not null,
- nome                                                    varchar(20)                               not null,
+ numero                                                  int                                       not null,
+ endereco                                                varchar(30)                               ,
+ nome                                                    varchar(20)                               ,
 primary key (numero),
 
 );
@@ -42,27 +44,28 @@ primary key (numero),
 
 CREATE TABLE RentaCar.Cliente(
  NIF                                                    char(9)                                      not null,
- nome                                                   varchar(9)                                   not null,
- num_carta                                              int                                          not null,
- endereco                                               varchar(30)                                  not null,
+ nome                                                   varchar(30)                                  ,
+ num_carta                                              varchar(10)                                  not null,
+ endereco                                               varchar(30)                                  ,
 primary key (NIF),
+UNIQUE(num_carta)
 
 );
 
 
 CREATE TABLE RentaCar.Tipo_Veiculo(
  codigo                                                 int                                           not null,
- Designacao                                             varchar(10)                                   not null,
- arcondicionado                                         boolean                                       not null,
+ Designacao                                             varchar(30)                                   ,
+ arcondicionado                                         boolean                                       ,
 primary key (codigo),
 
 );
 
 
 CREATE TABLE RentaCar.Veiculo(
- Matricula                                               char(6)                                     not null,
- Marca                                                   varchar(10)                                 not null,
- Ano                                                     int                                         not null,
+ Matricula                                               char(6)                                    not null,
+ Marca                                                   varchar(10)                                ,
+ Ano                                                     int                                        ,
  TipoVeiculo_Codigo                                      varchar(12)                                 not null,
 primary key (Matricula),
 
@@ -70,32 +73,32 @@ primary key (Matricula),
 
 
 CREATE TABLE RentaCar.Ligeiro(
- codigo                                                  int                                       not null,
- Designacao                                              varchar(10)                               not null,
- arcondicionado                                          boolean                                   not null,
- numlugares                                              int                                       not null,
- portas                                                  int                                       not null,
- combustivel                                             varchar(10)                               not null,
+ codigo                                                  int                                      ,
+ Designacao                                              varchar(30)                              ,
+ arcondicionado                                          boolean                                  ,
+ numlugares                                              int                                      ,
+ portas                                                  int                                      ,
+ combustivel                                             varchar(10)                              ,
 primary key (codigo),
 
 );
 
 
 CREATE TABLE RentaCar.Pesado(
- Designacao                                              varchar(10)                               not null,
- arcondicionado                                          boolean                                   not null,
- peso                                                    float                                     not null,
- passageiros                                             int                                      not null,
+ Designacao                                              varchar(30)                              ,
+ arcondicionado                                          boolean                                  ,
+ peso                                                    float                                    ,
+ passageiros                                             decimal(7,2)                             ,
 primary key (codigo),
 
 );
 
 
 CREATE TABLE RentaCar.Similariadade(
- Tipo_de_veiculo_codigo_1                                      int                               not null,
- Tipo_de_veiculo_codigo_2                                      int                               not null,
+ Tipo_de_veiculo_codigo_1                                      int                               ,
+ Tipo_de_veiculo_codigo_2                                      int                               ,
 
-primary key (Tipo_de_veiculo_codigo,Tipo_de_veiculo_codigo),
+primary key (Tipo_de_veiculo_codigo_1,Tipo_de_veiculo_codigo_2),
 
 );
 
