@@ -1,35 +1,31 @@
-CREATE SCHEMA STOCK
+--CREATE SCHEMA STOCK
 go
 
 ALTER TABLE   STOCK.Armazem                    DROP   CONSTRAINT       arProdutoCodigo        
-ALTER TABLE   STOCK.Armazem                    DROP   CONSTRAINT       arProdutoQuantidade                    
+--ALTER TABLE   STOCK.Armazem                    DROP   CONSTRAINT       arProdutoQuantidade                    
+ALTER TABLE   STOCK.Encomenda                  DROP   CONSTRAINT       encProdutoCodigo                     
+--ALTER TABLE   STOCK.Encomenda                  DROP   CONSTRAINT       encProdutoPreco                      
+--ALTER TABLE   STOCK.Encomenda                  DROP   CONSTRAINT       encFornecedorNIF                     
+--ALTER TABLE   STOCK.Fornecedor                 DROP   CONSTRAINT       fornTipoCodigo                      
+go
 
- --
-ALTER TABLE   STOCK.Encomenda                    DROP   CONSTRAINT       encProdutoCodigo                     
-ALTER TABLE   STOCK.Encomenda                    DROP   CONSTRAINT       encProdutoQuantidade                 
-ALTER TABLE   STOCK.Encomenda                    DROP   CONSTRAINT       encProdutoPreco                      
-ALTER TABLE   STOCK.Encomenda                    DROP   CONSTRAINT       encFornecedorNIF                     
+DROP TABLE STOCK.Armazem
+DROP TABLE STOCK.Produto
+DROP TABLE STOCK.Encomenda
+DROP TABLE STOCK.Fornecedor
+DROP TABLE STOCK.Tipo
+go
 
-ALTER TABLE   STOCK.Fornecedor                    DROP   CONSTRAINT       fornTipoCodigo                      
-
-
-DROP TABLE SCHEMA STOCK.Armazem
-DROP TABLE SCHEMA STOCK.Produto
-DROP TABLE SCHEMA STOCK.Encomenda
-DROP TABLE SCHEMA STOCK.Fornecedor
-DROP TABLE SCHEMA STOCK.Tipo
-
-
-CREATE TABLE SCHEMA.Armazem(
+CREATE TABLE STOCK.Armazem(
  ID                                   varchar(128)                               not null,
+ quantidade_produto_ar                int                               ,
  Produto_codigo                       int                               ,
- Produto_quantidade                   int                               ,
 primary key (ID),
 
 );
+go
 
-
-CREATE TABLE SCHEMA.Produto(
+CREATE TABLE STOCK.Produto(
  codigo                               int                                 not null,
  nome                                 varchar(30)                         not null,
  preco                                float                               not null,
@@ -37,21 +33,22 @@ CREATE TABLE SCHEMA.Produto(
 primary key (codigo),
 
 );
+go
 
-
-CREATE TABLE SCHEMA.Encomenda(
+CREATE TABLE STOCK.Encomenda(
  numero                             int                               not null,
  data_encomenda                     date                               not null,
+ quantidade_produto		            int                               not null,
  Produto_codigo                     int                               not null,
- Produto_quantidade                 int                               not null,
  Produto_preco                      float                               not null,
+ Fornecedor_NIF						int									not null,
 primary key (numero),
 
 );
+go
 
-
-CREATE TABLE SCHEMA.Fornecedor(
- NIF                                int(9)                               not null,
+CREATE TABLE STOCK.Fornecedor(
+ NIF                                int                               not null,
  nome                               varchar(30)                               not null,
  endereco                           varchar(30)                               not null,
  fax                                varchar(30)                               ,
@@ -60,22 +57,17 @@ CREATE TABLE SCHEMA.Fornecedor(
 primary key (NIF),
 
 );
+go
 
-
-CREATE TABLE SCHEMA.Tipo(
+CREATE TABLE STOCK.Tipo(
  codigo                             varchar(128)                               not null,
  descricao                          varchar(256)                               ,
 primary key (codigo),
 );
+go
 
-
-ALTER TABLE   STOCK.Armazem                    ADD   CONSTRAINT       arProdutoCodigo        foreign key (Produto_codigo)                REFERENCES          STOCK.Produto();
-ALTER TABLE   STOCK.Armazem                    ADD   CONSTRAINT       arProdutoQuantidade        foreign key (Produto_quantidade)                REFERENCES          STOCK.Produto();
-
- --
-ALTER TABLE   STOCK.Encomenda                    ADD   CONSTRAINT       encProdutoCodigo        foreign key (Produto_codigo)                REFERENCES          STOCK.Produto();
-ALTER TABLE   STOCK.Encomenda                    ADD   CONSTRAINT       encProdutoQuantidade        foreign key (Produto_quantidade)                REFERENCES          STOCK.Produto();
-ALTER TABLE   STOCK.Encomenda                    ADD   CONSTRAINT       encProdutoPreco        foreign key (Produto_preco)                REFERENCES          STOCK.Produto();
-ALTER TABLE   STOCK.Encomenda                    ADD   CONSTRAINT       encFornecedorNIF        foreign key (Fornecedor_NIF)                REFERENCES          STOCK.Fornecedor();
-
-ALTER TABLE   STOCK.Fornecedor                    ADD   CONSTRAINT       fornTipoCodigo        foreign key (Tipo_codigo)                REFERENCES          STOCK.Tipo();
+ALTER TABLE   STOCK.Armazem                      ADD   CONSTRAINT       arProdutoCodigo			foreign key (Produto_codigo)		          REFERENCES          STOCK.Produto(Codigo);
+ALTER TABLE   STOCK.Encomenda                    ADD   CONSTRAINT       encProdutoCodigo        foreign key (Produto_codigo)			      REFERENCES          STOCK.Produto(codigo);
+ALTER TABLE   STOCK.Encomenda                    ADD   CONSTRAINT       encFornecedorNIF        foreign key (Fornecedor_NIF)				  REFERENCES          STOCK.Fornecedor(NIF);
+ALTER TABLE   STOCK.Fornecedor                   ADD   CONSTRAINT       fornTipoCodigo			foreign key (Tipo_codigo)					  REFERENCES          STOCK.Tipo(codigo);
+go
