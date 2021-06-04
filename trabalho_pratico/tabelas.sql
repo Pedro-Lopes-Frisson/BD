@@ -1,4 +1,4 @@
-USE trabalhoPratico;
+USE project_dummy;
 GO
 
 --DROP TABLE consumable;
@@ -15,8 +15,8 @@ GO
 --DROP TABLE magical;
 --DROP TABLE ranged;
 --DROP TABLE weapon;
---DROP TABLE [stash];
 --DROP TABLE stashTabs;
+--DROP TABLE [stash];
 --DROP TABLE item;
 --DROP TABLE [user];
 
@@ -59,7 +59,6 @@ CREATE TABLE [user] (
             Pass            BINARY(64)      NOT NULL,
             RealCurrency    decimal(38,3)          NOT NULL DEFAULT 0,
             GameCurrency    decimal(38,3)          NOT NULL DEFAULT 0,
-            Stash_ID        bigint        ,
             PRIMARY KEY (UserID)
         )
 
@@ -68,64 +67,63 @@ CREATE TABLE [stash] (
   [User_ID]        int                    NOT NULL,
   NumberOfTabs   int                    NOT NULL DEFAULT 0,
   CHECK (NumberOfTabs < 65 and NumberOfTabs > 0),
-  PRIMARY KEY ([User_ID], ID),
+  PRIMARY KEY (ID),
   FOREIGN KEY ([User_ID]) references [user](UserID)
 )
 
 
 CREATE TABLE vendorStash(
   ID             bigint                 NOT NULL,
-  [User_ID]     int          NOT NULL,
-  TypeCode       nvarchar(200)          NOT NULL,
-  PRIMARY KEY ([User_ID], ID),
+  TypeCode       int          NOT NULL,
+  PRIMARY KEY (ID, TypeCode),
   --CHECK(TypeCode LIKE 'vendor[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
-  FOREIGN KEY ([User_ID],ID) references [stash]([User_ID], ID)
+  FOREIGN KEY (ID) references [stash](ID)
 )
 
 CREATE TABLE buyerStash(
   ID             bigint                 NOT NULL,
-  [User_ID]     int          NOT NULL,
-  TypeCode       nvarchar(200)          NOT NULL,
-  PRIMARY KEY ([User_ID], ID),
+  TypeCode       int          NOT NULL,
+  PRIMARY KEY (ID, TypeCode),
   --CHECK(TypeCode LIKE 'buyer[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
-  FOREIGN KEY ([User_ID],ID) references [stash]([User_ID], ID)
+  FOREIGN KEY (ID) references [stash](ID)
 )
 
 CREATE TABLE stashTabs (
-  ID             bigint                 NOT NULL,
-  [User_ID]        int                    NOT NULL,
+  [Stash_ID]        bigint                    NOT NULL,
   [Number]         bigint                 NOT NULL,
-  PRIMARY KEY (ID, [User_ID], [Number]),
-  FOREIGN KEY ([User_ID], ID ) references [stash] ([User_ID] ,ID )
+  PRIMARY KEY ([Stash_ID], [Number]),
+  FOREIGN KEY ([Stash_ID]) references [stash] ([ID])
 )
 
 CREATE TABLE normalTab (
-  ID               bigint                 NOT NULL,
-  [User_ID]     int          NOT NULL,
+  [Stash_ID]     bigint          NOT NULL,
   [Number]         bigint                 NOT NULL,
   SlotSpace        int                    NOT NULL DEFAULT 60,
-  PRIMARY KEY (ID, [User_ID], [Number]),
-  FOREIGN KEY (ID, [User_ID], [Number] ) references [stashTabs](ID, [User_ID], [Number])
+  PRIMARY KEY ([Stash_ID], [Number]),
+  FOREIGN KEY ([Stash_ID], [Number] ) references [stashTabs]([Stash_ID], [Number])
 )
 
 CREATE TABLE specialTab (
-  ID               bigint                 NOT NULL,
-  [User_ID]     int          NOT NULL,
+  [Stash_ID]     bigint          NOT NULL,
   [Number]         bigint                 NOT NULL,
-  SlotSpace        int                    NOT NULL DEFAULT 20,
-  PRIMARY KEY (ID, [User_ID], [Number]),
-  FOREIGN KEY (ID, [User_ID], [Number] ) references [stashTabs](ID, [User_ID], [Number])
+  SlotSpace        int                    NOT NULL DEFAULT 60,
+  PRIMARY KEY ([Stash_ID], [Number]),
+  FOREIGN KEY ([Stash_ID], [Number] ) references [stashTabs]([Stash_ID], [Number])
 )
 
 CREATE TABLE item (
 
   ID        bigint            NOT NULL,
   Price     decimal(38,3)     NOT NULL,
-  Name      varchar(128)      NOT NULL,
+  [Name]      varchar(128)      NOT NULL,
   isUnique  bit               NOT NULL DEFAULT 0,
   Upgraded  int               NOT NULL DEFAULT 0,
   [Rank]    int               ,
-  PRIMARY KEY (ID)
+  TabNumber bigint               NOT NULL,
+  Stash_ID  bigint                NOT NULL,
+  PRIMARY KEY (ID),
+  FOREIGN KEY (Stash_ID , TabNumber ) references [normalTab]([Stash_ID], [Number])
+
 )
 
 CREATE TABLE weapon(
@@ -174,7 +172,7 @@ CREATE TABLE magical (
   RadiusOfEffectiveness     int     NOT NULL,
 
   CHECK (RadiusOfEffectiveness >= 10.00 and RadiusOfEffectiveness <= 1000.00),
-  CHECK (CoolDown > 0),
+  CHECK (CoolDown > 0 and CoolDown <100),
   PRIMARY KEY  (item_ID),
   FOREIGN KEY (item_ID) references [ranged]( item_ID )
 )
@@ -219,14 +217,14 @@ CREATE TABLE shield (
 
 
 -- Procedure to insert a new user acc
-CREATE PROCEDURE dbo.user_store_proc
+go
+CREATE PROCEDURE dbo.user_store_proc (
     @uEmail NVARCHAR(320),
     @uAccName VARCHAR(128),
     @uPassword NVARCHAR(50),
-    @uRealCurrency DOUBLE(100,3)   = NULL,
-    @uGameCurrency DOUBLE(100,3)   = NULL,
-    --@uStashId     bigInt    =
-    @uesponseMessage NVARCHAR(250) OUTPUT
+    @uRealCurrency DECIMAL(38,3)   = NULL,
+    @uGameCurrency DECIMAL(38,3)   = NULL,
+    @responseMessage NVARCHAR(250) OUTPUT )
 AS
 BEGIN
     SET NOCOUNT ON
