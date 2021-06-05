@@ -612,49 +612,29 @@ CREATE TABLE shield (
 
 --DROP TRIGGER physicalTrigger;
 
-CREATE TRIGGER physicalTrigger   ON dbo.physical 
-INSTEAD OF INSERT
+--DROP TRIGGER physicalTrigger;
+
+CREATE proc physicalTrigger (
+@ID                AS bigint				,
+@Stash_ID          AS bigint				,
+@TabNumber         AS bigint				,
+@Price             AS decimal(38,3)		,
+@Name              AS varchar(128)		,
+@isUnique          AS bit				,
+@Upgraded          AS int				,
+@Rank              AS int				,
+@SpecialAttributes AS varchar(128) = NULL,
+@Damage            AS decimal(38,2)      ,
+@DamageType        AS varchar(128)       ,
+@CriticalChance    AS decimal(5,2)		,
+@CriticalMutiplier AS decimal(5,2)		,
+@Range             AS   int				,
+@Accuraccy         AS   decimal(5,2)		,
+@PiercingRate      AS   decimal(7,3)		,
+@FireRate          AS   decimal(7,3)		
+)
 AS 
 BEGIN
-	DECLARE @ID                   AS bigint        ;
-        DECLARE @Stash_ID             AS bigint        ;
-        DECLARE @TabNumber            AS bigint        ;
-        DECLARE @Price                AS decimal(38,3) ;
-        DECLARE @Name               AS varchar(128)  ;
-        DECLARE @isUnique             AS bit           ;
-        DECLARE @Upgraded             AS int           ;
-		DECLARE @Rank                 AS int           ; 
-		DECLARE @SpecialAttributes    AS varchar(128) = NULL  ;
-        DECLARE @Damage               AS decimal(38,2) ;
-        DECLARE @DamageType           AS varchar(128)  ;
-        DECLARE @CriticalChance       AS decimal(5,2)  ;
-        DECLARE @CriticalMutiplier    AS decimal(5,2)  ;
-        DECLARE @Range            AS   int            ;
-        DECLARE @Accuraccy        AS   decimal(5,2)   ;
-        DECLARE @PiercingRate     AS   decimal(7,3)   ;
-        DECLARE @FireRate         AS   decimal(7,3)   ;
-
-	SELECT @ID       = item_ID        ,
-               @Stash_ID = Stash_ID  ,
-               @TabNumber= TabNumber ,
-               @Price    = Price     ,
-               @Name   = [Name]    ,
-               @isUnique = isUnique  ,
-               @Upgraded = Upgraded  ,
-               @Rank   = [Rank]  ,
-               @SpecialAttributes = SpecialAttributes,
-               @Damage            = Damage           ,
-               @DamageType        = DamageType       ,
-               @CriticalChance    = CriticalChance   ,
-               @CriticalMutiplier = CriticalMutiplier ,
-               @Range = [Range],
-               @Accuraccy = Accuraccy,
-               @PiercingRate = PiercingRate,
-               @FireRate = FireRate
-  			 from inserted;
-       
-       print @SpecialAttributes
-
 	INSERT INTO [item]  (ID       ,
                              Stash_ID ,
                              TabNumber,
@@ -765,26 +745,279 @@ BEGIN
                                                 @FireRate    );
 
 END
-
+go
 SELECT * FROM item;
+SELECT * FROM stash;
 SELECT * FROM weapon;
 SELECT * FROM ranged;
 SELECT * FROM physical;
 
 
-INSERT INTO dbo.physical (item_ID      ,
-                          PiercingRate,
-                          FireRate   ,
-                          Price   ,
-                          [Name] ,
-                          isUnique,
-                          Upgraded,
-                          [Rank] ,
-                          TabNumber,
-                          Stash_ID,
-                          Damage           ,
-                          DamageType       ,
-                          CriticalChance   ,
-                          CriticalMutiplier,
-                          [Range],
-                          Accuraccy  ) VALUES ( 10001,  12.5 ,  2, 54, 'Bow', 0, 0, 0,4,55, 500 , 'Fire', 21, 10, 500, 57);
+-- 10001,  12.5 ,  2, 54, 'Bow', 0, 0, 0,4,55, 500 , 'Fire', 21, 10, 500, 57
+
+go
+
+
+--CREATE PROC getLoginInfo(
+--@Username as varchar(128),
+--@Password as binary(64) OUTPUT
+--)
+--as
+--begin
+-- Select @Password = Pass from [user] where AccName =  @Username
+--end
+--go
+
+--select AccName from [user]
+--go
+--DECLARE @Password as binary(64);
+--exec getLoginInfo @Username = 'malesuada', @Password= @Password OUTPUT;
+--select @Password as N'@Password'
+--go
+
+alter proc Verify_Login (@Username varchar(128), @Password varchar(128), @Verified binary OUTPUT) 
+AS
+Begin 
+    DECLARE @returned binary(64)
+    select @returned= Pass from [user] where AccName = @Username
+	DECLARE @success binary
+	if(@returned = HASHBYTES('SHA2_512', @Password)) Select @Verified = 1
+	else Select @Verified = 0
+end
+
+CREATE PROC magicalInsert(
+@ID                AS bigint				,
+@Stash_ID          AS bigint				,
+@TabNumber         AS bigint				,
+@Price             AS decimal(38,3)		,
+@Name              AS varchar(128)		,
+@isUnique          AS bit				,
+@Upgraded          AS int				,
+@Rank              AS int				,
+@SpecialAttributes AS varchar(128) = NULL,
+@Damage            AS decimal(38,2)      ,
+@DamageType        AS varchar(128)       ,
+@CriticalChance    AS decimal(5,2)		,
+@CriticalMutiplier AS decimal(5,2)		,
+@Range             AS   int				,
+@Accuraccy         AS   decimal(5,2)		,
+@CoolDown               AS   decimal(6,2)            ,
+@RadiusOfEffectiveness  AS    int     )
+AS
+	BEGIN
+		INSERT INTO [item]  (ID       ,
+				     Stash_ID ,
+				     TabNumber,
+				     Price    ,
+				     [Name]   ,
+				     isUnique ,
+				     Upgraded ,
+				     [Rank]   ) VALUES (@ID          ,
+							@Stash_ID    ,
+							@TabNumber   ,
+							@Price       ,
+							@Name      ,
+							@isUnique    ,
+							@Upgraded    ,
+							@Rank      );
+
+		INSERT INTO [weapon](item_ID  ,
+				     Stash_ID ,
+				     TabNumber,
+				     Price    ,
+				     [Name]   ,
+				     isUnique ,
+				     Upgraded ,
+				     [Rank]   ,
+				     SpecialAttributes     ,
+				     Damage                ,
+				     DamageType            ,
+				     CriticalChance        ,
+				     CriticalMutiplier     
+					      ) VALUES (@ID                    ,
+							@Stash_ID              ,
+							@TabNumber             ,
+							@Price                 ,
+							@Name                  ,
+							@isUnique              ,
+							@Upgraded              ,
+							@Rank                  ,
+							@SpecialAttributes     ,
+							@Damage                ,
+							@DamageType            ,
+							@CriticalChance        ,
+							@CriticalMutiplier     );
+
+		    INSERT INTO [ranged](item_ID,
+				     Stash_ID   ,
+				     TabNumber  ,
+				     Price      ,
+				     [Name]     ,
+				     isUnique   ,
+				     Upgraded   ,
+				     [Rank]     ,
+				     SpecialAttributes     ,
+				     Damage                ,
+				     DamageType            ,
+				     CriticalChance        ,
+				     CriticalMutiplier     ,
+				     [Range]               ,
+				     Accuraccy              )                   
+
+						VALUES (@ID          ,
+							@Stash_ID    ,
+							@TabNumber   ,
+							@Price       ,
+							@Name        ,
+							@isUnique    ,
+							@Upgraded    ,
+							@Rank        ,
+							@SpecialAttributes     ,
+							@Damage                ,
+							@DamageType            ,
+							@CriticalChance        ,
+							@CriticalMutiplier     ,
+							@Range       ,
+							@Accuraccy   );
+
+		    INSERT INTO [magical](item_ID          ,
+				     Stash_ID              ,
+				     TabNumber             ,
+				     Price                 ,
+				     [Name]                ,
+				     isUnique              ,
+				     Upgraded              ,
+				     [Rank]                ,
+				     SpecialAttributes     ,
+				     Damage                ,
+				     DamageType            ,
+				     CriticalChance        ,
+				     CriticalMutiplier     ,
+				     [Range]               ,
+				     Accuraccy,
+				     CoolDown                
+                                     RadiusOfEffectiveness  
+
+			)                   
+
+						VALUES (@ID                    ,
+							@Stash_ID              ,
+							@TabNumber             ,
+							@Price                 ,
+							@Name                  ,
+							@isUnique              ,
+							@Upgraded              ,
+							@Rank                  ,
+							@SpecialAttributes     ,
+							@Damage                ,
+							@DamageType            ,
+							@CriticalChance        ,
+							@CriticalMutiplier     ,
+							@Range                 ,
+							@Accuraccy             ,
+				         		@CoolDown              ,
+						        @RadiusOfEffectiveness  
+						);
+
+
+
+CREATE PROC meleeInsert(
+	--melee specifics
+    @Weapon_ID          AS          bigint            ,
+    @AttackSpeed        AS          DECIMAL(4,3)      ,
+    @HandNum            AS          int               ,
+    @MeleeType          AS          varchar(128)      ,
+	-- Item specifics
+    @Price              AS          decimal(38,3)     ,
+    @[Name]             AS          varchar(128)      ,
+    @isUnique           AS          bit               ,
+    @Upgraded           AS          int               ,
+    @[Rank]             AS          int               ,
+    @TabNumber          AS          bigint            ,
+    @Stash_ID           AS          bigint            ,
+	-- weapon specifics
+    @SpecialAttributes  AS          varchar(128)      ,    --Pode ser um composito ?
+    @Damage             AS          decimal(38,2)     ,
+    @DamageType         AS          varchar(128)      ,      -- Atributo multivalor ?
+    @CriticalChance     AS          decimal(5,2)      ,
+    @CriticalMutiplier  AS          decimal(5,2)      )
+                                  
+AS
+	BEGIN
+		INSERT INTO [item]  (ID       ,
+				     Stash_ID ,
+				     TabNumber,
+				     Price    ,
+				     [Name]   ,
+				     isUnique ,
+				     Upgraded ,
+				     [Rank]   ) VALUES (@ID          ,
+							@Stash_ID    ,
+							@TabNumber   ,
+							@Price       ,
+							@Name      ,
+							@isUnique    ,
+							@Upgraded    ,
+							@Rank      );
+
+		INSERT INTO [weapon](item_ID  ,
+				     Stash_ID ,
+				     TabNumber,
+				     Price    ,
+				     [Name]   ,
+				     isUnique ,
+				     Upgraded ,
+				     [Rank]   ,
+				     SpecialAttributes     ,
+				     Damage                ,
+				     DamageType            ,
+				     CriticalChance        ,
+				     CriticalMutiplier     
+					      ) VALUES (@ID                    ,
+							@Stash_ID              ,
+							@TabNumber             ,
+							@Price                 ,
+							@Name                  ,
+							@isUnique              ,
+							@Upgraded              ,
+							@Rank                  ,
+							@SpecialAttributes     ,
+							@Damage                ,
+							@DamageType            ,
+							@CriticalChance        ,
+							@CriticalMutiplier     );
+		INSERT INTO [melee](item_ID  ,
+				     Stash_ID ,
+				     TabNumber,
+				     Price    ,
+				     [Name]   ,
+				     isUnique ,
+				     Upgraded ,
+				     [Rank]   ,
+				     SpecialAttributes     ,
+				     Damage                ,
+				     DamageType            ,
+				     CriticalChance        ,
+				     CriticalMutiplier     ,
+				     Weapon_ID            ,
+				     AttackSpeed          ,
+				     HandNum              ,
+				     MeleeType            )
+						VALUES (@ID                    ,
+							@Stash_ID              ,
+							@TabNumber             ,
+							@Price                 ,
+							@Name                  ,
+							@isUnique              ,
+							@Upgraded              ,
+							@Rank                  ,
+							@SpecialAttributes     ,
+							@Damage                ,
+							@DamageType            ,
+							@CriticalChance        ,
+							@CriticalMutiplier     ,
+				                        @Weapon_ID             ,
+				                        @AttackSpeed           ,
+				                        @HandNum               ,
+				                        @MeleeType             ,
+						);

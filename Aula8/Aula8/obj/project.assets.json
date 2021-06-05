@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\bd\\Aula8\\Aula8\\Aula8.vbproj",
+      "projectUniqueName": "C:\\Users\\pedro\\OneDrive - Universidade de Aveiro\\Documents\\GitHub\\BD2\\Aula8\\Aula8\\Aula8.vbproj",
       "projectName": "Aula8",
-      "projectPath": "D:\\bd\\Aula8\\Aula8\\Aula8.vbproj",
+      "projectPath": "C:\\Users\\pedro\\OneDrive - Universidade de Aveiro\\Documents\\GitHub\\BD2\\Aula8\\Aula8\\Aula8.vbproj",
       "packagesPath": "C:\\Users\\pedro\\.nuget\\packages\\",
-      "outputPath": "D:\\bd\\Aula8\\Aula8\\obj\\",
+      "outputPath": "C:\\Users\\pedro\\OneDrive - Universidade de Aveiro\\Documents\\GitHub\\BD2\\Aula8\\Aula8\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\pedro\\AppData\\Roaming\\NuGet\\NuGet.Config",
