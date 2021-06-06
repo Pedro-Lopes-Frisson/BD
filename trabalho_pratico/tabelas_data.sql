@@ -31,6 +31,7 @@ CREATE TABLE specialItem (
             [Rank] int , -- Pode ser null?
             PRIMARY KEY (ID)
           )
+go
 
 CREATE TABLE consumable (
             SpecialItem_ID  int   FOREIGN KEY REFERENCES specialItem(ID), -- NOT NULL,
@@ -41,6 +42,7 @@ CREATE TABLE consumable (
             FOREIGN KEY (SpecialItem_ID) references [specialItem] (ID)
 
 )
+go
 
 CREATE TABLE cosmetic (
             SpecialItem_ID  int   FOREIGN KEY REFERENCES specialItem(ID), -- NOT NULL,
@@ -50,6 +52,7 @@ CREATE TABLE cosmetic (
             PRIMARY KEY (SpecialItem_ID),
             FOREIGN KEY (SpecialItem_ID) references [specialItem] (ID)
 )
+go
 
 CREATE TABLE [user] (
             UserID          INT IDENTITY(1,1) NOT NULL,
@@ -60,6 +63,7 @@ CREATE TABLE [user] (
             GameCurrency    decimal(38,3)          NOT NULL DEFAULT 0,
             PRIMARY KEY (UserID)
         )
+go
 
 CREATE TABLE [stash] (
   ID             bigint                 NOT NULL,
@@ -69,7 +73,7 @@ CREATE TABLE [stash] (
   PRIMARY KEY (ID),
   FOREIGN KEY ([User_ID]) references [user](UserID)
 )
-
+go
 
 CREATE TABLE vendorStash(
   ID             bigint                 NOT NULL,
@@ -78,6 +82,7 @@ CREATE TABLE vendorStash(
   --CHECK(TypeCode LIKE 'vendor[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
   FOREIGN KEY (ID) references [stash](ID)
 )
+go
 
 CREATE TABLE buyerStash(
   ID             bigint                 NOT NULL,
@@ -86,6 +91,7 @@ CREATE TABLE buyerStash(
   --CHECK(TypeCode LIKE 'buyer[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
   FOREIGN KEY (ID) references [stash](ID)
 )
+go
 
 CREATE TABLE stashTabs (
   [Stash_ID]        bigint                    NOT NULL,
@@ -93,6 +99,7 @@ CREATE TABLE stashTabs (
   PRIMARY KEY ([Stash_ID], [Number]),
   FOREIGN KEY ([Stash_ID]) references [stash] ([ID])
 )
+go
 
 CREATE TABLE normalTab (
   [Stash_ID]     bigint          NOT NULL,
@@ -101,6 +108,7 @@ CREATE TABLE normalTab (
   PRIMARY KEY ([Stash_ID], [Number]),
   FOREIGN KEY ([Stash_ID], [Number] ) references [stashTabs]([Stash_ID], [Number])
 )
+go
 
 CREATE TABLE specialTab (
   [Stash_ID]     bigint          NOT NULL,
@@ -108,6 +116,7 @@ CREATE TABLE specialTab (
   SlotSpace        int                    NOT NULL DEFAULT 20, PRIMARY KEY ([Stash_ID], [Number]),
   FOREIGN KEY ([Stash_ID], [Number] ) references [stashTabs]([Stash_ID], [Number])
 )
+go
 
 CREATE TABLE item (
 
@@ -125,6 +134,7 @@ CREATE TABLE item (
   FOREIGN KEY (Stash_ID , TabNumber ) references [normalTab]([Stash_ID], [Number])
 
 )
+go
 
 CREATE TABLE weapon(
   item_ID               bigint            NOT NULL,
@@ -148,6 +158,7 @@ CREATE TABLE weapon(
   CHECK( CriticalMutiplier <= 100.00 and CriticalMutiplier >= 000.00)
 
 )
+go
 
 CREATE TABLE ranged (
   item_ID    bigint            NOT NULL,
@@ -174,6 +185,7 @@ CREATE TABLE ranged (
   PRIMARY KEY  (item_ID),
   FOREIGN KEY (item_ID) references [weapon]( item_ID ),
 )
+go
 
 CREATE TABLE  physical (
   item_ID       bigint         NOT NULL,
@@ -205,8 +217,7 @@ CREATE TABLE  physical (
   CHECK (PiercingRate > 0),
   CHECK (FireRate > 0),
 )
-
-
+go
 
 CREATE TABLE magical (
   item_ID    bigint                 NOT NULL,
@@ -235,7 +246,7 @@ CREATE TABLE magical (
   PRIMARY KEY  (item_ID),
   FOREIGN KEY (item_ID) references [ranged]( item_ID )
 )
-
+go
 
 CREATE TABLE melee(
     Weapon_ID     bigint            NOT NULL,
@@ -263,6 +274,7 @@ CREATE TABLE melee(
     FOREIGN KEY (Weapon_ID) references [weapon]( item_ID ),
 
 )
+go
 
 CREATE TABLE armor (
 
@@ -285,6 +297,7 @@ CREATE TABLE armor (
   FOREIGN KEY (ID) references [item]( ID ),
 )
 go
+
 CREATE TABLE shield (
 
   ID        bigint            NOT NULL,
@@ -308,6 +321,7 @@ CREATE TABLE shield (
 
 
 
+go
 
 ---- Procedure to insert a new user acc
 --go
@@ -344,6 +358,7 @@ CREATE TABLE shield (
 ----    @uRealCurrency    = 1.00,
 ----    @uGameCurrency    = 1.0,
 ----    @responseMessage =    @responseMessage  OUTPUT 
+go
 
 -- SELECT * FROM [user]
 ---------------------------------------------------------------
@@ -613,7 +628,7 @@ CREATE TABLE shield (
 --DROP TRIGGER physicalTrigger;
 
 --DROP TRIGGER physicalTrigger;
-
+go
 CREATE proc physicalTrigger (
 @ID                AS bigint				,
 @Stash_ID          AS bigint				,
@@ -775,7 +790,7 @@ go
 --select @Password as N'@Password'
 --go
 
-alter proc Verify_Login (@Username varchar(128), @Password varchar(128), @Verified binary OUTPUT) 
+create proc Verify_Login (@Username varchar(128), @Password varchar(128), @Verified binary OUTPUT) 
 AS
 Begin 
     DECLARE @returned binary(64)
@@ -784,6 +799,7 @@ Begin
 	if(@returned = HASHBYTES('SHA2_512', @Password)) Select @Verified = 1
 	else Select @Verified = 0
 end
+go
 
 CREATE PROC magicalInsert(
 @ID                AS bigint				,
@@ -894,13 +910,11 @@ AS
 				     CriticalChance        ,
 				     CriticalMutiplier     ,
 				     [Range]               ,
-				     Accuraccy,
-				     CoolDown                
-                                     RadiusOfEffectiveness  
+				     Accuraccy			   ,
+				     CoolDown			   ,               
+                     RadiusOfEffectiveness)                   
 
-			)                   
-
-						VALUES (@ID                    ,
+					VALUES (@ID                    ,
 							@Stash_ID              ,
 							@TabNumber             ,
 							@Price                 ,
@@ -919,7 +933,8 @@ AS
 						        @RadiusOfEffectiveness  
 						);
 
-
+end
+go
 
 CREATE PROC meleeInsert(
 	--melee specifics
@@ -929,10 +944,10 @@ CREATE PROC meleeInsert(
     @MeleeType          AS          varchar(128)      ,
 	-- Item specifics
     @Price              AS          decimal(38,3)     ,
-    @[Name]             AS          varchar(128)      ,
+    @Name             AS          varchar(128)      ,
     @isUnique           AS          bit               ,
     @Upgraded           AS          int               ,
-    @[Rank]             AS          int               ,
+    @Rank             AS          int               ,
     @TabNumber          AS          bigint            ,
     @Stash_ID           AS          bigint            ,
 	-- weapon specifics
@@ -951,7 +966,7 @@ AS
 				     [Name]   ,
 				     isUnique ,
 				     Upgraded ,
-				     [Rank]   ) VALUES (@ID          ,
+				     [Rank]   ) VALUES (@Weapon_ID          ,
 							@Stash_ID    ,
 							@TabNumber   ,
 							@Price       ,
@@ -973,7 +988,7 @@ AS
 				     DamageType            ,
 				     CriticalChance        ,
 				     CriticalMutiplier     
-					      ) VALUES (@ID                    ,
+					      ) VALUES (@Weapon_ID                    ,
 							@Stash_ID              ,
 							@TabNumber             ,
 							@Price                 ,
@@ -999,11 +1014,10 @@ AS
 				     DamageType            ,
 				     CriticalChance        ,
 				     CriticalMutiplier     ,
-				     Weapon_ID            ,
 				     AttackSpeed          ,
 				     HandNum              ,
 				     MeleeType            )
-						VALUES (@ID                    ,
+						VALUES (@Weapon_ID                    ,
 							@Stash_ID              ,
 							@TabNumber             ,
 							@Price                 ,
@@ -1016,8 +1030,120 @@ AS
 							@DamageType            ,
 							@CriticalChance        ,
 							@CriticalMutiplier     ,
-				                        @Weapon_ID             ,
 				                        @AttackSpeed           ,
 				                        @HandNum               ,
-				                        @MeleeType             ,
-						);
+				                        @MeleeType             
+						)
+
+end
+go
+
+CREATE PROC armorInsert(
+	--armor specifics
+    @Item_ID			AS          bigint            ,
+    @Defense			AS          decimal(6, 3)      ,
+    @HealthBonus        AS          decimal(38, 5)               ,
+	-- Item specifics
+    @Price              AS          decimal(38,3)     ,
+    @Name				AS          varchar(128)      ,
+    @isUnique           AS          bit               ,
+    @Upgraded           AS          int               ,
+    @Rank				AS          int               ,
+    @TabNumber          AS          bigint            ,
+    @Stash_ID           AS          bigint            
+)
+as
+BEGIN
+	INSERT INTO [item]  (ID       ,
+				     Stash_ID ,
+				     TabNumber,
+				     Price    ,
+				     [Name]   ,
+				     isUnique ,
+				     Upgraded ,
+				     [Rank]   ) VALUES (@Item_ID          ,
+							@Stash_ID    ,
+							@TabNumber   ,
+							@Price       ,
+							@Name      ,
+							@isUnique    ,
+							@Upgraded    ,
+							@Rank      );
+
+		INSERT INTO [armor](ID  ,
+				     Stash_ID ,
+				     TabNumber,
+				     Price    ,
+				     [Name]   ,
+				     isUnique ,
+				     Upgraded ,
+				     [Rank]   ,
+				     Defense,
+					 HealthBonus
+					      ) VALUES (@item_ID                    ,
+							@Stash_ID              ,
+							@TabNumber             ,
+							@Price                 ,
+							@Name                  ,
+							@isUnique              ,
+							@Upgraded              ,
+							@Rank                  ,
+							@Defense,
+							@HealthBonus)
+END
+go
+
+CREATE PROC shieldInsert(
+	--armor specifics
+    @Item_ID			AS          bigint            ,
+    @Defense			AS          decimal(6, 3)      ,
+    @SpecialAbility        AS          varchar(128)               ,
+	-- Item specifics
+    @Price              AS          decimal(38,3)     ,
+    @Name				AS          varchar(128)      ,
+    @isUnique           AS          bit               ,
+    @Upgraded           AS          int               ,
+    @Rank				AS          int               ,
+    @TabNumber          AS          bigint            ,
+    @Stash_ID           AS          bigint            
+)
+as
+BEGIN
+	INSERT INTO [item]  (ID       ,
+				     Stash_ID ,
+				     TabNumber,
+				     Price    ,
+				     [Name]   ,
+				     isUnique ,
+				     Upgraded ,
+				     [Rank]   ) VALUES (@Item_ID          ,
+							@Stash_ID    ,
+							@TabNumber   ,
+							@Price       ,
+							@Name      ,
+							@isUnique    ,
+							@Upgraded    ,
+							@Rank      );
+
+		INSERT INTO [shield](ID  ,
+				     Stash_ID ,
+				     TabNumber,
+				     Price    ,
+				     [Name]   ,
+				     isUnique ,
+				     Upgraded ,
+				     [Rank]   ,
+				     Defense,
+					 SpecialAbility
+					      ) VALUES (@item_ID                    ,
+							@Stash_ID              ,
+							@TabNumber             ,
+							@Price                 ,
+							@Name                  ,
+							@isUnique              ,
+							@Upgraded              ,
+							@Rank                  ,
+							@Defense,
+							@SpecialAbility)
+END
+go
