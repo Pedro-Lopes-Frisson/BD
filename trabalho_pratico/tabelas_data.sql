@@ -120,7 +120,7 @@ go
 
 CREATE TABLE item (
 
-  ID        bigint            NOT NULL, 
+  ID        bigint identity(1,1)            NOT NULL, 
   Stash_ID  bigint            NOT NULL,
   TabNumber bigint            NOT NULL,
 
@@ -629,8 +629,46 @@ go
 
 --DROP TRIGGER physicalTrigger;
 go
-CREATE proc physicalTrigger (
-@ID                AS bigint				,
+SELECT * FROM item;
+SELECT * FROM stash;
+SELECT * FROM weapon;
+SELECT * FROM ranged;
+SELECT * FROM physical;
+
+
+-- 10001,  12.5 ,  2, 54, 'Bow', 0, 0, 0,4,55, 500 , 'Fire', 21, 10, 500, 57
+
+go
+
+--CREATE PROC getLoginInfo(
+--@Username as varchar(128),
+--@Password as binary(64) OUTPUT
+--)
+--as
+--begin
+-- Select @Password = Pass from [user] where AccName =  @Username
+--end
+--go
+
+--select AccName from [user]
+--go
+--DECLARE @Password as binary(64);
+--exec getLoginInfo @Username = 'malesuada', @Password= @Password OUTPUT;
+--select @Password as N'@Password'
+--go
+
+create proc Verify_Login (@Username varchar(128), @Password varchar(128), @Verified binary OUTPUT) 
+AS
+Begin 
+    DECLARE @returned binary(64)
+    select @returned= Pass from [user] where AccName = @Username
+	DECLARE @success binary
+	if(@returned = HASHBYTES('SHA2_512', @Password)) Select @Verified = 1
+	else Select @Verified = 0
+end
+go
+
+alter proc physicalTrigger (
 @Stash_ID          AS bigint				,
 @TabNumber         AS bigint				,
 @Price             AS decimal(38,3)		,
@@ -650,6 +688,9 @@ CREATE proc physicalTrigger (
 )
 AS 
 BEGIN
+declare @ID bigint;
+select @ID = count(*) from item;
+select @ID = @ID+1;
 	INSERT INTO [item]  (ID       ,
                              Stash_ID ,
                              TabNumber,
@@ -761,48 +802,8 @@ BEGIN
 
 END
 go
-SELECT * FROM item;
-SELECT * FROM stash;
-SELECT * FROM weapon;
-SELECT * FROM ranged;
-SELECT * FROM physical;
 
-
--- 10001,  12.5 ,  2, 54, 'Bow', 0, 0, 0,4,55, 500 , 'Fire', 21, 10, 500, 57
-
-go
-
-
---CREATE PROC getLoginInfo(
---@Username as varchar(128),
---@Password as binary(64) OUTPUT
---)
---as
---begin
--- Select @Password = Pass from [user] where AccName =  @Username
---end
---go
-
---select AccName from [user]
---go
---DECLARE @Password as binary(64);
---exec getLoginInfo @Username = 'malesuada', @Password= @Password OUTPUT;
---select @Password as N'@Password'
---go
-
-create proc Verify_Login (@Username varchar(128), @Password varchar(128), @Verified binary OUTPUT) 
-AS
-Begin 
-    DECLARE @returned binary(64)
-    select @returned= Pass from [user] where AccName = @Username
-	DECLARE @success binary
-	if(@returned = HASHBYTES('SHA2_512', @Password)) Select @Verified = 1
-	else Select @Verified = 0
-end
-go
-
-CREATE PROC magicalInsert(
-@ID                AS bigint				,
+alter PROC magicalInsert(
 @Stash_ID          AS bigint				,
 @TabNumber         AS bigint				,
 @Price             AS decimal(38,3)		,
@@ -820,6 +821,9 @@ CREATE PROC magicalInsert(
 @CoolDown               AS   decimal(6,2)            ,
 @RadiusOfEffectiveness  AS    int     )
 AS
+declare @ID bigint;
+select @ID = count(*) from item;
+select @ID = @ID+1;
 	BEGIN
 		INSERT INTO [item]  (ID       ,
 				     Stash_ID ,
@@ -936,9 +940,8 @@ AS
 end
 go
 
-CREATE PROC meleeInsert(
+alter PROC meleeInsert(
 	--melee specifics
-    @Weapon_ID          AS          bigint            ,
     @AttackSpeed        AS          DECIMAL(4,3)      ,
     @HandNum            AS          int               ,
     @MeleeType          AS          varchar(128)      ,
@@ -959,6 +962,9 @@ CREATE PROC meleeInsert(
                                   
 AS
 	BEGIN
+	declare @Weapon_ID bigint;
+select @Weapon_ID = count(*) from item;
+select @Weapon_ID = @Weapon_ID+1;
 		INSERT INTO [item]  (ID       ,
 				     Stash_ID ,
 				     TabNumber,
@@ -1001,7 +1007,7 @@ AS
 							@DamageType            ,
 							@CriticalChance        ,
 							@CriticalMutiplier     );
-		INSERT INTO [melee](item_ID  ,
+		INSERT INTO [melee](Weapon_ID  ,
 				     Stash_ID ,
 				     TabNumber,
 				     Price    ,
@@ -1038,9 +1044,8 @@ AS
 end
 go
 
-CREATE PROC armorInsert(
+alter PROC armorInsert(
 	--armor specifics
-    @Item_ID			AS          bigint            ,
     @Defense			AS          decimal(6, 3)      ,
     @HealthBonus        AS          decimal(38, 5)               ,
 	-- Item specifics
@@ -1054,6 +1059,9 @@ CREATE PROC armorInsert(
 )
 as
 BEGIN
+declare @Item_ID bigint;
+select  @Item_ID = count(*) from item;
+select  @Item_ID = @Item_ID+1;
 	INSERT INTO [item]  (ID       ,
 				     Stash_ID ,
 				     TabNumber,
@@ -1093,9 +1101,8 @@ BEGIN
 END
 go
 
-CREATE PROC shieldInsert(
+alter PROC shieldInsert(
 	--armor specifics
-    @Item_ID			AS          bigint            ,
     @Defense			AS          decimal(6, 3)      ,
     @SpecialAbility        AS          varchar(128)               ,
 	-- Item specifics
@@ -1109,6 +1116,9 @@ CREATE PROC shieldInsert(
 )
 as
 BEGIN
+declare @Item_ID bigint;
+select  @Item_ID = count(*) from item;
+select  @Item_ID = @Item_ID+1;
 	INSERT INTO [item]  (ID       ,
 				     Stash_ID ,
 				     TabNumber,
