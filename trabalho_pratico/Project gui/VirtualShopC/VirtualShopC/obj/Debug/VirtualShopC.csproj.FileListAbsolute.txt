@@ -8,3 +8,15 @@ C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\base de dados\Projec
 C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\base de dados\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.exe
 C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\base de dados\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.pdb
 C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\base de dados\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.Form2.resources
+C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.csprojAssemblyReference.cache
+C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.Form1.resources
+C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.Form2.resources
+C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.Form3.resources
+C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.Properties.Resources.resources
+C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.csproj.GenerateResource.cache
+C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.exe
+C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.pdb
+C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\bin\Debug\VirtualShopC.exe.config
+C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\bin\Debug\VirtualShopC.exe
+C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\bin\Debug\VirtualShopC.pdb
+C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.Form4.resources

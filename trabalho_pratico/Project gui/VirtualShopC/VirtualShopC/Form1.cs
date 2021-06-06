@@ -70,6 +70,10 @@ namespace VirtualShopC
                     MessageBox.Show("Login Successful!");
                     user = UsernameBox.Text;
                     Clear();
+                    this.Hide();
+                    Form form3 = new Form3(user);
+                    form3.ShowDialog();
+                    this.Close();
                 }
                 else
                 {
