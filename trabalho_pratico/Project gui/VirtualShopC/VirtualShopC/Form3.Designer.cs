@@ -225,7 +225,7 @@
             // 
             this.RegisterItem.AccessibleName = "RegisterItem";
             this.RegisterItem.Name = "RegisterItem";
-            this.RegisterItem.Size = new System.Drawing.Size(224, 26);
+            this.RegisterItem.Size = new System.Drawing.Size(180, 26);
             this.RegisterItem.Text = "Register Item";
             this.RegisterItem.Click += new System.EventHandler(this.RegisterItem_Click);
             // 

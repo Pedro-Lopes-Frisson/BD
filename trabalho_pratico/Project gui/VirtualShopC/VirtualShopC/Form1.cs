@@ -59,8 +59,8 @@ namespace VirtualShopC
                 sqlConn.Open();
                 SqlCommand sqlComm = new SqlCommand("Verify_Login", sqlConn);
                 sqlComm.CommandType = CommandType.StoredProcedure;
-                sqlComm.Parameters.AddWithValue("@Username", UsernameBox.Text);
-                sqlComm.Parameters.AddWithValue("@Password", PasswordBox.Text);
+                sqlComm.Parameters.AddWithValue("@Username", "dummy");
+                sqlComm.Parameters.AddWithValue("@Password", "dummypassword");
                 SqlParameter success = new SqlParameter("@Verified", DbType.Binary);
                 success.Direction = System.Data.ParameterDirection.Output;
                 sqlComm.Parameters.Add(success);
