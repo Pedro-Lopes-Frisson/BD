@@ -47,7 +47,7 @@ namespace VirtualShopC
             {
                 sqlConn.Open();
                 string objects = "";
-                string command = "select Name, Upgraded, Rank from";
+                string command = "select [Name], [Upgraded], [Rank] from";
                 int commandNo = 0;
                 if (WeaponCheck.Checked)
                 {

@@ -53,7 +53,7 @@
             this.MagicalCheck.TabIndex = 11;
             this.MagicalCheck.Text = "Magical (Ranged)";
             this.MagicalCheck.UseVisualStyleBackColor = true;
-            this.MagicalCheck.CheckedChanged += new System.EventHandler(this.MagicalCheck_CheckedChanged);
+            this.MagicalCheck.Click += new System.EventHandler(this.MagicalType_Click);
             // 
             // PhysicalCheck
             // 
@@ -66,7 +66,7 @@
             this.PhysicalCheck.TabIndex = 10;
             this.PhysicalCheck.Text = "Physical (Ranged)";
             this.PhysicalCheck.UseVisualStyleBackColor = true;
-            this.PhysicalCheck.CheckedChanged += new System.EventHandler(this.PhysicalCheck_CheckedChanged);
+            this.PhysicalCheck.Click += new System.EventHandler(this.PhysicalType_click);
             // 
             // MeleeCheck
             // 
@@ -79,7 +79,7 @@
             this.MeleeCheck.TabIndex = 9;
             this.MeleeCheck.Text = "Melee";
             this.MeleeCheck.UseVisualStyleBackColor = true;
-            this.MeleeCheck.CheckedChanged += new System.EventHandler(this.MeleeCheck_CheckedChanged);
+            this.MeleeCheck.Click += new System.EventHandler(this.MeleeType_Click);
             // 
             // ShieldCheck
             // 
@@ -92,7 +92,7 @@
             this.ShieldCheck.TabIndex = 8;
             this.ShieldCheck.Text = "Shield";
             this.ShieldCheck.UseVisualStyleBackColor = true;
-            this.ShieldCheck.CheckedChanged += new System.EventHandler(this.ShieldCheck_CheckedChanged);
+            this.ShieldCheck.Click += new System.EventHandler(this.ShieldType_Click);
             // 
             // ArmorCheck
             // 
@@ -105,7 +105,7 @@
             this.ArmorCheck.TabIndex = 7;
             this.ArmorCheck.Text = "Armor";
             this.ArmorCheck.UseVisualStyleBackColor = true;
-            this.ArmorCheck.CheckedChanged += new System.EventHandler(this.ArmorCheck_CheckedChanged);
+            this.ArmorCheck.Click += new System.EventHandler(this.ArmorType_Click);
             // 
             // Title
             // 
@@ -137,13 +137,12 @@
             this.ItemType.TabIndex = 14;
             this.ItemType.TabStop = false;
             this.ItemType.Text = "Item Type";
-            this.ItemType.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // ItemAttributes
             // 
             this.ItemAttributes.Location = new System.Drawing.Point(12, 152);
             this.ItemAttributes.Name = "ItemAttributes";
-            this.ItemAttributes.Size = new System.Drawing.Size(551, 249);
+            this.ItemAttributes.Size = new System.Drawing.Size(551, 287);
             this.ItemAttributes.TabIndex = 15;
             this.ItemAttributes.TabStop = false;
             this.ItemAttributes.Text = "Item Attributes";

@@ -31,41 +31,7 @@ namespace VirtualShopC
 
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void MeleeCheck_CheckedChanged(object sender, EventArgs e)
-        {
-            this.checkGroup(ItemType, MeleeCheck);
-            
-
-        }
-
-        private void ArmorCheck_CheckedChanged(object sender, EventArgs e)
-        {
-            this.checkGroup(ItemType, ArmorCheck);
-
-        }
-
-        private void ShieldCheck_CheckedChanged(object sender, EventArgs e)
-        {
-            this.checkGroup(ItemType, ShieldCheck);
-
-        }
-
-        private void PhysicalCheck_CheckedChanged(object sender, EventArgs e)
-        {
-            this.checkGroup(ItemType, PhysicalCheck);
-
-        }
-
-        private void MagicalCheck_CheckedChanged(object sender, EventArgs e)
-        {
-            this.checkGroup(ItemType, MagicalCheck);
-
-        }
+        
         private void checkGroup(GroupBox GroupBox1, CheckBox CheckBox1)
         {
             foreach (Control c in GroupBox1.Controls)
@@ -76,6 +42,39 @@ namespace VirtualShopC
                     checkbox.Checked = false;
                 }
             }
+        }
+
+        private void MeleeType_Click(object sender, EventArgs e)
+        {
+            checkGroup(ItemType, MeleeCheck);
+        }
+
+        private void ArmorType_Click(object sender, EventArgs e)
+        {
+            checkGroup(ItemType, ArmorCheck);
+
+        }
+
+        private void ShieldType_Click(object sender, EventArgs e)
+        {
+            checkGroup(ItemType, ShieldCheck);
+
+        }
+
+        private void PhysicalType_click(object sender, EventArgs e)
+        {
+            checkGroup(ItemType, PhysicalCheck);
+
+        }
+
+        private void MagicalType_Click(object sender, EventArgs e)
+        {
+            checkGroup(ItemType, MagicalCheck);
+
+        }
+
+        public void LoadItemProperties(CheckBox checkBox)
+        {
 
         }
     }
