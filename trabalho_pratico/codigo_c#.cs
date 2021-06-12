@@ -3,7 +3,6 @@ namespace specialItem
     [Serializable()]
     public class specialItem
     {
-
         private String _ID;
         public String ID
         {
