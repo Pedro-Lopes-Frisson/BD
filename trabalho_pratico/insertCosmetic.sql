@@ -10,11 +10,11 @@ CREATE PROC insertCosmetic(
 )
 AS
 	BEGIN
+	BEGIN TRANSACTION
 		INSERT INTO [specialItem] (ID, Name, Price, CurrencyType,[Rank])
 		VALUES (@ID, @Name, @Price, @CurrencyType,@Rank)
 
 		INSERT INTO [cosmetic] (ID,  [Type], [BodyPart], Gender)
 		VALUES (@ID,@Type,@BodyPart,@Gender)
+	COMMIT;
 	END
-
-

@@ -20,7 +20,8 @@ CREATE PROC meleeInsert(
     @CriticalMutiplier  AS          decimal(5,2)      )
                                   
 AS
-	BEGIN
+BEGIN
+	BEGIN TRANSACTION
 		INSERT INTO [item]  (ID       ,
 				     Stash_ID ,
 				     TabNumber,
@@ -98,3 +99,5 @@ AS
 				                        @HandNum               ,
 				                        @MeleeType             ,
 						);
+	COMMIT;
+END

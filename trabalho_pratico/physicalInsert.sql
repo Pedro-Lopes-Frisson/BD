@@ -19,6 +19,7 @@ CREATE proc physicalTrigger (
 )
 AS 
 BEGIN
+BEGIN TRANSACTION
 	INSERT INTO [item]  (ID       ,
                              Stash_ID ,
                              TabNumber,
@@ -128,4 +129,5 @@ BEGIN
                                                 @PiercingRate,
                                                 @FireRate    );
 
+COMMIT;
 END

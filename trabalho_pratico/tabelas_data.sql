@@ -123,6 +123,7 @@ CREATE TABLE item (
   ID        bigint identity(1,1)            NOT NULL, 
   Stash_ID  bigint            NOT NULL,
   TabNumber bigint            NOT NULL,
+  BaseItem_ID bigint		  DEFAULT NULL,
 
   Price     decimal(38,3)     NOT NULL,
   [Name]    varchar(128)      NOT NULL,
@@ -131,7 +132,8 @@ CREATE TABLE item (
   [Rank]    int               ,
 
   PRIMARY KEY (ID),
-  FOREIGN KEY (Stash_ID , TabNumber ) references [normalTab]([Stash_ID], [Number])
+  FOREIGN KEY (Stash_ID , TabNumber ) references [normalTab]([Stash_ID], [Number]),
+  FOREIGN KEY (BaseItem_ID) references [item](ID)
 
 )
 go
@@ -143,6 +145,7 @@ CREATE TABLE weapon(
   DamageType            varchar(128)     NOT NULL,      -- Atributo multivalor ?
   CriticalChance        decimal(5,2) NOT NULL DEFAULT 000.00,
   CriticalMutiplier     decimal(5,2) NOT NULL DEFAULT 000.00,
+  BaseItem_ID			bigint		  DEFAULT NULL,
 	-- Item specifics
   Price     decimal(38,3)     NOT NULL,
   [Name]    varchar(128)      NOT NULL,
@@ -154,6 +157,7 @@ CREATE TABLE weapon(
 
   PRIMARY KEY  (item_ID),
   FOREIGN KEY (item_ID) references [item]( ID ),
+  FOREIGN KEY (BaseItem_ID) references weapon(item_ID),
   CHECK (CriticalChance <= 100.00 and CriticalChance >= 000.00),
   CHECK( CriticalMutiplier <= 100.00 and CriticalMutiplier >= 000.00)
 
@@ -164,6 +168,7 @@ CREATE TABLE ranged (
   item_ID    bigint            NOT NULL,
   [Range]      int               NOT NULL DEFAULT 100,
   Accuraccy  DECIMAL(5,2)      NOT NULL DEFAULT 65.000,
+  BaseItem_ID bigint		  DEFAULT NULL,
 
 	-- Item specifics
   Price     decimal(38,3)     NOT NULL,
@@ -184,6 +189,7 @@ CREATE TABLE ranged (
   CHECK ([Range] < 1000),
   PRIMARY KEY  (item_ID),
   FOREIGN KEY (item_ID) references [weapon]( item_ID ),
+    FOREIGN KEY (BaseItem_ID) references ranged(item_ID)
 )
 go
 
@@ -191,6 +197,7 @@ CREATE TABLE  physical (
   item_ID       bigint         NOT NULL,
   PiercingRate  decimal(7,3)    NOT NULL,
   FireRate      decimal(7,3)    NOT NULL,
+  BaseItem_ID bigint		  DEFAULT NULL,
 
 	-- Item specifics
   Price     decimal(38,3)     NOT NULL,
@@ -214,6 +221,7 @@ CREATE TABLE  physical (
 
   PRIMARY KEY  (item_ID),
   FOREIGN KEY (item_ID) references [ranged]( item_ID ),
+  FOREIGN KEY (BaseItem_ID) references physical(item_ID),
   CHECK (PiercingRate > 0),
   CHECK (FireRate > 0),
 )
@@ -223,6 +231,7 @@ CREATE TABLE magical (
   item_ID    bigint                 NOT NULL,
   CoolDown   decimal(6,2)            NOT NULL,
   RadiusOfEffectiveness     int     NOT NULL,
+  BaseItem_ID bigint		  DEFAULT NULL,
 	-- Item specifics
   Price     decimal(38,3)     NOT NULL,
   [Name]    varchar(128)      NOT NULL,
@@ -244,7 +253,8 @@ CREATE TABLE magical (
   CHECK (RadiusOfEffectiveness >= 10.00 and RadiusOfEffectiveness <= 1000.00),
   CHECK (CoolDown > 0 and CoolDown <100),
   PRIMARY KEY  (item_ID),
-  FOREIGN KEY (item_ID) references [ranged]( item_ID )
+  FOREIGN KEY (item_ID) references [ranged]( item_ID ),
+  FOREIGN KEY (BaseItem_ID) references magical(item_ID)
 )
 go
 
@@ -253,6 +263,7 @@ CREATE TABLE melee(
     AttackSpeed   DECIMAL(4,3)      NOT NULL DEFAULT 0.625,
     HandNum       int               NOT NULL DEFAULT 1,
     MeleeType     varchar(128)      NOT NULL,
+    BaseItem_ID   bigint		    DEFAULT NULL,
 	-- Item specifics
     Price     decimal(38,3)     NOT NULL,
     [Name]    varchar(128)      NOT NULL,
@@ -272,6 +283,7 @@ CREATE TABLE melee(
     CHECK (HandNum > 0 and HandNum < 8),
     PRIMARY KEY  (Weapon_ID),
     FOREIGN KEY (Weapon_ID) references [weapon]( item_ID ),
+    FOREIGN KEY (BaseItem_ID) references melee(Weapon_ID)
 
 )
 go
@@ -282,6 +294,7 @@ CREATE TABLE armor (
   SpecialAttributes           varchar(128),
   Defense   DECIMAL(6,3)      NOT NULL,
   HealthBonus     decimal(38,5),
+  BaseItem_ID bigint		  DEFAULT NULL,
 	-- Item specifics
   Price     decimal(38,3)     NOT NULL,
   [Name]    varchar(128)      NOT NULL,
@@ -295,6 +308,7 @@ CREATE TABLE armor (
   CHECK (Defense <= 100),
   PRIMARY KEY  (ID),
   FOREIGN KEY (ID) references [item]( ID ),
+  FOREIGN KEY (BaseItem_ID) references armor(ID)
 )
 go
 
@@ -303,6 +317,7 @@ CREATE TABLE shield (
   ID        bigint            NOT NULL,
   Defense   DECIMAL(6,3)      NOT NULL,
   SpecialAbility    varchar(128),
+  BaseItem_ID bigint		  DEFAULT NULL,
 	-- Item specifics
   Price     decimal(38,3)     NOT NULL,
   [Name]    varchar(128)      NOT NULL,
@@ -315,6 +330,7 @@ CREATE TABLE shield (
   CHECK (Defense <= 100),
   PRIMARY KEY  (ID),
   FOREIGN KEY (ID) references [item]( ID ),
+  FOREIGN KEY (BaseItem_ID) references shield(ID)
 )
 
 

@@ -11,11 +11,12 @@ CREATE PROC insertConsumable(
 )
 AS
 	BEGIN
+	BEGIN TRANSACTION
 		INSERT INTO [specialItem] (ID, Name, Price, CurrencyType,[Rank])
 		VALUES (@ID, @Name, @Price, @CurrencyType,@Rank)
 
 		INSERT INTO [consumable] (ID,  [Effect], [Duration], Quantity)
 		VALUES (@ID,@Effect,@Duration,@Quantity)
+	COMMIT;
 	END
-
 

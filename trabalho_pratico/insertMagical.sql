@@ -18,6 +18,7 @@ CREATE PROC magicalInsert(
 @RadiusOfEffectiveness  AS    int     )
 AS
 	BEGIN
+	BEGIN TRANSACTION
 		INSERT INTO [item]  (ID       ,
 				     Stash_ID ,
 				     TabNumber,
@@ -131,3 +132,5 @@ AS
 				         		@CoolDown              ,
 						        @RadiusOfEffectiveness  
 						);
+	COMMIT;
+END
