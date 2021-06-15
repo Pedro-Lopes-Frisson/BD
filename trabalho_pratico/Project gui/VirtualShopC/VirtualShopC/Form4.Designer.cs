@@ -39,6 +39,7 @@
             this.ItemType = new System.Windows.Forms.GroupBox();
             this.ItemAttributes = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.ListAttributes = new System.Windows.Forms.Button();
             this.ItemType.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,7 +47,7 @@
             // 
             this.MagicalCheck.AccessibleName = "MagicalCheck";
             this.MagicalCheck.AutoSize = true;
-            this.MagicalCheck.Location = new System.Drawing.Point(403, 33);
+            this.MagicalCheck.Location = new System.Drawing.Point(403, 23);
             this.MagicalCheck.Margin = new System.Windows.Forms.Padding(5);
             this.MagicalCheck.Name = "MagicalCheck";
             this.MagicalCheck.Size = new System.Drawing.Size(142, 21);
@@ -59,7 +60,7 @@
             // 
             this.PhysicalCheck.AccessibleName = "PhysicalCheck";
             this.PhysicalCheck.AutoSize = true;
-            this.PhysicalCheck.Location = new System.Drawing.Point(247, 33);
+            this.PhysicalCheck.Location = new System.Drawing.Point(247, 23);
             this.PhysicalCheck.Margin = new System.Windows.Forms.Padding(5);
             this.PhysicalCheck.Name = "PhysicalCheck";
             this.PhysicalCheck.Size = new System.Drawing.Size(146, 21);
@@ -72,7 +73,7 @@
             // 
             this.MeleeCheck.AccessibleName = "MeleeCheck";
             this.MeleeCheck.AutoSize = true;
-            this.MeleeCheck.Location = new System.Drawing.Point(8, 33);
+            this.MeleeCheck.Location = new System.Drawing.Point(8, 23);
             this.MeleeCheck.Margin = new System.Windows.Forms.Padding(5);
             this.MeleeCheck.Name = "MeleeCheck";
             this.MeleeCheck.Size = new System.Drawing.Size(68, 21);
@@ -85,7 +86,7 @@
             // 
             this.ShieldCheck.AccessibleName = "ShieldCheck";
             this.ShieldCheck.AutoSize = true;
-            this.ShieldCheck.Location = new System.Drawing.Point(167, 33);
+            this.ShieldCheck.Location = new System.Drawing.Point(167, 23);
             this.ShieldCheck.Margin = new System.Windows.Forms.Padding(6);
             this.ShieldCheck.Name = "ShieldCheck";
             this.ShieldCheck.Size = new System.Drawing.Size(69, 21);
@@ -98,7 +99,7 @@
             // 
             this.ArmorCheck.AccessibleName = "ArmorCheck";
             this.ArmorCheck.AutoSize = true;
-            this.ArmorCheck.Location = new System.Drawing.Point(87, 33);
+            this.ArmorCheck.Location = new System.Drawing.Point(87, 23);
             this.ArmorCheck.Margin = new System.Windows.Forms.Padding(6);
             this.ArmorCheck.Name = "ArmorCheck";
             this.ArmorCheck.Size = new System.Drawing.Size(68, 21);
@@ -126,6 +127,7 @@
             // 
             // ItemType
             // 
+            this.ItemType.Controls.Add(this.ListAttributes);
             this.ItemType.Controls.Add(this.MeleeCheck);
             this.ItemType.Controls.Add(this.ArmorCheck);
             this.ItemType.Controls.Add(this.ShieldCheck);
@@ -133,7 +135,7 @@
             this.ItemType.Controls.Add(this.PhysicalCheck);
             this.ItemType.Location = new System.Drawing.Point(12, 46);
             this.ItemType.Name = "ItemType";
-            this.ItemType.Size = new System.Drawing.Size(551, 79);
+            this.ItemType.Size = new System.Drawing.Size(551, 100);
             this.ItemType.TabIndex = 14;
             this.ItemType.TabStop = false;
             this.ItemType.Text = "Item Type";
@@ -155,6 +157,19 @@
             this.button1.TabIndex = 16;
             this.button1.Text = "Register Item";
             this.button1.UseVisualStyleBackColor = true;
+            // 
+            // ListAttributes
+            // 
+            this.ListAttributes.AutoEllipsis = true;
+            this.ListAttributes.AutoSize = true;
+            this.ListAttributes.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ListAttributes.Location = new System.Drawing.Point(208, 67);
+            this.ListAttributes.Name = "ListAttributes";
+            this.ListAttributes.Size = new System.Drawing.Size(123, 27);
+            this.ListAttributes.TabIndex = 12;
+            this.ListAttributes.Text = "Select Item Type";
+            this.ListAttributes.UseVisualStyleBackColor = true;
+            this.ListAttributes.Click += new System.EventHandler(this.ListAttributes_Click);
             // 
             // Form4
             // 
@@ -187,5 +202,6 @@
         private System.Windows.Forms.GroupBox ItemType;
         private System.Windows.Forms.GroupBox ItemAttributes;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button ListAttributes;
     }
 }

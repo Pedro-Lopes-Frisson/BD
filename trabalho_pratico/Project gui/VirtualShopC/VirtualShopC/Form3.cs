@@ -16,6 +16,15 @@ namespace VirtualShopC
 
         string connStr = @"Data Source=My-LEGION;Initial Catalog=project_dummy;Integrated Security=True;";
         string _user="";
+        string weaponQ = "";
+        string meleeQ = "";
+        string rangedQ = "";
+        string physicalQ = "";
+        string magicalQ = "";
+        string armorQ = "";
+        string shieldQ = "";
+        string itemQ = "";
+
         public Form3(string user)
         {
             setUser(user);
@@ -38,7 +47,14 @@ namespace VirtualShopC
 
         private void checkBox5_CheckedChanged(object sender, EventArgs e)
         {
-
+            if (RangedCheck.Checked)
+            {
+                rangedQ = "ranged,";
+            }
+            else
+            {
+                rangedQ = "";
+            }
         }
 
         private void Search_Click(object sender, EventArgs e)
@@ -46,59 +62,21 @@ namespace VirtualShopC
             using (SqlConnection sqlConn = new SqlConnection(connStr))
             {
                 sqlConn.Open();
-                string objects = "";
-                string command = "select [Name], [Upgraded], [Rank] from";
+                string command = "select [Name], [Upgraded], [Rank] from ";
                 int commandNo = 0;
-                if (WeaponCheck.Checked)
+                foreach (Control c in FiltersType.Controls)
                 {
-                    objects = objects + "weapon,";
-                    commandNo++;
+                    CheckBox checkbox = c as CheckBox;
+                    if (checkbox.Checked)
+                    {
+                        commandNo++;
+                    }
                 }
-                if (ShieldCheck.Checked)
-                {
-                    objects = objects + "shield,";
-                    commandNo++;
+                if (commandNo == 0) { itemQ = "item"; }
 
-                }
-                if (ArmorCheck.Checked)
-                {
-                    objects = objects + "armor,";
-                    commandNo++;
-
-                }
-                if (MeleeCheck.Checked)
-                {
-                    objects = objects + "melee,";
-                    commandNo++;
-
-                }
-                if (RangedCheck.Checked)
-                {
-                    objects = objects + "ranged,";
-                    commandNo++;
-
-                }
-                if (PhysicalCheck.Checked)
-                {
-                    objects = objects + "physical,";
-                    commandNo++;
-
-                }
-                if (MagicalCheck.Checked)
-                {
-                    objects = objects + "magical,";
-                    commandNo++;
-
-                }
-                if (commandNo == 0)
-                {
-                    objects = "item";
-                }
-                else
-                {
-                    objects.Remove(objects.Length - 1);
-                }
-                command += objects;
+                command += weaponQ + armorQ + shieldQ + weaponQ + meleeQ + rangedQ + physicalQ + magicalQ+itemQ;
+                command.TrimEnd(',');
+                MessageBox.Show(command);
                 SqlCommand query = new SqlCommand(command, sqlConn);
                 query.CommandType = CommandType.Text;
                 SqlDataReader reader = query.ExecuteReader();
@@ -114,6 +92,79 @@ namespace VirtualShopC
         {
             Form4 form4 = new Form4(_user);
             form4.ShowDialog();
+        }
+
+        private void WeaponCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (WeaponCheck.Checked)
+            {
+                weaponQ = "weapon,";
+            }
+            else
+            {
+                weaponQ = "";
+            }
+        }
+
+        private void ArmorCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ArmorCheck.Checked)
+            {
+                armorQ = "armor,";
+            }
+            else
+            {
+                armorQ = "";
+            }
+        }
+
+        private void ShieldCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ShieldCheck.Checked)
+            {
+                shieldQ = "shield,";
+            }
+            else
+            {
+                shieldQ = "";
+            }
+        }
+
+        private void MeleeCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (MeleeCheck.Checked)
+            {
+                meleeQ = "melee,";
+            }
+            else
+            {
+                meleeQ = "";
+            }
+        }
+
+
+        private void PhysicalCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (PhysicalCheck.Checked)
+            {
+                physicalQ = "physical,";
+            }
+            else
+            {
+                physicalQ = "";
+            }
+        }
+
+        private void MagicalCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (MagicalCheck.Checked)
+            {
+                magicalQ = "magical,";
+            }
+            else
+            {
+                magicalQ = "";
+            }
         }
     }
 }

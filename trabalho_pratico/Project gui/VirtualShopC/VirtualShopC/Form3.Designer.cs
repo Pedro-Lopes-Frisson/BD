@@ -116,6 +116,7 @@
             this.MagicalCheck.TabIndex = 6;
             this.MagicalCheck.Text = "Magical (Ranged)";
             this.MagicalCheck.UseVisualStyleBackColor = true;
+            this.MagicalCheck.CheckedChanged += new System.EventHandler(this.MagicalCheck_CheckedChanged);
             // 
             // PhysicalCheck
             // 
@@ -128,6 +129,7 @@
             this.PhysicalCheck.TabIndex = 5;
             this.PhysicalCheck.Text = "Physical (Ranged)";
             this.PhysicalCheck.UseVisualStyleBackColor = true;
+            this.PhysicalCheck.CheckedChanged += new System.EventHandler(this.PhysicalCheck_CheckedChanged);
             // 
             // RangedCheck
             // 
@@ -153,6 +155,7 @@
             this.MeleeCheck.TabIndex = 3;
             this.MeleeCheck.Text = "Melee";
             this.MeleeCheck.UseVisualStyleBackColor = true;
+            this.MeleeCheck.CheckedChanged += new System.EventHandler(this.MeleeCheck_CheckedChanged);
             // 
             // ShieldCheck
             // 
@@ -165,6 +168,7 @@
             this.ShieldCheck.TabIndex = 2;
             this.ShieldCheck.Text = "Shield";
             this.ShieldCheck.UseVisualStyleBackColor = true;
+            this.ShieldCheck.CheckedChanged += new System.EventHandler(this.ShieldCheck_CheckedChanged);
             // 
             // ArmorCheck
             // 
@@ -177,6 +181,7 @@
             this.ArmorCheck.TabIndex = 1;
             this.ArmorCheck.Text = "Armor";
             this.ArmorCheck.UseVisualStyleBackColor = true;
+            this.ArmorCheck.CheckedChanged += new System.EventHandler(this.ArmorCheck_CheckedChanged);
             // 
             // WeaponCheck
             // 
@@ -189,15 +194,16 @@
             this.WeaponCheck.TabIndex = 0;
             this.WeaponCheck.Text = "Weapon";
             this.WeaponCheck.UseVisualStyleBackColor = true;
+            this.WeaponCheck.CheckedChanged += new System.EventHandler(this.WeaponCheck_CheckedChanged);
             // 
             // ItemShower
             // 
             this.ItemShower.AccessibleName = "ItemShower";
             this.ItemShower.Dock = System.Windows.Forms.DockStyle.Left;
             this.ItemShower.HideSelection = false;
-            this.ItemShower.Location = new System.Drawing.Point(0, 28);
+            this.ItemShower.Location = new System.Drawing.Point(0, 30);
             this.ItemShower.Name = "ItemShower";
-            this.ItemShower.Size = new System.Drawing.Size(258, 410);
+            this.ItemShower.Size = new System.Drawing.Size(370, 408);
             this.ItemShower.TabIndex = 3;
             this.ItemShower.UseCompatibleStateImageBehavior = false;
             // 
@@ -208,7 +214,7 @@
             this.MyStore});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(784, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(784, 30);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -218,7 +224,7 @@
             this.MyStore.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.RegisterItem});
             this.MyStore.Name = "MyStore";
-            this.MyStore.Size = new System.Drawing.Size(78, 24);
+            this.MyStore.Size = new System.Drawing.Size(78, 26);
             this.MyStore.Text = "MyStore";
             // 
             // RegisterItem

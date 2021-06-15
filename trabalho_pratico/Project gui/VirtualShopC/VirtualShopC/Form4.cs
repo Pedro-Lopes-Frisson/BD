@@ -72,10 +72,91 @@ namespace VirtualShopC
             checkGroup(ItemType, MagicalCheck);
 
         }
-
-        public void LoadItemProperties(CheckBox checkBox)
+        private void ListAttributes_Click(object sender, EventArgs e)
         {
-
+            foreach (Control c in ItemType.Controls)
+            {
+                CheckBox checkbox = c as CheckBox;
+                if (checkbox != null && checkbox.Checked)
+                {
+                    LoadItemProperties(checkbox, ItemAttributes);
+                }
+            }
         }
+
+        public void LoadItemProperties(CheckBox checkBox, GroupBox group)
+        {
+            if(checkBox == MeleeCheck)
+            {
+                Label baseItem = new Label();
+                baseItem.Text = "Base Item?";
+                baseItem.Location = new Point(20, 20);
+
+                Label name = new Label();
+                name.Text = "Item Name";
+                name.Location = new Point(20, 40);
+
+                Label handNum = new Label();
+                handNum.Text = "Nº of Hands";
+                baseItem.Location = new Point(20, 20);
+
+                Label meleeType = new Label();
+                meleeType.Text = "Melee Type";
+                baseItem.Location = new Point(20, 20);
+
+                Label attackSpd = new Label();
+                attackSpd.Text = "Attack Speed";
+                baseItem.Location = new Point(20, 20);
+
+                Label dmg = new Label();
+                dmg.Text = "Damage";
+                baseItem.Location = new Point(20, 20);
+
+                Label dmgType = new Label();
+                dmgType.Text = "Damage Type";
+                baseItem.Location = new Point(20, 20);
+
+                Label critical = new Label();
+                critical.Text = "Critical Chance";
+                baseItem.Location = new Point(20, 20);
+
+                Label criticalMult = new Label();
+                criticalMult.Text = "Critical Multiplier";
+                baseItem.Location = new Point(20, 20);
+
+                Label rank = new Label();
+                rank.Text = "Item Rank";
+                baseItem.Location = new Point(20, 20);
+
+                Label upgraded = new Label();
+                upgraded.Text = "Upgraded";
+                baseItem.Location = new Point(20, 20);
+
+                Label unique = new Label();
+                unique.Text = "Unique Item?";
+                baseItem.Location = new Point(20, 20);
+
+                Label specialAttr = new Label();
+                specialAttr.Text = "Special Attributes";
+                baseItem.Location = new Point(20, 20);
+
+                group.Controls.Add(baseItem);
+                group.Controls.Add(name);
+                //group.Controls.Add(handNum);
+                //group.Controls.Add(meleeType);
+                //group.Controls.Add(attackSpd);
+                //group.Controls.Add(dmg);
+                //group.Controls.Add(dmgType);
+                //group.Controls.Add(critical);
+                //group.Controls.Add(criticalMult);
+                //group.Controls.Add(rank);
+                //group.Controls.Add(upgraded);
+                //group.Controls.Add(unique);
+                //group.Controls.Add(specialAttr);
+
+            }
+        }
+
+        
     }
 }
