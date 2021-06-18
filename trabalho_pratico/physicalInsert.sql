@@ -16,26 +16,45 @@ CREATE proc physicalTrigger (
 @Accuraccy         AS   decimal(5,2)		,
 @PiercingRate      AS   decimal(7,3)		,
 @FireRate          AS   decimal(7,3)		
+--requiremtns
+@Level              AS         bigint   ,
+@Dexterity          AS         DECIMAL(38,3),
+@Inteligence		AS         DECIMAL(38,3),
+@Strength           AS         DECIMAL(38,3),
+@CharClass          AS         DECIMAL(38,3),
 )
 AS 
 BEGIN
 BEGIN TRANSACTION
-	INSERT INTO [item]  (ID       ,
-                             Stash_ID ,
-                             TabNumber,
-                             Price    ,
-                             [Name]   ,
-                             isUnique ,
-                             Upgraded ,
-                             [Rank]   ) VALUES (@ID          ,
+	INSERT INTO [item]  (    ID                ,
+                             Stash_ID          ,
+                             TabNumber         ,
+                             Price             ,
+                             [Name]            ,
+                             isUnique          ,
+                             Upgraded          ,
+                             [Rank]            ,
+                             [Level]           ,
+                             Dexterity         ,
+                             Inteligence	   ,
+                             Strength          ,
+                             CharClass         ,
+                             
+			             ) VALUES (             @ID          ,
                                                 @Stash_ID    ,
                                                 @TabNumber   ,
                                                 @Price       ,
                                                 @Name      ,
                                                 @isUnique    ,
                                                 @Upgraded    ,
-                                                @Rank      );
-
+                                                @Rank        ,
+                                                @Level       ,      
+                                                @Dexterity   ,      
+                                                @Inteligence ,  	
+                                                @Strength    ,      
+                                                @CharClass          
+                                                );
+                                                
 	INSERT INTO [weapon](item_ID       ,
                              Stash_ID ,
                              TabNumber,

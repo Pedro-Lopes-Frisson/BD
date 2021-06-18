@@ -7,6 +7,7 @@ GO
 --DROP TABLE buyerStash;
 --DROP TABLE normalTab;
 --DROP TABLE specialTab;
+--DROP TABLE item;
 --DROP TABLE melee;
 --DROP TABLE shield;
 --DROP TABLE armor;
@@ -16,9 +17,10 @@ GO
 --DROP TABLE weapon;
 --DROP TABLE stashTabs;
 --DROP TABLE [stash];
---DROP TABLE item;
 --DROP TABLE [user];
-
+--DROP TABLE [requirements];
+--DROP TABLE [class];
+--DROP TABLE [character];
 
 
 CREATE TABLE specialItem (
@@ -56,12 +58,13 @@ go
 
 CREATE TABLE [user] (
             UserID          INT IDENTITY(1,1) NOT NULL,
-            Email           NVARCHAR(320)  NOT NULL,
+            Email           NVARCHAR(320)  UNIQUE,
             AccName         varchar(128)    NOT NULL,
             Pass            BINARY(64)      NOT NULL,
             RealCurrency    decimal(38,3)          NOT NULL DEFAULT 0,
             GameCurrency    decimal(38,3)          NOT NULL DEFAULT 0,
-            PRIMARY KEY (UserID)
+            PRIMARY KEY (UserID),
+	    
         )
 go
 
@@ -130,6 +133,13 @@ CREATE TABLE item (
   isUnique  bit               NOT NULL DEFAULT 0,
   Upgraded  int               NOT NULL DEFAULT 0,
   [Rank]    int               ,
+
+  --requirements
+  [Level]             bigint   ,
+  Dexterity           DECIMAL(38,3),
+  Inteligence         DECIMAL(38,3),
+  Strength            DECIMAL(38,3),
+  CharClass           DECIMAL(38,3),
 
   PRIMARY KEY (ID),
   FOREIGN KEY (Stash_ID , TabNumber ) references [normalTab]([Stash_ID], [Number]),
@@ -332,11 +342,32 @@ CREATE TABLE shield (
   FOREIGN KEY (ID) references [item]( ID ),
   FOREIGN KEY (BaseItem_ID) references shield(ID)
 )
+go
+CREATE TABLE [class] (
+	Name                   varchar(512)     NOT NULL,
+	BaseStrength           DECIMAL(38,3),
+	BaseInteligence        DECIMAL(38,3),
+	BaseDexterity          DECIMAL(38,3),
+    BaseLife               DECIMAL(38,3),
+    BaseMana               DECIMAL(38,3),
+    BaseAccuracy           DECIMAL(38,3),
+    PRIMARY KEY (Name),
+)
 
+go
+CREATE TABLE [character] (
+  
+	Name               varchar(512)	NOT NULL,
+	Strength           DECIMAL(38,3),
+	Inteligence        DECIMAL(38,3),
+	Dexterity          DECIMAL(38,3),
+	User_email         NVARCHAR(320),
+	Class_Name         VARCHAR(512),
+    PRIMARY KEY (Class_Name, Name ),
+    FOREIGN KEY (Class_Name) REFERENCES [class] (Name),
+    FOREIGN KEY (User_email) REFERENCES [user] (Email)
 
-
-
-
+)
 go
 
 ---- Procedure to insert a new user acc
@@ -382,8 +413,8 @@ go
 -- INSERT USER DATA
 --
 -------------------------------------------------------
---INSERT INTO [User]([Email],[AccName],[Pass],[RealCurrency],[GameCurrency]) 
---VALUES('tincidunt.neque@Phaselluslibero.net','aliquet.', HASHBYTES('SHA2_512', 'XMX25CAM9HI'),'174.191','8.31'),
+INSERT INTO [User]([Email],[AccName],[Pass],[RealCurrency],[GameCurrency]) 
+VALUES('tincidunt.neque@Phaselluslibero.net','aliquet.', HASHBYTES('SHA2_512', 'XMX25CAM9HI'),'174.191','8.31'),
 --('aliquet.molestie.tellus@acmattis.edu','quis,', HASHBYTES('SHA2_512', 'JSZ52ZIA4KW'),'19.390','2.41'),
 --('Pellentesque.ut@atiaculis.org','malesuada', HASHBYTES('SHA2_512', 'BWY93FAX7TG'),'28.093','2.63'),
 --('ipsum.porta@risusDonec.edu','consectetuer,',HASHBYTES('SHA2_512', 'BFA05NCL7GV'),'182.305','4.21'),
@@ -640,7 +671,53 @@ go
 --SELECT * FROM normalTab;
 
 
+------------------------------------------------------------------------
+--
+-- INSERT CLASS DATA                 
+-- SELECT * from dbo.class
+-----------------------------------------------------------------------
+INSERT INTO dbo.[class] ([Name], BaseInteligence,BaseStrength, BaseDexterity,BaseLife, BaseMana, BaseAccuracy) VALUES
+                            ('Mage', 20,12, 11,17,16,12 ),
+                            ('Warrior',13,19,20,13,7,2),
+                            ('Archer',18,15,1,14,12,13),
+                            ('Mechromancer',4,15,1,15,6,2),
+                            ('Fairy',14,18,1,5,20,2),
+                            ('Troll',11,11,1,10,16,14),
+                            ('Giant',11,17,2,11,11,4),
+                            ('Dwarf',5,8,3,18,17,13);
 
+------------------------------------------------------------------------
+--
+-- INSERT CHARACTER DATA                 
+--
+------------------------------------------------------------------------
+
+INSERT INTO [character] ([Name],[Inteligence],[Strength],[Dexterity], Class_Name, [User_email]) VALUES
+('Blake',7,18,8      ,'Mage'        ,'aliquet.molestie.tellus@acmattis.edu'),
+('Omar',1,9,20        ,'Warrior'     ,'Pellentesque.ut@atiaculis.org'       ),
+('Marvin',18,5,12     ,'Archer'      ,'ipsum.porta@risusDonec.edu'          ),
+('Sylvia',11,2,10   ,'Giant'       ,'tellus.eu@accumsansedfacilisis.edu'  ),
+('Xaviera',14,7,16    ,'Fairy'       ,'elementum@ultricesposuere.com'       ),
+('Bianca',4,19,3     ,'Fairy'       ,'dolor@lectusNullam.edu'              ),
+('Adele',6,20,5        ,'Troll'       ,'nulla@mattisvelit.org'               ),
+('Cedric',4,5,9      , 'Mage'       ,'et.magnis@gravidamolestie.edu'       ),
+('Danielle',15,18,4  ,'Warrior'     ,'aliquet.molestie.tellus@acmattis.edu'),
+('Wesley',10,17,16,'Archer'      ,'Pellentesque.ut@atiaculis.org'       ),
+('Dara',10,16,6       ,'Mechromancer','ipsum.porta@risusDonec.edu'          ),
+('Arden',16,1,12,'Archer'      ,'tellus.eu@accumsansedfacilisis.edu'  ),
+('Kasimir',6,5,2,'Troll'       ,'elementum@ultricesposuere.com'       ),
+('Audra',13,8,7,'Troll'       ,'dolor@lectusNullam.edu'              ),
+('Plato',9,6,20,'Troll'       ,'nulla@mattisvelit.org'               ),
+('Stacy',1,10,4,'Troll'       ,'et.magnis@gravidamolestie.edu'       ),
+('Irma',7,7,15,'Giant'       ,'aliquet.molestie.tellus@acmattis.edu'),
+('Leo',18,11,14,'Dwarf'       ,'Pellentesque.ut@atiaculis.org'       ),
+('Nolan',10,7,6,'Dwarf'       ,'ipsum.porta@risusDonec.edu'          ),
+('Nicole',12,18,20,'Dwarf'       ,'tellus.eu@accumsansedfacilisis.edu'  ),
+('Ira',3,2,16,'Troll'       ,'elementum@ultricesposuere.com'       ),
+('Burton',3,4,11,'Dwarf'       ,'dolor@lectusNullam.edu'               );
+
+
+------------------------------------------------------------------------
 --DROP TRIGGER physicalTrigger;
 
 --DROP TRIGGER physicalTrigger;
@@ -1119,16 +1196,23 @@ go
 
 alter PROC shieldInsert(
 	--armor specifics
-    @Defense			AS          decimal(6, 3)      ,
-    @SpecialAbility        AS          varchar(128)               ,
+    @Defense			AS         decimal(6, 3)     ,
+    @SpecialAbility     AS         varchar(128)      ,
 	-- Item specifics
-    @Price              AS          decimal(38,3)     ,
-    @Name				AS          varchar(128)      ,
-    @isUnique           AS          bit               ,
-    @Upgraded           AS          int               ,
-    @Rank				AS          int               ,
-    @TabNumber          AS          bigint            ,
-    @Stash_ID           AS          bigint            
+    @Price              AS         decimal(38,3)     ,
+    @Name				AS         varchar(128)      ,
+    @isUnique           AS         bit               ,
+    @Upgraded           AS         int               ,
+    @Rank				AS         int               ,
+    @TabNumber          AS         bigint            ,
+    @Stash_ID           AS         bigint            ,
+    --requiremtns
+    @Level              AS         bigint   ,
+    @Dexterity          AS         DECIMAL(38,3),
+    @Inteligence		AS         DECIMAL(38,3),
+    @Strength           AS         DECIMAL(38,3),
+    @CharClass          AS         DECIMAL(38,3),
+
 )
 as
 BEGIN
@@ -1142,14 +1226,25 @@ select  @Item_ID = @Item_ID+1;
 				     [Name]   ,
 				     isUnique ,
 				     Upgraded ,
-				     [Rank]   ) VALUES (@Item_ID          ,
+				     [Rank]   ,
+                     [Level]    ,  
+                     Dexterity  , 
+                     Inteligence,
+                     Strength   , 
+                     CharClass  
+                    ) VALUES (@Item_ID          ,
 							@Stash_ID    ,
 							@TabNumber   ,
 							@Price       ,
-							@Name      ,
+							@Name        ,
 							@isUnique    ,
 							@Upgraded    ,
-							@Rank      );
+							@Rank        ,
+                            @Level       ,      
+                            @Dexterity   ,      
+                            @Inteligence ,  	
+                            @Strength    ,      
+                            @CharClass        ); 
 
 		INSERT INTO [shield](ID  ,
 				     Stash_ID ,
@@ -1215,3 +1310,25 @@ AS
 	END
 
 
+
+-- View NON CLUSTERED fill factor 75% for items level podemos uqeres inserir a meio de uma tabela
+CREATE NONCLUSTERED INDEX IxItemLevel ON dbo.[item] 
+([Level]) WITH (FILLFACTOR = 75, PAD_INDEX = ON)
+-- View For usernames non clustered 80% 
+CREATE NONCLUSTERED INDEX IxUserNamesHash ON dbo.[user]
+(Username,Password) WITH (FILLFACTOR = 75, PAD_INDEX = ON)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    -- set expandtab set shiftwidth=4 set tabstop=4
