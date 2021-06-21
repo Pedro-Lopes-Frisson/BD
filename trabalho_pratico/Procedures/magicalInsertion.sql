@@ -25,6 +25,7 @@ ALTER PROC dbo.magicalInsert(
 )
 AS
 	BEGIN
+	BEGIN TRY
 	BEGIN TRANSACTION
 		INSERT INTO [item]  (ID       ,
 				     Stash_ID ,
@@ -155,7 +156,24 @@ AS
 				         		@CoolDown              ,
 						        @RadiusOfEffectiveness  
 						);
-	COMMIT
+		COMMIT;
+	END TRY
+		BEGIN CATCH
+		    IF @@TRANCOUNT > 0
+			ROLLBACK TRAN
+
+		    DECLARE @ErrorMessage NVARCHAR(4000);  
+		    DECLARE @ErrorSeverity INT;  
+		    DECLARE @ErrorState INT;  
+
+		    SELECT   
+		       @ErrorMessage = ERROR_MESSAGE(),  
+		       @ErrorSeverity = ERROR_SEVERITY(),  
+		       @ErrorState = ERROR_STATE();  
+
+		    RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);  
+		END CATCH
+END
 END
 exec magicalInsert
 		  @ID               = 1,
