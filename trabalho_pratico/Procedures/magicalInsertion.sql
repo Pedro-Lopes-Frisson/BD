@@ -1,4 +1,4 @@
-CREATE PROC magicalInsert(
+ALTER PROC dbo.magicalInsert(
           @ID                AS bigint				,
           @Stash_ID          AS bigint				,
           @TabNumber         AS bigint				,
@@ -21,10 +21,11 @@ CREATE PROC magicalInsert(
           @Dexterity          AS         DECIMAL(38,3),
           @Inteligence  		AS         DECIMAL(38,3),
           @Strength           AS         DECIMAL(38,3),
-          @CharClass          AS         DECIMAL(38,3),
+          @CharClass          AS         DECIMAL(38,3)
 )
 AS
 	BEGIN
+	BEGIN TRY
 	BEGIN TRANSACTION
 		INSERT INTO [item]  (ID       ,
 				     Stash_ID ,
@@ -38,11 +39,11 @@ AS
                      Dexterity   ,      
                      Inteligence ,  	
                      Strength    ,      
-                     CharClass        ); 
+                     CharClass        )
 
 
 
-				) VALUES (@ID          ,
+				 VALUES (@ID          ,
 							@Stash_ID    ,
 							@TabNumber   ,
 							@Price       ,
@@ -54,7 +55,7 @@ AS
                             @Dexterity   ,      
                             @Inteligence ,	  
                             @Strength    ,      
-                            @CharClass   ,      
+                            @CharClass     
 
                         );
 
@@ -132,8 +133,8 @@ AS
 				     CriticalMutiplier     ,
 				     [Range]               ,
 				     Accuraccy,
-				     CoolDown                
-                                     RadiusOfEffectiveness  
+				     CoolDown                ,
+                     RadiusOfEffectiveness  
 
 			)                   
 
@@ -155,5 +156,46 @@ AS
 				         		@CoolDown              ,
 						        @RadiusOfEffectiveness  
 						);
-	COMMIT;
+		COMMIT;
+	END TRY
+		BEGIN CATCH
+		    IF @@TRANCOUNT > 0
+			ROLLBACK TRAN
+
+		    DECLARE @ErrorMessage NVARCHAR(4000);  
+		    DECLARE @ErrorSeverity INT;  
+		    DECLARE @ErrorState INT;  
+
+		    SELECT   
+		       @ErrorMessage = ERROR_MESSAGE(),  
+		       @ErrorSeverity = ERROR_SEVERITY(),  
+		       @ErrorState = ERROR_STATE();  
+
+		    RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);  
+		END CATCH
 END
+END
+exec magicalInsert
+		  @ID               = 1,
+          @Stash_ID         = NULL	,
+          @TabNumber         = NULL				,
+          @Price             = 120.0,
+          @Name              = N'EspadaLongaQueMandaTiros' ,
+          @isUnique          = 0,
+          @Upgraded          = 1			,
+          @Rank              = 1			,
+          @SpecialAttributes = NULL,
+          @Damage            =200.0      ,
+          @DamageType        = N'Poison'       ,
+          @CriticalChance    = 10.23		,
+          @CriticalMutiplier = 10.2		,
+          @Range             =29,
+          @Accuraccy        = 123 ,
+          @CoolDown         = 10 ,
+          @RadiusOfEffectiveness = 123 ,
+          --requiremtns
+          @Level            = 12,
+          @Dexterity        = 112,
+          @Inteligence  	= 123.3,
+          @Strength         = 123.4 ,
+          @CharClass        = N'Dwarf'

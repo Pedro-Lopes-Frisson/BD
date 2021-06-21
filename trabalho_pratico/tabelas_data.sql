@@ -1260,6 +1260,8 @@ BEGIN
 declare @Item_ID bigint;
 select  @Item_ID = count(*) from item;
 select  @Item_ID = @Item_ID+1;
+	BEGIN TRY
+	BEGIN TRANSACTION
 	INSERT INTO [item]  (ID       ,
 				     Stash_ID ,
 				     TabNumber,
@@ -1309,9 +1311,26 @@ select  @Item_ID = @Item_ID+1;
 							@Rank                  ,
 							@Defense,
 							@SpecialAbility)
+		COMMIT;
+	END TRY
+		BEGIN CATCH
+		    IF @@TRANCOUNT > 0
+			ROLLBACK TRAN
+
+		    DECLARE @ErrorMessage NVARCHAR(4000);  
+		    DECLARE @ErrorSeverity INT;  
+		    DECLARE @ErrorState INT;  
+
+		    SELECT   
+		       @ErrorMessage = ERROR_MESSAGE(),  
+		       @ErrorSeverity = ERROR_SEVERITY(),  
+		       @ErrorState = ERROR_STATE();  
+
+		    RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);  
+		END CATCH
 END
 go
-alter PROC armorInsert(
+CREATE PROC armorInsert(
 	--armor specifics
     @Defense			AS          decimal(6, 3)      ,
     @HealthBonus        AS          decimal(38, 5)               ,
@@ -1335,56 +1354,76 @@ BEGIN
 declare @Item_ID bigint;
 select  @Item_ID = count(*) from item;
 select  @Item_ID = @Item_ID+1;
-		INSERT INTO [item]  (ID       ,
-				     Stash_ID ,
-				     TabNumber,
-				     Price    ,
-				     [Name]   ,
-				     isUnique ,
-				     Upgraded ,
-				     [Rank]   ,
-             BaseItem_ID,
-             [Level]      ,
-             Dexterity    ,
-				     Inteligence  ,
-				     Strength     ,
-				     CharClass
-				) VALUES (
-              @ID          ,
-							@Stash_ID    ,
-							@TabNumber   ,
-							@Price       ,
-							@Name        ,
-							@isUnique    ,
-							@Upgraded    ,
-              @BaseItem_ID ,
-							@Rank        ,
-              @Level       ,
-              @Dexterity   ,
-              @Inteligence ,
-              @Strength    ,
-              @CharClass        );
+	BEGIN 
+		BEGIN TRY
+			BEGIN TRANSACTION
+				INSERT INTO [item]  (ID       ,
+						     Stash_ID ,
+						     TabNumber,
+						     Price    ,
+						     [Name]   ,
+						     isUnique ,
+						     Upgraded ,
+						     [Rank]   ,
+			     BaseItem_ID,
+			     [Level]      ,
+			     Dexterity    ,
+						     Inteligence  ,
+						     Strength     ,
+						     CharClass
+						) VALUES (
+			      @ID          ,
+									@Stash_ID    ,
+									@TabNumber   ,
+									@Price       ,
+									@Name        ,
+									@isUnique    ,
+									@Upgraded    ,
+			      @BaseItem_ID ,
+									@Rank        ,
+			      @Level       ,
+			      @Dexterity   ,
+			      @Inteligence ,
+			      @Strength    ,
+			      @CharClass        );
 
-		INSERT INTO [armor](ID  ,
-				     Stash_ID ,
-				     TabNumber,
-				     Price    ,
-				     [Name]   ,
-				     isUnique ,
-				     Upgraded ,
-				     [Rank]   ,
-				     Defense,
-					 HealthBonus
-					      ) VALUES (@item_ID                    ,
-							@Stash_ID              ,
-							@TabNumber             ,
-							@Price                 ,
-							@Name                  ,
-							@isUnique              ,
-							@Upgraded              ,
-							@Rank                  ,
-							@Defense,
-							@HealthBonus)
+				INSERT INTO [armor](ID  ,
+						     Stash_ID ,
+						     TabNumber,
+						     Price    ,
+						     [Name]   ,
+						     isUnique ,
+						     Upgraded ,
+						     [Rank]   ,
+						     Defense,
+							 HealthBonus
+							      ) VALUES (@item_ID                    ,
+									@Stash_ID              ,
+									@TabNumber             ,
+									@Price                 ,
+									@Name                  ,
+									@isUnique              ,
+									@Upgraded              ,
+									@Rank                  ,
+									@Defense,
+									@HealthBonus)
+				COMMIT;
+	END TRY
+		BEGIN CATCH
+		    IF @@TRANCOUNT > 0
+			ROLLBACK TRAN
+
+		    DECLARE @ErrorMessage NVARCHAR(4000);  
+		    DECLARE @ErrorSeverity INT;  
+		    DECLARE @ErrorState INT;  
+
+		    SELECT   
+		       @ErrorMessage = ERROR_MESSAGE(),  
+		       @ErrorSeverity = ERROR_SEVERITY(),  
+		       @ErrorState = ERROR_STATE();  
+
+		    RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);  
+		END CATCH
 END
 go
 CREATE PROC insertCosmetic(
@@ -1400,11 +1439,30 @@ CREATE PROC insertCosmetic(
 )
 AS
 	BEGIN
-		INSERT INTO [specialItem] (ID, Name, Price, CurrencyType,[Rank])
-		VALUES (@ID, @Name, @Price, @CurrencyType,@Rank)
+		BEGIN TRY
+			BEGIN TRANSACTION
+					INSERT INTO [specialItem] (ID, Name, Price, CurrencyType,[Rank])
+					VALUES (@ID, @Name, @Price, @CurrencyType,@Rank)
 
-		INSERT INTO [cosmetic] (ID,  [Type], [BodyPart], Gender)
-		VALUES (@ID,@Type,@BodyPart,@Gender)
+					INSERT INTO [cosmetic] (ID,  [Type], [BodyPart], Gender)
+					VALUES (@ID,@Type,@BodyPart,@Gender)
+			COMMIT;
+		END TRY
+			BEGIN CATCH
+			    IF @@TRANCOUNT > 0
+				ROLLBACK TRAN
+
+			    DECLARE @ErrorMessage NVARCHAR(4000);  
+			    DECLARE @ErrorSeverity INT;  
+			    DECLARE @ErrorState INT;  
+
+			    SELECT   
+			       @ErrorMessage = ERROR_MESSAGE(),  
+			       @ErrorSeverity = ERROR_SEVERITY(),  
+			       @ErrorState = ERROR_STATE();  
+
+			    RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);  
+			END CATCH
 	END
 
 go

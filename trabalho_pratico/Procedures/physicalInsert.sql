@@ -1,4 +1,4 @@
-CREATE proc physicalTrigger (
+CREATE proc physicalInsert(
 @ID                AS bigint				,
 @Stash_ID          AS bigint				,
 @TabNumber         AS bigint				,
@@ -25,6 +25,7 @@ CREATE proc physicalTrigger (
 )
 AS 
 BEGIN
+	BEGIN TRY
 BEGIN TRANSACTION
 	INSERT INTO [item]  (    ID                ,
                              Stash_ID          ,
@@ -147,6 +148,21 @@ BEGIN TRANSACTION
                                                 @Accuraccy   ,
                                                 @PiercingRate,
                                                 @FireRate    );
+		COMMIT;
+	END TRY
+		BEGIN CATCH
+		    IF @@TRANCOUNT > 0
+			ROLLBACK TRAN
 
-COMMIT;
+		    DECLARE @ErrorMessage NVARCHAR(4000);  
+		    DECLARE @ErrorSeverity INT;  
+		    DECLARE @ErrorState INT;  
+
+		    SELECT   
+		       @ErrorMessage = ERROR_MESSAGE(),  
+		       @ErrorSeverity = ERROR_SEVERITY(),  
+		       @ErrorState = ERROR_STATE();  
+
+		    RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);  
+		END CATCH
 END
