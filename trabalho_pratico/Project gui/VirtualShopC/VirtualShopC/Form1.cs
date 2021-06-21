@@ -14,7 +14,7 @@ namespace VirtualShopC
 {
     public partial class Form1 : Form
     {
-        string connStr = @"Data Source=My-LEGION;Initial Catalog=project_dummy;Integrated Security=True;";
+        string connStr = @"Data Source=localhost;Initial Catalog=project_dummy;Integrated Security=True;";
         string user;
         public Form1()
         {

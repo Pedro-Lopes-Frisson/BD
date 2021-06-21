@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,17 @@ namespace VirtualShopC
         }
         private void Form4_Load(object sender, EventArgs e)
         {
-
+            using (SqlConnection sqlConn = new SqlConnection(connStr))
+            {
+                sqlConn.Open();
+                string command = "SELECT * FROM item WHERE BaseItem_ID IS NULL";
+                MessageBox.Show(command);
+                SqlCommand query = new SqlCommand(command, sqlConn);
+                query.CommandType = CommandType.Text;
+                SqlDataReader reader = query.ExecuteReader();
+                while (reader.Read()) {
+                }
+            }
         }
  
         
