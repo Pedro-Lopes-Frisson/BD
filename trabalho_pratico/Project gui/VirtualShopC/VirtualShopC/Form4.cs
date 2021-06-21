@@ -13,6 +13,7 @@ namespace VirtualShopC
     public partial class Form4 : Form
     {
         private string _user = "";
+        string[] baseattr = { "Price", "Weapon_ID", "AttackSpeed", "HandNum", "BaseItem_ID", "Name", "isUnique", "Upgraded",  };
         public Form4(string user)
         {
             setUser(user);
@@ -30,7 +31,7 @@ namespace VirtualShopC
         {
 
         }
-
+ 
         
         private void checkGroup(GroupBox GroupBox1, CheckBox CheckBox1)
         {
@@ -79,7 +80,7 @@ namespace VirtualShopC
                 CheckBox checkbox = c as CheckBox;
                 if (checkbox != null && checkbox.Checked)
                 {
-                    LoadItemProperties(checkbox, ItemAttributes);
+                    LoadItemProperties(checkbox, MeleeAttributes);
                 }
             }
         }
@@ -88,75 +89,82 @@ namespace VirtualShopC
         {
             if(checkBox == MeleeCheck)
             {
-                Label baseItem = new Label();
-                baseItem.Text = "Base Item?";
-                baseItem.Location = new Point(20, 20);
-
-                Label name = new Label();
-                name.Text = "Item Name";
-                name.Location = new Point(20, 40);
-
-                Label handNum = new Label();
-                handNum.Text = "Nº of Hands";
-                baseItem.Location = new Point(20, 20);
-
-                Label meleeType = new Label();
-                meleeType.Text = "Melee Type";
-                baseItem.Location = new Point(20, 20);
-
-                Label attackSpd = new Label();
-                attackSpd.Text = "Attack Speed";
-                baseItem.Location = new Point(20, 20);
-
-                Label dmg = new Label();
-                dmg.Text = "Damage";
-                baseItem.Location = new Point(20, 20);
-
-                Label dmgType = new Label();
-                dmgType.Text = "Damage Type";
-                baseItem.Location = new Point(20, 20);
-
-                Label critical = new Label();
-                critical.Text = "Critical Chance";
-                baseItem.Location = new Point(20, 20);
-
-                Label criticalMult = new Label();
-                criticalMult.Text = "Critical Multiplier";
-                baseItem.Location = new Point(20, 20);
-
-                Label rank = new Label();
-                rank.Text = "Item Rank";
-                baseItem.Location = new Point(20, 20);
-
-                Label upgraded = new Label();
-                upgraded.Text = "Upgraded";
-                baseItem.Location = new Point(20, 20);
-
-                Label unique = new Label();
-                unique.Text = "Unique Item?";
-                baseItem.Location = new Point(20, 20);
-
-                Label specialAttr = new Label();
-                specialAttr.Text = "Special Attributes";
-                baseItem.Location = new Point(20, 20);
-
-                group.Controls.Add(baseItem);
-                group.Controls.Add(name);
-                //group.Controls.Add(handNum);
-                //group.Controls.Add(meleeType);
-                //group.Controls.Add(attackSpd);
-                //group.Controls.Add(dmg);
-                //group.Controls.Add(dmgType);
-                //group.Controls.Add(critical);
-                //group.Controls.Add(criticalMult);
-                //group.Controls.Add(rank);
-                //group.Controls.Add(upgraded);
-                //group.Controls.Add(unique);
-                //group.Controls.Add(specialAttr);
+                melee.Melee c = new melee.Melee();
+                int space = 20;
+                foreach (var prop in c.GetType().GetProperties())
+                {
+                    if(prop.Name != "Weapon_ID" && prop.Name != "Stash_ID" && prop.Name != "Name") {
+                        if (prop.Name == "isUnique")
+                        {
+                            Label label2 = new Label();
+                            label2.Text = "Unique Item";
+                            label2.Location = new Point(20, space);
+                            CheckBox check1 = new CheckBox();
+                            CheckBox check2 = new CheckBox();
+                            check1.Text = "Yes";
+                            check2.Text = "No";
+                            check1.Name = "UniqueYes";
+                            check2.Name = "UniqueNo";
+                            check1.Location = new Point(150, space);
+                            check2.Location = new Point(270, space);
+                            group.Controls.Add(label2);
+                            group.Controls.Add(check1);
+                            group.Controls.Add(check2);
+                            space += 25;
+                            continue;
+                        }
+                        if (prop.Name == "Rank")
+                        {
+                            Label label3 = new Label();
+                            label3.Text = "Item Rank";
+                            label3.Location = new Point(20, space);
+                            space += 25;
+                            group.Controls.Add(label3);
+                            continue;
+                        }
+                        if (prop.Name == "TabNumber")
+                        {
+                            Label label3 = new Label();
+                            label3.Text = "Stash Tab Number";
+                            label3.Location = new Point(20, space);
+                            space += 25;
+                            group.Controls.Add(label3);
+                            continue;
+                        }
+                        Label label1 = new Label();
+                        label1.Text = prop.Name;
+                        label1.Location = new Point(20, space);
+                        space += 25;
+                        group.Controls.Add(label1);
+                    }
+                }
 
             }
         }
 
-        
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label18_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label22_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
