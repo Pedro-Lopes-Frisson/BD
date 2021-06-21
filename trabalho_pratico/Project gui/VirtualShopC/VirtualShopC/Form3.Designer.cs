@@ -47,6 +47,9 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.MyStore = new System.Windows.Forms.ToolStripMenuItem();
             this.RegisterItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.yourStashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CosmeticCheck = new System.Windows.Forms.CheckBox();
+            this.ConsumableCheck = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.project_dummyDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.armorBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.physicalBindingSource)).BeginInit();
@@ -80,7 +83,7 @@
             // Search
             // 
             this.Search.AccessibleName = "Search";
-            this.Search.Location = new System.Drawing.Point(531, 390);
+            this.Search.Location = new System.Drawing.Point(662, 390);
             this.Search.Name = "Search";
             this.Search.Size = new System.Drawing.Size(98, 36);
             this.Search.TabIndex = 1;
@@ -91,6 +94,8 @@
             // FiltersType
             // 
             this.FiltersType.AccessibleName = "FiltersType";
+            this.FiltersType.Controls.Add(this.ConsumableCheck);
+            this.FiltersType.Controls.Add(this.CosmeticCheck);
             this.FiltersType.Controls.Add(this.MagicalCheck);
             this.FiltersType.Controls.Add(this.PhysicalCheck);
             this.FiltersType.Controls.Add(this.RangedCheck);
@@ -98,9 +103,9 @@
             this.FiltersType.Controls.Add(this.ShieldCheck);
             this.FiltersType.Controls.Add(this.ArmorCheck);
             this.FiltersType.Controls.Add(this.WeaponCheck);
-            this.FiltersType.Location = new System.Drawing.Point(436, 24);
+            this.FiltersType.Location = new System.Drawing.Point(376, 24);
             this.FiltersType.Name = "FiltersType";
-            this.FiltersType.Size = new System.Drawing.Size(336, 186);
+            this.FiltersType.Size = new System.Drawing.Size(707, 191);
             this.FiltersType.TabIndex = 2;
             this.FiltersType.TabStop = false;
             this.FiltersType.Text = "Filter by Type";
@@ -109,7 +114,7 @@
             // 
             this.MagicalCheck.AccessibleName = "MagicalCheck";
             this.MagicalCheck.AutoSize = true;
-            this.MagicalCheck.Location = new System.Drawing.Point(193, 150);
+            this.MagicalCheck.Location = new System.Drawing.Point(526, 86);
             this.MagicalCheck.Margin = new System.Windows.Forms.Padding(5);
             this.MagicalCheck.Name = "MagicalCheck";
             this.MagicalCheck.Size = new System.Drawing.Size(142, 21);
@@ -135,7 +140,7 @@
             // 
             this.RangedCheck.AccessibleName = "RangedCheck";
             this.RangedCheck.AutoSize = true;
-            this.RangedCheck.Location = new System.Drawing.Point(121, 86);
+            this.RangedCheck.Location = new System.Drawing.Point(297, 86);
             this.RangedCheck.Margin = new System.Windows.Forms.Padding(5);
             this.RangedCheck.Name = "RangedCheck";
             this.RangedCheck.Size = new System.Drawing.Size(80, 21);
@@ -161,7 +166,7 @@
             // 
             this.ShieldCheck.AccessibleName = "ShieldCheck";
             this.ShieldCheck.AutoSize = true;
-            this.ShieldCheck.Location = new System.Drawing.Point(236, 24);
+            this.ShieldCheck.Location = new System.Drawing.Point(526, 24);
             this.ShieldCheck.Margin = new System.Windows.Forms.Padding(6);
             this.ShieldCheck.Name = "ShieldCheck";
             this.ShieldCheck.Size = new System.Drawing.Size(69, 21);
@@ -174,7 +179,7 @@
             // 
             this.ArmorCheck.AccessibleName = "ArmorCheck";
             this.ArmorCheck.AutoSize = true;
-            this.ArmorCheck.Location = new System.Drawing.Point(121, 24);
+            this.ArmorCheck.Location = new System.Drawing.Point(297, 24);
             this.ArmorCheck.Margin = new System.Windows.Forms.Padding(6);
             this.ArmorCheck.Name = "ArmorCheck";
             this.ArmorCheck.Size = new System.Drawing.Size(68, 21);
@@ -201,9 +206,9 @@
             this.ItemShower.AccessibleName = "ItemShower";
             this.ItemShower.Dock = System.Windows.Forms.DockStyle.Left;
             this.ItemShower.HideSelection = false;
-            this.ItemShower.Location = new System.Drawing.Point(0, 30);
+            this.ItemShower.Location = new System.Drawing.Point(0, 28);
             this.ItemShower.Name = "ItemShower";
-            this.ItemShower.Size = new System.Drawing.Size(370, 408);
+            this.ItemShower.Size = new System.Drawing.Size(370, 410);
             this.ItemShower.TabIndex = 3;
             this.ItemShower.UseCompatibleStateImageBehavior = false;
             // 
@@ -214,7 +219,7 @@
             this.MyStore});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(784, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(1102, 28);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -222,24 +227,58 @@
             // 
             this.MyStore.AccessibleName = "MyStore";
             this.MyStore.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.RegisterItem});
+            this.RegisterItem,
+            this.yourStashToolStripMenuItem});
             this.MyStore.Name = "MyStore";
-            this.MyStore.Size = new System.Drawing.Size(78, 26);
+            this.MyStore.Size = new System.Drawing.Size(78, 24);
             this.MyStore.Text = "MyStore";
             // 
             // RegisterItem
             // 
             this.RegisterItem.AccessibleName = "RegisterItem";
             this.RegisterItem.Name = "RegisterItem";
-            this.RegisterItem.Size = new System.Drawing.Size(180, 26);
+            this.RegisterItem.Size = new System.Drawing.Size(224, 26);
             this.RegisterItem.Text = "Register Item";
             this.RegisterItem.Click += new System.EventHandler(this.RegisterItem_Click);
+            // 
+            // yourStashToolStripMenuItem
+            // 
+            this.yourStashToolStripMenuItem.Name = "yourStashToolStripMenuItem";
+            this.yourStashToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.yourStashToolStripMenuItem.Text = "Your Stash";
+            this.yourStashToolStripMenuItem.Click += new System.EventHandler(this.YourStash_Click);
+            // 
+            // CosmeticCheck
+            // 
+            this.CosmeticCheck.AccessibleName = "PhysicalCheck";
+            this.CosmeticCheck.AutoSize = true;
+            this.CosmeticCheck.Location = new System.Drawing.Point(297, 150);
+            this.CosmeticCheck.Margin = new System.Windows.Forms.Padding(5);
+            this.CosmeticCheck.Name = "CosmeticCheck";
+            this.CosmeticCheck.Size = new System.Drawing.Size(87, 21);
+            this.CosmeticCheck.TabIndex = 7;
+            this.CosmeticCheck.Text = "Cosmetic";
+            this.CosmeticCheck.UseVisualStyleBackColor = true;
+            this.CosmeticCheck.CheckedChanged += new System.EventHandler(this.CosmeticCheck_CheckedChanged);
+            // 
+            // ConsumableCheck
+            // 
+            this.ConsumableCheck.AccessibleName = "PhysicalCheck";
+            this.ConsumableCheck.AutoSize = true;
+            this.ConsumableCheck.Location = new System.Drawing.Point(526, 150);
+            this.ConsumableCheck.Margin = new System.Windows.Forms.Padding(5);
+            this.ConsumableCheck.Name = "ConsumableCheck";
+            this.ConsumableCheck.Size = new System.Drawing.Size(108, 21);
+            this.ConsumableCheck.TabIndex = 8;
+            this.ConsumableCheck.Text = "Consumable";
+            this.ConsumableCheck.UseVisualStyleBackColor = true;
+            this.ConsumableCheck.CheckedChanged += new System.EventHandler(this.ConsumableCheck_CheckedChanged);
             // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 438);
+            this.ClientSize = new System.Drawing.Size(1102, 438);
             this.Controls.Add(this.ItemShower);
             this.Controls.Add(this.FiltersType);
             this.Controls.Add(this.Search);
@@ -279,5 +318,8 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem MyStore;
         private System.Windows.Forms.ToolStripMenuItem RegisterItem;
+        private System.Windows.Forms.CheckBox ConsumableCheck;
+        private System.Windows.Forms.CheckBox CosmeticCheck;
+        private System.Windows.Forms.ToolStripMenuItem yourStashToolStripMenuItem;
     }
 }

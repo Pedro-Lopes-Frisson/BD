@@ -37,8 +37,8 @@
             this.Title = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ItemType = new System.Windows.Forms.GroupBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.ConsumableCheck = new System.Windows.Forms.CheckBox();
+            this.CosmeticCheck = new System.Windows.Forms.CheckBox();
             this.ListAttributes = new System.Windows.Forms.Button();
             this.MeleeAttributes = new System.Windows.Forms.GroupBox();
             this.MeleeSpecialAttributes = new System.Windows.Forms.TextBox();
@@ -67,7 +67,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.MeleeCritChanceText = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.ResgisterItem = new System.Windows.Forms.Button();
             this.BaseAttributes = new System.Windows.Forms.GroupBox();
             this.TabNums = new System.Windows.Forms.DomainUpDown();
             this.label11 = new System.Windows.Forms.Label();
@@ -95,7 +95,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.ArmorHealthBonus = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ShieldAttributes = new System.Windows.Forms.GroupBox();
             this.ShieldDefense = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
@@ -155,8 +155,15 @@
             this.MagicalCriticalChance = new System.Windows.Forms.TextBox();
             this.label36 = new System.Windows.Forms.Label();
             this.Cosmetic = new System.Windows.Forms.GroupBox();
+            this.CosmeticType = new System.Windows.Forms.TextBox();
+            this.label50 = new System.Windows.Forms.Label();
+            this.CosmeticGender = new System.Windows.Forms.Panel();
+            this.CosmeticFemale = new System.Windows.Forms.RadioButton();
+            this.CosmeticMale = new System.Windows.Forms.RadioButton();
             this.CosmeticTabNum = new System.Windows.Forms.DomainUpDown();
             this.label37 = new System.Windows.Forms.Label();
+            this.CosmeticName = new System.Windows.Forms.TextBox();
+            this.label38 = new System.Windows.Forms.Label();
             this.CosmeticBodyPart = new System.Windows.Forms.Panel();
             this.CosmeticFace = new System.Windows.Forms.RadioButton();
             this.CosmeticBack = new System.Windows.Forms.RadioButton();
@@ -170,12 +177,11 @@
             this.label40 = new System.Windows.Forms.Label();
             this.label41 = new System.Windows.Forms.Label();
             this.label42 = new System.Windows.Forms.Label();
-            this.CosmeticName = new System.Windows.Forms.TextBox();
-            this.label38 = new System.Windows.Forms.Label();
-            this.CosmeticGender = new System.Windows.Forms.Panel();
-            this.CosmeticFemale = new System.Windows.Forms.RadioButton();
-            this.CosmeticMale = new System.Windows.Forms.RadioButton();
             this.Consumable = new System.Windows.Forms.GroupBox();
+            this.ConsumableEffect = new System.Windows.Forms.TextBox();
+            this.ConsumableDuration = new System.Windows.Forms.TextBox();
+            this.ConsumableQuantity = new System.Windows.Forms.TextBox();
+            this.label49 = new System.Windows.Forms.Label();
             this.ConsumableTabNum = new System.Windows.Forms.DomainUpDown();
             this.label43 = new System.Windows.Forms.Label();
             this.ConsumableName = new System.Windows.Forms.TextBox();
@@ -188,12 +194,6 @@
             this.label46 = new System.Windows.Forms.Label();
             this.label47 = new System.Windows.Forms.Label();
             this.label48 = new System.Windows.Forms.Label();
-            this.ConsumableQuantity = new System.Windows.Forms.TextBox();
-            this.label49 = new System.Windows.Forms.Label();
-            this.ConsumableDuration = new System.Windows.Forms.TextBox();
-            this.ConsumableEffect = new System.Windows.Forms.TextBox();
-            this.CosmeticType = new System.Windows.Forms.TextBox();
-            this.label50 = new System.Windows.Forms.Label();
             this.ItemType.SuspendLayout();
             this.MeleeAttributes.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -202,15 +202,15 @@
             this.RankPanel.SuspendLayout();
             this.UniquePanel.SuspendLayout();
             this.ArmorAttributes.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.ShieldAttributes.SuspendLayout();
             this.PhysicalAttributes.SuspendLayout();
             this.PhysicalDamageType.SuspendLayout();
             this.MagicalAttributes.SuspendLayout();
             this.MagicalDamageType.SuspendLayout();
             this.Cosmetic.SuspendLayout();
+            this.CosmeticGender.SuspendLayout();
             this.CosmeticBodyPart.SuspendLayout();
             this.CosmeticCurrencyType.SuspendLayout();
-            this.CosmeticGender.SuspendLayout();
             this.Consumable.SuspendLayout();
             this.ConsumableCurremcyType.SuspendLayout();
             this.SuspendLayout();
@@ -300,8 +300,8 @@
             // 
             // ItemType
             // 
-            this.ItemType.Controls.Add(this.checkBox2);
-            this.ItemType.Controls.Add(this.checkBox1);
+            this.ItemType.Controls.Add(this.ConsumableCheck);
+            this.ItemType.Controls.Add(this.CosmeticCheck);
             this.ItemType.Controls.Add(this.ListAttributes);
             this.ItemType.Controls.Add(this.MeleeCheck);
             this.ItemType.Controls.Add(this.ArmorCheck);
@@ -318,29 +318,31 @@
             this.ItemType.TabStop = false;
             this.ItemType.Text = "Item Type";
             // 
-            // checkBox2
+            // ConsumableCheck
             // 
-            this.checkBox2.AccessibleName = "MagicalCheck";
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(1335, 26);
-            this.checkBox2.Margin = new System.Windows.Forms.Padding(5);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(108, 21);
-            this.checkBox2.TabIndex = 14;
-            this.checkBox2.Text = "Consumable";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.ConsumableCheck.AccessibleName = "MagicalCheck";
+            this.ConsumableCheck.AutoSize = true;
+            this.ConsumableCheck.Location = new System.Drawing.Point(1335, 26);
+            this.ConsumableCheck.Margin = new System.Windows.Forms.Padding(5);
+            this.ConsumableCheck.Name = "ConsumableCheck";
+            this.ConsumableCheck.Size = new System.Drawing.Size(108, 21);
+            this.ConsumableCheck.TabIndex = 14;
+            this.ConsumableCheck.Text = "Consumable";
+            this.ConsumableCheck.UseVisualStyleBackColor = true;
+            this.ConsumableCheck.Click += new System.EventHandler(this.ConsumableType_Click);
             // 
-            // checkBox1
+            // CosmeticCheck
             // 
-            this.checkBox1.AccessibleName = "MagicalCheck";
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(1119, 26);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(5);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(87, 21);
-            this.checkBox1.TabIndex = 13;
-            this.checkBox1.Text = "Cosmetic";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.CosmeticCheck.AccessibleName = "MagicalCheck";
+            this.CosmeticCheck.AutoSize = true;
+            this.CosmeticCheck.Location = new System.Drawing.Point(1119, 26);
+            this.CosmeticCheck.Margin = new System.Windows.Forms.Padding(5);
+            this.CosmeticCheck.Name = "CosmeticCheck";
+            this.CosmeticCheck.Size = new System.Drawing.Size(87, 21);
+            this.CosmeticCheck.TabIndex = 13;
+            this.CosmeticCheck.Text = "Cosmetic";
+            this.CosmeticCheck.UseVisualStyleBackColor = true;
+            this.CosmeticCheck.Click += new System.EventHandler(this.CosmeticType_Click);
             // 
             // ListAttributes
             // 
@@ -632,14 +634,15 @@
             this.label7.Text = "Damage Type";
             this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
-            // button1
+            // ResgisterItem
             // 
-            this.button1.Location = new System.Drawing.Point(311, 751);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(122, 34);
-            this.button1.TabIndex = 16;
-            this.button1.Text = "Register Item";
-            this.button1.UseVisualStyleBackColor = true;
+            this.ResgisterItem.Location = new System.Drawing.Point(311, 751);
+            this.ResgisterItem.Name = "ResgisterItem";
+            this.ResgisterItem.Size = new System.Drawing.Size(122, 34);
+            this.ResgisterItem.TabIndex = 16;
+            this.ResgisterItem.Text = "Register Item";
+            this.ResgisterItem.UseVisualStyleBackColor = true;
+            this.ResgisterItem.Click += new System.EventHandler(this.ResgisterItem_Click);
             // 
             // BaseAttributes
             // 
@@ -907,20 +910,20 @@
             this.ArmorHealthBonus.Size = new System.Drawing.Size(179, 22);
             this.ArmorHealthBonus.TabIndex = 13;
             // 
-            // groupBox1
+            // ShieldAttributes
             // 
-            this.groupBox1.AutoSize = true;
-            this.groupBox1.Controls.Add(this.ShieldDefense);
-            this.groupBox1.Controls.Add(this.label16);
-            this.groupBox1.Controls.Add(this.label19);
-            this.groupBox1.Controls.Add(this.ShieldSpecialAbility);
-            this.groupBox1.Location = new System.Drawing.Point(0, 384);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(728, 115);
-            this.groupBox1.TabIndex = 28;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Shield Attributes";
-            this.groupBox1.Visible = false;
+            this.ShieldAttributes.AutoSize = true;
+            this.ShieldAttributes.Controls.Add(this.ShieldDefense);
+            this.ShieldAttributes.Controls.Add(this.label16);
+            this.ShieldAttributes.Controls.Add(this.label19);
+            this.ShieldAttributes.Controls.Add(this.ShieldSpecialAbility);
+            this.ShieldAttributes.Location = new System.Drawing.Point(0, 384);
+            this.ShieldAttributes.Name = "ShieldAttributes";
+            this.ShieldAttributes.Size = new System.Drawing.Size(728, 115);
+            this.ShieldAttributes.TabIndex = 28;
+            this.ShieldAttributes.TabStop = false;
+            this.ShieldAttributes.Text = "Shield Attributes";
+            this.ShieldAttributes.Visible = false;
             // 
             // ShieldDefense
             // 
@@ -1518,6 +1521,53 @@
             this.Cosmetic.Text = "Cosmetic Item";
             this.Cosmetic.Visible = false;
             // 
+            // CosmeticType
+            // 
+            this.CosmeticType.Location = new System.Drawing.Point(128, 187);
+            this.CosmeticType.Name = "CosmeticType";
+            this.CosmeticType.Size = new System.Drawing.Size(100, 22);
+            this.CosmeticType.TabIndex = 26;
+            // 
+            // label50
+            // 
+            this.label50.AutoSize = true;
+            this.label50.Location = new System.Drawing.Point(81, 187);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(40, 17);
+            this.label50.TabIndex = 25;
+            this.label50.Text = "Type";
+            // 
+            // CosmeticGender
+            // 
+            this.CosmeticGender.Controls.Add(this.CosmeticFemale);
+            this.CosmeticGender.Controls.Add(this.CosmeticMale);
+            this.CosmeticGender.Location = new System.Drawing.Point(128, 119);
+            this.CosmeticGender.Name = "CosmeticGender";
+            this.CosmeticGender.Size = new System.Drawing.Size(168, 25);
+            this.CosmeticGender.TabIndex = 19;
+            // 
+            // CosmeticFemale
+            // 
+            this.CosmeticFemale.AutoSize = true;
+            this.CosmeticFemale.Location = new System.Drawing.Point(88, 3);
+            this.CosmeticFemale.Name = "CosmeticFemale";
+            this.CosmeticFemale.Size = new System.Drawing.Size(75, 21);
+            this.CosmeticFemale.TabIndex = 17;
+            this.CosmeticFemale.TabStop = true;
+            this.CosmeticFemale.Text = "Female";
+            this.CosmeticFemale.UseVisualStyleBackColor = true;
+            // 
+            // CosmeticMale
+            // 
+            this.CosmeticMale.AutoSize = true;
+            this.CosmeticMale.Location = new System.Drawing.Point(11, 3);
+            this.CosmeticMale.Name = "CosmeticMale";
+            this.CosmeticMale.Size = new System.Drawing.Size(59, 21);
+            this.CosmeticMale.TabIndex = 16;
+            this.CosmeticMale.TabStop = true;
+            this.CosmeticMale.Text = "Male";
+            this.CosmeticMale.UseVisualStyleBackColor = true;
+            // 
             // CosmeticTabNum
             // 
             this.CosmeticTabNum.Location = new System.Drawing.Point(128, 216);
@@ -1533,6 +1583,22 @@
             this.label37.Size = new System.Drawing.Size(87, 17);
             this.label37.TabIndex = 23;
             this.label37.Text = "Tab Number";
+            // 
+            // CosmeticName
+            // 
+            this.CosmeticName.Location = new System.Drawing.Point(128, 88);
+            this.CosmeticName.Name = "CosmeticName";
+            this.CosmeticName.Size = new System.Drawing.Size(279, 22);
+            this.CosmeticName.TabIndex = 22;
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(66, 124);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(56, 17);
+            this.label38.TabIndex = 21;
+            this.label38.Text = "Gender";
             // 
             // CosmeticBodyPart
             // 
@@ -1663,53 +1729,6 @@
             this.label42.TabIndex = 0;
             this.label42.Text = "Name";
             // 
-            // CosmeticName
-            // 
-            this.CosmeticName.Location = new System.Drawing.Point(128, 88);
-            this.CosmeticName.Name = "CosmeticName";
-            this.CosmeticName.Size = new System.Drawing.Size(279, 22);
-            this.CosmeticName.TabIndex = 22;
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(66, 124);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(56, 17);
-            this.label38.TabIndex = 21;
-            this.label38.Text = "Gender";
-            // 
-            // CosmeticGender
-            // 
-            this.CosmeticGender.Controls.Add(this.CosmeticFemale);
-            this.CosmeticGender.Controls.Add(this.CosmeticMale);
-            this.CosmeticGender.Location = new System.Drawing.Point(128, 119);
-            this.CosmeticGender.Name = "CosmeticGender";
-            this.CosmeticGender.Size = new System.Drawing.Size(168, 25);
-            this.CosmeticGender.TabIndex = 19;
-            // 
-            // CosmeticFemale
-            // 
-            this.CosmeticFemale.AutoSize = true;
-            this.CosmeticFemale.Location = new System.Drawing.Point(88, 3);
-            this.CosmeticFemale.Name = "CosmeticFemale";
-            this.CosmeticFemale.Size = new System.Drawing.Size(75, 21);
-            this.CosmeticFemale.TabIndex = 17;
-            this.CosmeticFemale.TabStop = true;
-            this.CosmeticFemale.Text = "Female";
-            this.CosmeticFemale.UseVisualStyleBackColor = true;
-            // 
-            // CosmeticMale
-            // 
-            this.CosmeticMale.AutoSize = true;
-            this.CosmeticMale.Location = new System.Drawing.Point(11, 3);
-            this.CosmeticMale.Name = "CosmeticMale";
-            this.CosmeticMale.Size = new System.Drawing.Size(59, 21);
-            this.CosmeticMale.TabIndex = 16;
-            this.CosmeticMale.TabStop = true;
-            this.CosmeticMale.Text = "Male";
-            this.CosmeticMale.UseVisualStyleBackColor = true;
-            // 
             // Consumable
             // 
             this.Consumable.AutoSize = true;
@@ -1734,6 +1753,36 @@
             this.Consumable.TabStop = false;
             this.Consumable.Text = "Consumable Item";
             this.Consumable.Visible = false;
+            // 
+            // ConsumableEffect
+            // 
+            this.ConsumableEffect.Location = new System.Drawing.Point(128, 120);
+            this.ConsumableEffect.Name = "ConsumableEffect";
+            this.ConsumableEffect.Size = new System.Drawing.Size(100, 22);
+            this.ConsumableEffect.TabIndex = 28;
+            // 
+            // ConsumableDuration
+            // 
+            this.ConsumableDuration.Location = new System.Drawing.Point(128, 155);
+            this.ConsumableDuration.Name = "ConsumableDuration";
+            this.ConsumableDuration.Size = new System.Drawing.Size(100, 22);
+            this.ConsumableDuration.TabIndex = 27;
+            // 
+            // ConsumableQuantity
+            // 
+            this.ConsumableQuantity.Location = new System.Drawing.Point(128, 186);
+            this.ConsumableQuantity.Name = "ConsumableQuantity";
+            this.ConsumableQuantity.Size = new System.Drawing.Size(100, 22);
+            this.ConsumableQuantity.TabIndex = 26;
+            // 
+            // label49
+            // 
+            this.label49.AutoSize = true;
+            this.label49.Location = new System.Drawing.Point(59, 186);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(61, 17);
+            this.label49.TabIndex = 25;
+            this.label49.Text = "Quantity";
             // 
             // ConsumableTabNum
             // 
@@ -1841,69 +1890,23 @@
             this.label48.TabIndex = 0;
             this.label48.Text = "Name";
             // 
-            // ConsumableQuantity
-            // 
-            this.ConsumableQuantity.Location = new System.Drawing.Point(128, 186);
-            this.ConsumableQuantity.Name = "ConsumableQuantity";
-            this.ConsumableQuantity.Size = new System.Drawing.Size(100, 22);
-            this.ConsumableQuantity.TabIndex = 26;
-            // 
-            // label49
-            // 
-            this.label49.AutoSize = true;
-            this.label49.Location = new System.Drawing.Point(59, 186);
-            this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(61, 17);
-            this.label49.TabIndex = 25;
-            this.label49.Text = "Quantity";
-            // 
-            // ConsumableDuration
-            // 
-            this.ConsumableDuration.Location = new System.Drawing.Point(128, 155);
-            this.ConsumableDuration.Name = "ConsumableDuration";
-            this.ConsumableDuration.Size = new System.Drawing.Size(100, 22);
-            this.ConsumableDuration.TabIndex = 27;
-            // 
-            // ConsumableEffect
-            // 
-            this.ConsumableEffect.Location = new System.Drawing.Point(128, 120);
-            this.ConsumableEffect.Name = "ConsumableEffect";
-            this.ConsumableEffect.Size = new System.Drawing.Size(100, 22);
-            this.ConsumableEffect.TabIndex = 28;
-            // 
-            // CosmeticType
-            // 
-            this.CosmeticType.Location = new System.Drawing.Point(128, 187);
-            this.CosmeticType.Name = "CosmeticType";
-            this.CosmeticType.Size = new System.Drawing.Size(100, 22);
-            this.CosmeticType.TabIndex = 26;
-            // 
-            // label50
-            // 
-            this.label50.AutoSize = true;
-            this.label50.Location = new System.Drawing.Point(81, 187);
-            this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(40, 17);
-            this.label50.TabIndex = 25;
-            this.label50.Text = "Type";
-            // 
             // Form4
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1451, 797);
             this.Controls.Add(this.BaseItems);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.ResgisterItem);
             this.Controls.Add(this.ItemType);
             this.Controls.Add(this.Title);
-            this.Controls.Add(this.Consumable);
-            this.Controls.Add(this.Cosmetic);
-            this.Controls.Add(this.BaseAttributes);
-            this.Controls.Add(this.MagicalAttributes);
-            this.Controls.Add(this.PhysicalAttributes);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.ShieldAttributes);
             this.Controls.Add(this.ArmorAttributes);
             this.Controls.Add(this.MeleeAttributes);
+            this.Controls.Add(this.Consumable);
+            this.Controls.Add(this.Cosmetic);
+            this.Controls.Add(this.MagicalAttributes);
+            this.Controls.Add(this.PhysicalAttributes);
+            this.Controls.Add(this.BaseAttributes);
             this.Name = "Form4";
             this.Text = "Form4";
             this.Load += new System.EventHandler(this.Form4_Load);
@@ -1923,8 +1926,8 @@
             this.UniquePanel.PerformLayout();
             this.ArmorAttributes.ResumeLayout(false);
             this.ArmorAttributes.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.ShieldAttributes.ResumeLayout(false);
+            this.ShieldAttributes.PerformLayout();
             this.PhysicalAttributes.ResumeLayout(false);
             this.PhysicalAttributes.PerformLayout();
             this.PhysicalDamageType.ResumeLayout(false);
@@ -1935,12 +1938,12 @@
             this.MagicalDamageType.PerformLayout();
             this.Cosmetic.ResumeLayout(false);
             this.Cosmetic.PerformLayout();
+            this.CosmeticGender.ResumeLayout(false);
+            this.CosmeticGender.PerformLayout();
             this.CosmeticBodyPart.ResumeLayout(false);
             this.CosmeticBodyPart.PerformLayout();
             this.CosmeticCurrencyType.ResumeLayout(false);
             this.CosmeticCurrencyType.PerformLayout();
-            this.CosmeticGender.ResumeLayout(false);
-            this.CosmeticGender.PerformLayout();
             this.Consumable.ResumeLayout(false);
             this.Consumable.PerformLayout();
             this.ConsumableCurremcyType.ResumeLayout(false);
@@ -1961,7 +1964,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.GroupBox ItemType;
         private System.Windows.Forms.GroupBox MeleeAttributes;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button ResgisterItem;
         private System.Windows.Forms.Button ListAttributes;
         private System.Windows.Forms.GroupBox BaseAttributes;
         private System.Windows.Forms.Label label5;
@@ -2016,7 +2019,7 @@
         private System.Windows.Forms.TextBox ArmorHealthBonus;
         private System.Windows.Forms.TextBox ArmorSpecialAttributes;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox ShieldAttributes;
         private System.Windows.Forms.TextBox ShieldDefense;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label19;
@@ -2075,8 +2078,8 @@
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.TextBox MagicalCriticalChance;
         private System.Windows.Forms.Label label36;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox CosmeticCheck;
+        private System.Windows.Forms.CheckBox ConsumableCheck;
         private System.Windows.Forms.GroupBox Cosmetic;
         private System.Windows.Forms.TextBox CosmeticType;
         private System.Windows.Forms.Label label50;

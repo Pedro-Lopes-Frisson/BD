@@ -14,7 +14,9 @@ namespace VirtualShopC
     public partial class Form4 : Form
     {
         private string _user = "";
+        string connStr = @"Data Source=localhost;Initial Catalog=project_dummy;Integrated Security=True;";
         string[] baseattr = { "Price", "Weapon_ID", "AttackSpeed", "HandNum", "BaseItem_ID", "Name", "isUnique", "Upgraded",  };
+        string currentlyChecked = "";
         public Form4(string user)
         {
             setUser(user);
@@ -30,17 +32,7 @@ namespace VirtualShopC
         }
         private void Form4_Load(object sender, EventArgs e)
         {
-            using (SqlConnection sqlConn = new SqlConnection(connStr))
-            {
-                sqlConn.Open();
-                string command = "SELECT * FROM item WHERE BaseItem_ID IS NULL";
-                MessageBox.Show(command);
-                SqlCommand query = new SqlCommand(command, sqlConn);
-                query.CommandType = CommandType.Text;
-                SqlDataReader reader = query.ExecuteReader();
-                while (reader.Read()) {
-                }
-            }
+            
         }
  
         
@@ -84,6 +76,16 @@ namespace VirtualShopC
             checkGroup(ItemType, MagicalCheck);
 
         }
+        private void CosmeticType_Click(object sender, EventArgs e)
+        {
+            checkGroup(ItemType, CosmeticCheck);
+        }
+
+        private void ConsumableType_Click(object sender, EventArgs e)
+        {
+            checkGroup(ItemType, ConsumableCheck);
+
+        }
         private void ListAttributes_Click(object sender, EventArgs e)
         {
             foreach (Control c in ItemType.Controls)
@@ -98,57 +100,132 @@ namespace VirtualShopC
 
         public void LoadItemProperties(CheckBox checkBox, GroupBox group)
         {
-            if(checkBox == MeleeCheck)
+            if (MeleeCheck.Checked)
             {
-                melee.Melee c = new melee.Melee();
-                int space = 20;
-                foreach (var prop in c.GetType().GetProperties())
+                BaseAttributes.Visible = true;
+                MeleeAttributes.Visible = true;
+
+                Consumable.Visible = false;
+                Cosmetic.Visible = false;
+                ArmorAttributes.Visible = false;
+                ShieldAttributes.Visible = false;
+                PhysicalAttributes.Visible = false;
+                MagicalAttributes.Visible = false;
+                Cosmetic.Visible = false;
+                Consumable.Visible = false;
+
+                currentlyChecked = "MeleeCheck";
+
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
                 {
-                    if(prop.Name != "Weapon_ID" && prop.Name != "Stash_ID" && prop.Name != "Name") {
-                        if (prop.Name == "isUnique")
-                        {
-                            Label label2 = new Label();
-                            label2.Text = "Unique Item";
-                            label2.Location = new Point(20, space);
-                            CheckBox check1 = new CheckBox();
-                            CheckBox check2 = new CheckBox();
-                            check1.Text = "Yes";
-                            check2.Text = "No";
-                            check1.Name = "UniqueYes";
-                            check2.Name = "UniqueNo";
-                            check1.Location = new Point(150, space);
-                            check2.Location = new Point(270, space);
-                            group.Controls.Add(label2);
-                            group.Controls.Add(check1);
-                            group.Controls.Add(check2);
-                            space += 25;
-                            continue;
-                        }
-                        if (prop.Name == "Rank")
-                        {
-                            Label label3 = new Label();
-                            label3.Text = "Item Rank";
-                            label3.Location = new Point(20, space);
-                            space += 25;
-                            group.Controls.Add(label3);
-                            continue;
-                        }
-                        if (prop.Name == "TabNumber")
-                        {
-                            Label label3 = new Label();
-                            label3.Text = "Stash Tab Number";
-                            label3.Location = new Point(20, space);
-                            space += 25;
-                            group.Controls.Add(label3);
-                            continue;
-                        }
-                        Label label1 = new Label();
-                        label1.Text = prop.Name;
-                        label1.Location = new Point(20, space);
-                        space += 25;
-                        group.Controls.Add(label1);
+                    sqlConn.Open();
+                    string command = "SELECT * FROM melee WHERE BaseItem_ID IS NULL";
+                    SqlCommand query = new SqlCommand(command, sqlConn);
+                    query.CommandType = CommandType.Text;
+                    SqlDataReader reader = query.ExecuteReader();
+                    while (reader.Read())
+                    {
                     }
                 }
+
+            }
+            else if (ArmorCheck.Checked)
+            {
+                BaseAttributes.Visible = true;
+                ArmorAttributes.Visible = true;
+
+                Consumable.Visible = false;
+                Cosmetic.Visible = false;
+                ShieldAttributes.Visible = false;
+                MeleeAttributes.Visible = false;
+                PhysicalAttributes.Visible = false;
+                MagicalAttributes.Visible = false;
+                Cosmetic.Visible = false;
+                Consumable.Visible = false;
+
+                currentlyChecked = "ArmorCheck";
+            }
+            else if (ShieldCheck.Checked)
+            {
+                BaseAttributes.Visible = true;
+                ShieldAttributes.Visible = true;
+
+                Consumable.Visible = false;
+                Cosmetic.Visible = false;
+                ArmorAttributes.Visible = false;
+                MeleeAttributes.Visible = false;
+                PhysicalAttributes.Visible = false;
+                MagicalAttributes.Visible = false;
+                Cosmetic.Visible = false;
+                Consumable.Visible = false;
+
+                currentlyChecked = "ShieldCheck";
+
+            }
+            else if (PhysicalCheck.Checked)
+            {
+                BaseAttributes.Visible = true;
+                PhysicalAttributes.Visible = true;
+
+                Consumable.Visible = false;
+                Cosmetic.Visible = false;
+                ArmorAttributes.Visible = false;
+                ShieldAttributes.Visible = false;
+                MeleeAttributes.Visible = false;
+                MagicalAttributes.Visible = false;
+                Cosmetic.Visible = false;
+                Consumable.Visible = false;
+
+                currentlyChecked = "PhysicalCheck";
+
+            }
+            else if (MagicalCheck.Checked)
+            {
+                BaseAttributes.Visible = true;
+                MagicalAttributes.Visible = true;
+
+                Consumable.Visible = false;
+                Cosmetic.Visible = false;
+                ArmorAttributes.Visible = false;
+                ShieldAttributes.Visible = false;
+                PhysicalAttributes.Visible = false;
+                MeleeAttributes.Visible = false;
+                Cosmetic.Visible = false;
+                Consumable.Visible = false;
+
+                currentlyChecked = "MagicalCheck";
+
+            }
+            else if (CosmeticCheck.Checked)
+            {
+                Cosmetic.Visible = true;
+
+                MeleeAttributes.Visible = false;
+                BaseAttributes.Visible = false;
+                Consumable.Visible = false;
+                ArmorAttributes.Visible = false;
+                ShieldAttributes.Visible = false;
+                PhysicalAttributes.Visible = false;
+                MagicalAttributes.Visible = false;
+                Consumable.Visible = false;
+
+                currentlyChecked = "CosmeticCheck";
+
+            }
+            else if (ConsumableCheck.Checked)
+            {
+                Consumable.Visible = true;
+
+                MeleeAttributes.Visible = false;
+                BaseAttributes.Visible = false;
+                Cosmetic.Visible = false;
+                ArmorAttributes.Visible = false;
+                ShieldAttributes.Visible = false;
+                PhysicalAttributes.Visible = false;
+                MagicalAttributes.Visible = false;
+                Cosmetic.Visible = false;
+
+                currentlyChecked = "ConsumableCheck";
 
             }
         }
@@ -176,6 +253,47 @@ namespace VirtualShopC
         private void label22_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void ResgisterItem_Click(object sender, EventArgs e)
+        {
+            switch (currentlyChecked)
+            {
+                case "MeleeCheck":
+                    using (SqlConnection sqlConn = new SqlConnection(connStr))
+                    {
+                        sqlConn.Open();
+                        SqlCommand sqlComm = new SqlCommand("Melee_Insert", sqlConn);
+                        sqlComm.CommandType = CommandType.StoredProcedure;
+                        sqlComm.Parameters.AddWithValue("@Username", "dummy");
+                        sqlComm.Parameters.AddWithValue("@Password", "dummypassword");
+                        
+                        sqlComm.ExecuteNonQuery();
+
+                    }
+                    break;
+                case "ArmorCheck":
+
+                    break;
+                case "ShieldCheck":
+
+                    break;
+                case "PhysicalCheck":
+
+                    break;
+                case "MagicalCheck":
+
+                    break;
+                case "ConsumableCheck":
+
+                    break;
+                case "CosmeticCheck":
+
+                    break;
+                default:
+                    MessageBox.Show("Please select an item to register");
+                    break;
+            }
         }
     }
 }

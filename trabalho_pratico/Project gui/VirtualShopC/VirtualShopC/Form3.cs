@@ -24,6 +24,8 @@ namespace VirtualShopC
         string armorQ = "";
         string shieldQ = "";
         string itemQ = "";
+        string consumableQ = "";
+        string cosmeticQ = "";
 
         public Form3(string user)
         {
@@ -72,17 +74,13 @@ namespace VirtualShopC
                         commandNo++;
                     }
                 }
-                if (commandNo == 0) { itemQ = "item"; }
+                if (commandNo == 0) { itemQ = "item";}
 
                 command += weaponQ + armorQ + shieldQ  + meleeQ + rangedQ + physicalQ + magicalQ +itemQ;
-                command = command.TrimEnd(',').TrimEnd(',').TrimEnd(',');
-                MessageBox.Show(command);
+                command = command.TrimEnd(',');
                 SqlCommand query = new SqlCommand(command, sqlConn);
                 query.CommandType = CommandType.Text;
-                SqlDataReader reader = query.ExecuteReader();
-                
-
-            
+                SqlDataReader reader = query.ExecuteReader();            
         }
 
        
@@ -165,6 +163,36 @@ namespace VirtualShopC
             {
                 magicalQ = "";
             }
+        }
+
+        private void ConsumableCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ConsumableCheck.Checked)
+            {
+                consumableQ = "consumable,";
+            }
+            else
+            {
+                consumableQ = "";
+            }
+        }
+
+        private void CosmeticCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (CosmeticCheck.Checked)
+            {
+                cosmeticQ = "cosmetic,";
+            }
+            else
+            {
+                cosmeticQ = "";
+            }
+        }
+
+        private void YourStash_Click(object sender, EventArgs e)
+        {
+            Form5 form5 = new Form5(_user);
+            form5.ShowDialog();
         }
     }
 }
