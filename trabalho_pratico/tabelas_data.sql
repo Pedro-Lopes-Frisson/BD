@@ -124,8 +124,8 @@ go
 CREATE TABLE item (
 
   ID        bigint identity(1,1)            NOT NULL, 
-  Stash_ID  bigint            NOT NULL,
-  TabNumber bigint            NOT NULL,
+  Stash_ID  bigint            DEFAULT NULL,
+  TabNumber bigint            DEFAULT NULL,
   BaseItem_ID bigint		  DEFAULT NULL,
 
   Price     decimal(38,3)     NOT NULL,
@@ -139,7 +139,7 @@ CREATE TABLE item (
   Dexterity           DECIMAL(38,3),
   Inteligence         DECIMAL(38,3),
   Strength            DECIMAL(38,3),
-  CharClass           DECIMAL(38,3),
+  CharClass           varchar(128),
 
   PRIMARY KEY (ID),
   FOREIGN KEY (Stash_ID , TabNumber ) references [normalTab]([Stash_ID], [Number]),
@@ -715,6 +715,24 @@ INSERT INTO [character] ([Name],[Inteligence],[Strength],[Dexterity], Class_Name
 ('Nicole',12,18,20,'Dwarf'       ,'tellus.eu@accumsansedfacilisis.edu'  ),
 ('Ira',3,2,16,'Troll'       ,'elementum@ultricesposuere.com'       ),
 ('Burton',3,4,11,'Dwarf'       ,'dolor@lectusNullam.edu'               );
+------------------------------------------------------------------------
+--
+-- INSERT CHARACTER BaseITems                 
+--
+------------------------------------------------------------------------
+
+INSERT INTO [item] ( BaseItem_ID , Price , [Name] , isUnique , Upgraded , [Rank] , [Level]    , Dexterity  , Inteligence, Strength   , CharClass) VALUES
+(NULL, 120, 'espada pequena',                          0,           0,           1,     1,           10,          2,            0,     NULL),
+(NULL, 720, 'arco',                                    0,           0,           1,     1,           12,         10,            14,    'Archer'),
+(NULL, 332, 'besta',                                   0,           0,           1,     1,           18,          9,            11,    'Archer'),
+(NULL, 824, 'adaga',                                   0,           0,           1,     1,           10,         14,            12,    'Dwarf'),
+(NULL, 495, 'martelo',                                 0,           0,           1,     1,           20,         14,            20,    'Troll'),
+(NULL, 926, 'spear',                                   0,           0,           1,     1,           10,         12,            18,    'Warrior'),
+(NULL, 827, 'machado',                                 0,           0,           1,     1,           14,         13,            19,    'Giant'),
+
+
+
+
 
 
 ------------------------------------------------------------------------
