@@ -4,10 +4,16 @@ CREATE PROC insertConsumable(
             @Price AS  smallmoney  ,
             --@CurrencyType AS   bit,
             @Rank  AS  int 
-	-- Consumable
-	@Effect    AS  varchar(128)
-	@Duration  AS    decimal(38,3
-	@Quantity   AS   int         
+        	-- Consumable
+        	@Effect    AS  varchar(128)
+        	@Duration  AS    decimal(38,3
+        	@Quantity   AS   int         
+            --requiremtns
+            @Level              AS         bigint   ,
+            @Dexterity          AS         DECIMAL(38,3),
+            @Inteligence		AS         DECIMAL(38,3),
+            @Strength           AS         DECIMAL(38,3),
+            @CharClass          AS         DECIMAL(38,3),
 )
 AS
 	BEGIN

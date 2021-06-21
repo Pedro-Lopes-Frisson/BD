@@ -17,8 +17,15 @@ CREATE PROC meleeInsert(
     @Damage             AS          decimal(38,2)     ,
     @DamageType         AS          varchar(128)      ,      -- Atributo multivalor ?
     @CriticalChance     AS          decimal(5,2)      ,
-    @CriticalMutiplier  AS          decimal(5,2)      )
-                                  
+    @CriticalMutiplier  AS          decimal(5,2)      ,
+    --requiremtns
+    @Level              AS         bigint   ,
+    @Dexterity          AS         DECIMAL(38,3),
+    @Inteligence		AS         DECIMAL(38,3),
+    @Strength           AS         DECIMAL(38,3),
+    @CharClass          AS         DECIMAL(38,3)
+
+                                  			)
 AS
 BEGIN
 	BEGIN TRANSACTION
@@ -29,14 +36,26 @@ BEGIN
 				     [Name]   ,
 				     isUnique ,
 				     Upgraded ,
-				     [Rank]   ) VALUES (@ID          ,
+				     [Rank]   ,
+                     [Level]      ,    			             
+                     Dexterity    ,  
+				     Inteligence  ,  
+				     Strength     ,  
+				     CharClass    
+				) VALUES (  @ID          ,
 							@Stash_ID    ,
 							@TabNumber   ,
 							@Price       ,
-							@Name      ,
+							@Name        ,
 							@isUnique    ,
 							@Upgraded    ,
-							@Rank      );
+							@Rank        ,
+                            @Level       ,      
+                            @Dexterity   ,      
+                            @Inteligence ,  	
+                            @Strength    ,      
+                            @CharClass        ); 
+
 
 		INSERT INTO [weapon](item_ID  ,
 				     Stash_ID ,

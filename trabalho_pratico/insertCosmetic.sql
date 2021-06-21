@@ -1,5 +1,4 @@
-CREATE PROC insertCosmetic(
-            @ID    AS  int,
+CREATE PROC insertCosmetic( @ID    AS  int,
             @Name AS  varchar(128)  ,
             @Price AS  smallmoney  ,
             --@CurrencyType AS   bit,
