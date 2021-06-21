@@ -14,7 +14,7 @@ namespace VirtualShopC
     public partial class Form3 : Form
     {
 
-        string connStr = @"Data Source=My-LEGION;Initial Catalog=project_dummy;Integrated Security=True;";
+        string connStr = @"Data Source=localhost;Initial Catalog=project_dummy;Integrated Security=True;";
         string _user="";
         string weaponQ = "";
         string meleeQ = "";
@@ -74,8 +74,8 @@ namespace VirtualShopC
                 }
                 if (commandNo == 0) { itemQ = "item"; }
 
-                command += weaponQ + armorQ + shieldQ + weaponQ + meleeQ + rangedQ + physicalQ + magicalQ+itemQ;
-                command.TrimEnd(',');
+                command += weaponQ + armorQ + shieldQ  + meleeQ + rangedQ + physicalQ + magicalQ +itemQ;
+                command = command.TrimEnd(',').TrimEnd(',').TrimEnd(',');
                 MessageBox.Show(command);
                 SqlCommand query = new SqlCommand(command, sqlConn);
                 query.CommandType = CommandType.Text;
