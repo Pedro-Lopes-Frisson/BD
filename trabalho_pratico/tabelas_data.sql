@@ -54,16 +54,17 @@ CREATE TABLE cosmetic (
 )
 go
 
-CREATE TABLE [user] (
+create TABLE [user] (
             UserID          INT IDENTITY(1,1) NOT NULL,
             Email           NVARCHAR(320)  NOT NULL,
             AccName         varchar(128)    NOT NULL,
             Pass            BINARY(64)      NOT NULL,
             RealCurrency    decimal(38,3)          NOT NULL DEFAULT 0,
             GameCurrency    decimal(38,3)          NOT NULL DEFAULT 0,
-            PRIMARY KEY (UserID)
+            PRIMARY KEY (UserID),
         )
 go
+alter table [user] add constraint unique_email unique (Email)
 
 CREATE TABLE [stash] (
   ID             bigint                 NOT NULL,
@@ -333,11 +334,56 @@ CREATE TABLE shield (
   FOREIGN KEY (BaseItem_ID) references shield(ID)
 )
 
-
-
-
+go
+CREATE TABLE [class] (
+    [Name]                   varchar(512)     NOT NULL,
+    BaseStrength           DECIMAL(38,3),
+    BaseInteligence        DECIMAL(38,3),
+    BaseDexterity          DECIMAL(38,3),
+    BaseLife               DECIMAL(38,3),
+    BaseMana               DECIMAL(38,3),
+    BaseAccuracy           DECIMAL(38,3),
+    PRIMARY KEY ([Name]),
+)
 
 go
+
+create TABLE [character] (
+  
+    [Name]             varchar(128)    NOT NULL,
+    Strength           DECIMAL(38,3),
+    Inteligence        DECIMAL(38,3),
+    Dexterity          DECIMAL(38,3),
+    User_email         NVARCHAR(320),
+    Class_Name         VARCHAR(512),
+    PRIMARY KEY (Class_Name, Name ),
+    FOREIGN KEY (Class_Name) REFERENCES [class] (Name),
+    FOREIGN KEY (User_email) REFERENCES [user] (Email)
+
+)
+go
+CREATE TABLE [requirements] (
+    Item_id             bigint   NOT NULL,
+    [Level]             bigint   ,
+    Dexterity           DECIMAL(38,3),
+    Inteligence         DECIMAL(38,3),
+    Strength            DECIMAL(38,3),
+    CharClass           DECIMAL(38,3),
+    PRIMARY KEY     (Item_ID),
+    FOREIGN KEY (Item_ID) references [item] (ID) ,
+
+
+
+)
+
+
+
+-- View NON CLUSTERED fill factor 75% for items level podemos uqeres inserir a meio de uma tabela
+CREATE NONCLUSTERED INDEX IxItemLevel ON dbo.[item] 
+([Level]) WITH (FILLFACTOR = 75, PAD_INDEX = ON)
+-- View For usernames non clustered 80% 
+CREATE NONCLUSTERED INDEX IxUserNamesHash ON dbo.[user]
+(AccName,Pass) WITH (FILLFACTOR = 75, PAD_INDEX = ON)
 
 ---- Procedure to insert a new user acc
 --go
@@ -673,7 +719,7 @@ go
 --select @Password as N'@Password'
 --go
 
-create proc Verify_Login (@Username varchar(128), @Password varchar(128), @Verified binary OUTPUT) 
+alter proc Verify_Login (@Username varchar(128), @Password varchar(128), @Verified binary OUTPUT) 
 AS
 Begin 
     DECLARE @returned binary(64)
@@ -685,6 +731,7 @@ end
 go
 
 alter proc physicalTrigger (
+@ID                AS bigint				,
 @Stash_ID          AS bigint				,
 @TabNumber         AS bigint				,
 @Price             AS decimal(38,3)		,
@@ -700,29 +747,46 @@ alter proc physicalTrigger (
 @Range             AS   int				,
 @Accuraccy         AS   decimal(5,2)		,
 @PiercingRate      AS   decimal(7,3)		,
-@FireRate          AS   decimal(7,3)		
+@FireRate          AS   decimal(7,3)		,
+--requiremtns
+@Level              AS         bigint   ,
+@Dexterity          AS         DECIMAL(38,3),
+@Inteligence		AS         DECIMAL(38,3),
+@Strength           AS         DECIMAL(38,3),
+@CharClass          AS         DECIMAL(38,3),
 )
 AS 
 BEGIN
-declare @ID bigint;
-select @ID = count(*) from item;
-select @ID = @ID+1;
-	INSERT INTO [item]  (ID       ,
-                             Stash_ID ,
-                             TabNumber,
-                             Price    ,
-                             [Name]   ,
-                             isUnique ,
-                             Upgraded ,
-                             [Rank]   ) VALUES (@ID          ,
+BEGIN TRANSACTION
+	INSERT INTO [item]  (    ID                ,
+                             Stash_ID          ,
+                             TabNumber         ,
+                             Price             ,
+                             [Name]            ,
+                             isUnique          ,
+                             Upgraded          ,
+                             [Rank]            ,
+                             [Level]           ,
+                             Dexterity         ,
+                             Inteligence	   ,
+                             Strength          ,
+                             CharClass         
+                             
+			             ) VALUES (             @ID          ,
                                                 @Stash_ID    ,
                                                 @TabNumber   ,
                                                 @Price       ,
                                                 @Name      ,
                                                 @isUnique    ,
                                                 @Upgraded    ,
-                                                @Rank      );
-
+                                                @Rank        ,
+                                                @Level       ,      
+                                                @Dexterity   ,      
+                                                @Inteligence ,  	
+                                                @Strength    ,      
+                                                @CharClass          
+                                                );
+                                                
 	INSERT INTO [weapon](item_ID       ,
                              Stash_ID ,
                              TabNumber,
@@ -816,31 +880,38 @@ select @ID = @ID+1;
                                                 @PiercingRate,
                                                 @FireRate    );
 
+COMMIT;
 END
 go
 
 alter PROC magicalInsert(
-@Stash_ID          AS bigint				,
-@TabNumber         AS bigint				,
-@Price             AS decimal(38,3)		,
-@Name              AS varchar(128)		,
-@isUnique          AS bit				,
-@Upgraded          AS int				,
-@Rank              AS int				,
-@SpecialAttributes AS varchar(128) = NULL,
-@Damage            AS decimal(38,2)      ,
-@DamageType        AS varchar(128)       ,
-@CriticalChance    AS decimal(5,2)		,
-@CriticalMutiplier AS decimal(5,2)		,
-@Range             AS   int				,
-@Accuraccy         AS   decimal(5,2)		,
-@CoolDown               AS   decimal(6,2)            ,
-@RadiusOfEffectiveness  AS    int     )
+          @ID                AS bigint				,
+          @Stash_ID          AS bigint				,
+          @TabNumber         AS bigint				,
+          @Price             AS decimal(38,3)		,
+          @Name              AS varchar(128)		,
+          @isUnique          AS bit				,
+          @Upgraded          AS int				,
+          @Rank              AS int				,
+          @SpecialAttributes AS varchar(128) = NULL,
+          @Damage            AS decimal(38,2)      ,
+          @DamageType        AS varchar(128)       ,
+          @CriticalChance    AS decimal(5,2)		,
+          @CriticalMutiplier AS decimal(5,2)		,
+          @Range             AS   int				,
+          @Accuraccy         AS   decimal(5,2)		,
+          @CoolDown               AS   decimal(6,2)            ,
+          @RadiusOfEffectiveness  AS    int,
+          --requiremtns
+          @Level              AS         bigint   ,
+          @Dexterity          AS         DECIMAL(38,3),
+          @Inteligence  		AS         DECIMAL(38,3),
+          @Strength           AS         DECIMAL(38,3),
+          @CharClass          AS         DECIMAL(38,3)
+)
 AS
-declare @ID bigint;
-select @ID = count(*) from item;
-select @ID = @ID+1;
 	BEGIN
+	BEGIN TRANSACTION
 		INSERT INTO [item]  (ID       ,
 				     Stash_ID ,
 				     TabNumber,
@@ -848,14 +919,26 @@ select @ID = @ID+1;
 				     [Name]   ,
 				     isUnique ,
 				     Upgraded ,
-				     [Rank]   ) VALUES (@ID          ,
+				     [Rank]        ,
+                     [Level]       ,      
+                     Dexterity   ,      
+                     Inteligence ,  	
+                     Strength    ,      
+                     CharClass        ) 
+				VALUES (@ID          ,
 							@Stash_ID    ,
 							@TabNumber   ,
 							@Price       ,
 							@Name      ,
 							@isUnique    ,
 							@Upgraded    ,
-							@Rank      );
+							@Rank        ,
+                            @Level       ,          
+                            @Dexterity   ,      
+                            @Inteligence ,	  
+                            @Strength    ,      
+                            @CharClass
+                        );
 
 		INSERT INTO [weapon](item_ID  ,
 				     Stash_ID ,
@@ -930,11 +1013,13 @@ select @ID = @ID+1;
 				     CriticalChance        ,
 				     CriticalMutiplier     ,
 				     [Range]               ,
-				     Accuraccy			   ,
-				     CoolDown			   ,               
-                     RadiusOfEffectiveness)                   
+				     Accuraccy,
+				     CoolDown      ,          
+                                     RadiusOfEffectiveness  
 
-					VALUES (@ID                    ,
+			)                   
+
+						VALUES (@ID                    ,
 							@Stash_ID              ,
 							@TabNumber             ,
 							@Price                 ,
@@ -950,23 +1035,23 @@ select @ID = @ID+1;
 							@Range                 ,
 							@Accuraccy             ,
 				         		@CoolDown              ,
-						        @RadiusOfEffectiveness  
-						);
-
-end
+						        @RadiusOfEffectiveness);
+	COMMIT;
+END
 go
 
 alter PROC meleeInsert(
 	--melee specifics
+    @Weapon_ID          AS          bigint            ,
     @AttackSpeed        AS          DECIMAL(4,3)      ,
     @HandNum            AS          int               ,
     @MeleeType          AS          varchar(128)      ,
 	-- Item specifics
     @Price              AS          decimal(38,3)     ,
-    @Name             AS          varchar(128)      ,
+    @Name               AS          varchar(128)      ,
     @isUnique           AS          bit               ,
     @Upgraded           AS          int               ,
-    @Rank             AS          int               ,
+    @Rank               AS          int               ,
     @TabNumber          AS          bigint            ,
     @Stash_ID           AS          bigint            ,
 	-- weapon specifics
@@ -974,13 +1059,18 @@ alter PROC meleeInsert(
     @Damage             AS          decimal(38,2)     ,
     @DamageType         AS          varchar(128)      ,      -- Atributo multivalor ?
     @CriticalChance     AS          decimal(5,2)      ,
-    @CriticalMutiplier  AS          decimal(5,2)      )
-                                  
+    @CriticalMutiplier  AS          decimal(5,2)      ,
+    --requiremtns
+    @Level              AS         bigint   ,
+    @Dexterity          AS         DECIMAL(38,3),
+    @Inteligence		AS         DECIMAL(38,3),
+    @Strength           AS         DECIMAL(38,3),
+    @CharClass          AS         DECIMAL(38,3)
+
+                                  			)
 AS
-	BEGIN
-	declare @Weapon_ID bigint;
-select @Weapon_ID = count(*) from item;
-select @Weapon_ID = @Weapon_ID+1;
+BEGIN
+	BEGIN TRANSACTION
 		INSERT INTO [item]  (ID       ,
 				     Stash_ID ,
 				     TabNumber,
@@ -988,14 +1078,26 @@ select @Weapon_ID = @Weapon_ID+1;
 				     [Name]   ,
 				     isUnique ,
 				     Upgraded ,
-				     [Rank]   ) VALUES (@Weapon_ID          ,
+				     [Rank]   ,
+                     [Level]      ,    			             
+                     Dexterity    ,  
+				     Inteligence  ,  
+				     Strength     ,  
+				     CharClass    )
+					 VALUES (  @Weapon_ID          ,
 							@Stash_ID    ,
 							@TabNumber   ,
 							@Price       ,
-							@Name      ,
+							@Name        ,
 							@isUnique    ,
 							@Upgraded    ,
-							@Rank      );
+							@Rank        ,
+                            @Level       ,      
+                            @Dexterity   ,      
+                            @Inteligence ,  	
+                            @Strength    ,      
+                            @CharClass        ); 
+
 
 		INSERT INTO [weapon](item_ID  ,
 				     Stash_ID ,
@@ -1036,6 +1138,7 @@ select @Weapon_ID = @Weapon_ID+1;
 				     DamageType            ,
 				     CriticalChance        ,
 				     CriticalMutiplier     ,
+				     Weapon_ID            ,
 				     AttackSpeed          ,
 				     HandNum              ,
 				     MeleeType            )
@@ -1052,26 +1155,34 @@ select @Weapon_ID = @Weapon_ID+1;
 							@DamageType            ,
 							@CriticalChance        ,
 							@CriticalMutiplier     ,
+				                        @Weapon_ID             ,
 				                        @AttackSpeed           ,
 				                        @HandNum               ,
 				                        @MeleeType             
-						)
-
-end
+						);
+	COMMIT;
+END
 go
-
-alter PROC armorInsert(
+alter PROC shieldInsert(
 	--armor specifics
-    @Defense			AS          decimal(6, 3)      ,
-    @HealthBonus        AS          decimal(38, 5)               ,
+    @Defense			AS         decimal(6, 3)     ,
+    @SpecialAbility     AS         varchar(128)      ,
 	-- Item specifics
-    @Price              AS          decimal(38,3)     ,
-    @Name				AS          varchar(128)      ,
-    @isUnique           AS          bit               ,
-    @Upgraded           AS          int               ,
-    @Rank				AS          int               ,
-    @TabNumber          AS          bigint            ,
-    @Stash_ID           AS          bigint            
+    @Price              AS         decimal(38,3)     ,
+    @Name				AS         varchar(128)      ,
+    @isUnique           AS         bit               ,
+    @Upgraded           AS         int               ,
+    @BaseItem_ID        AS          bigint            ,
+    @Rank				AS         int               ,
+    @TabNumber          AS         bigint            ,
+    @Stash_ID           AS         bigint            ,
+    --requiremtns
+    @Level              AS         bigint   ,
+    @Dexterity          AS         DECIMAL(38,3),
+    @Inteligence		AS         DECIMAL(38,3),
+    @Strength           AS         DECIMAL(38,3),
+    @CharClass          AS         DECIMAL(38,3)
+
 )
 as
 BEGIN
@@ -1085,14 +1196,103 @@ select  @Item_ID = @Item_ID+1;
 				     [Name]   ,
 				     isUnique ,
 				     Upgraded ,
-				     [Rank]   ) VALUES (@Item_ID          ,
+				     [Rank]   ,
+             [Level]    ,
+             Dexterity  ,
+             Inteligence,
+             Strength   ,
+             CharClass)
+
+          VALUES (@Item_ID     ,
+			  @Stash_ID    ,
+			  @TabNumber   ,
+			  @Price       ,
+			  @Name        ,
+			  @isUnique    ,
+			  @Upgraded    ,
+			  @Rank        ,
+              @BaseItem_ID ,
+              @Level       ,
+              @Dexterity   ,
+              @Inteligence ,
+              @Strength    ,
+              @CharClass        );
+
+		INSERT INTO [shield](ID  ,
+				     Stash_ID ,
+				     TabNumber,
+				     Price    ,
+				     [Name]   ,
+				     isUnique ,
+				     Upgraded ,
+				     [Rank]   ,
+				     Defense,
+					 SpecialAbility
+					      ) VALUES (@Item_ID       ,
+							@Stash_ID              ,
+							@TabNumber             ,
+							@Price                 ,
+							@Name                  ,
+							@isUnique              ,
+							@Upgraded              ,
+							@Rank                  ,
+							@Defense,
+							@SpecialAbility)
+END
+go
+alter PROC armorInsert(
+	--armor specifics
+    @Defense			AS          decimal(6, 3)      ,
+    @HealthBonus        AS          decimal(38, 5)               ,
+	-- Item specifics
+    @Price              AS          decimal(38,3)     ,
+    @Name				AS          varchar(128)      ,
+    @isUnique           AS          bit               ,
+    @Upgraded           AS          int               ,
+    @BaseItem_ID        AS          bigint            ,
+    @Rank				AS          int               ,
+    @TabNumber          AS          bigint            ,
+    @Stash_ID           AS          bigint            ,
+    @Level              AS         bigint   ,
+    @Dexterity          AS         DECIMAL(38,3),
+    @Inteligence    		AS         DECIMAL(38,3),
+    @Strength           AS         DECIMAL(38,3),
+    @CharClass          AS         DECIMAL(38,3)
+)
+as
+BEGIN
+declare @Item_ID bigint;
+select  @Item_ID = count(*) from item;
+select  @Item_ID = @Item_ID+1;
+		INSERT INTO [item]  (ID       ,
+				     Stash_ID ,
+				     TabNumber,
+				     Price    ,
+				     [Name]   ,
+				     isUnique ,
+				     Upgraded ,
+				     [Rank]   ,
+             BaseItem_ID,
+             [Level]      ,
+             Dexterity    ,
+				     Inteligence  ,
+				     Strength     ,
+				     CharClass
+				) VALUES (
+              @ID          ,
 							@Stash_ID    ,
 							@TabNumber   ,
 							@Price       ,
-							@Name      ,
+							@Name        ,
 							@isUnique    ,
 							@Upgraded    ,
-							@Rank      );
+              @BaseItem_ID ,
+							@Rank        ,
+              @Level       ,
+              @Dexterity   ,
+              @Inteligence ,
+              @Strength    ,
+              @CharClass        );
 
 		INSERT INTO [armor](ID  ,
 				     Stash_ID ,
@@ -1116,73 +1316,16 @@ select  @Item_ID = @Item_ID+1;
 							@HealthBonus)
 END
 go
-
-alter PROC shieldInsert(
-	--armor specifics
-    @Defense			AS          decimal(6, 3)      ,
-    @SpecialAbility        AS          varchar(128)               ,
-	-- Item specifics
-    @Price              AS          decimal(38,3)     ,
-    @Name				AS          varchar(128)      ,
-    @isUnique           AS          bit               ,
-    @Upgraded           AS          int               ,
-    @Rank				AS          int               ,
-    @TabNumber          AS          bigint            ,
-    @Stash_ID           AS          bigint            
-)
-as
-BEGIN
-declare @Item_ID bigint;
-select  @Item_ID = count(*) from item;
-select  @Item_ID = @Item_ID+1;
-	INSERT INTO [item]  (ID       ,
-				     Stash_ID ,
-				     TabNumber,
-				     Price    ,
-				     [Name]   ,
-				     isUnique ,
-				     Upgraded ,
-				     [Rank]   ) VALUES (@Item_ID          ,
-							@Stash_ID    ,
-							@TabNumber   ,
-							@Price       ,
-							@Name      ,
-							@isUnique    ,
-							@Upgraded    ,
-							@Rank      );
-
-		INSERT INTO [shield](ID  ,
-				     Stash_ID ,
-				     TabNumber,
-				     Price    ,
-				     [Name]   ,
-				     isUnique ,
-				     Upgraded ,
-				     [Rank]   ,
-				     Defense,
-					 SpecialAbility
-					      ) VALUES (@item_ID                    ,
-							@Stash_ID              ,
-							@TabNumber             ,
-							@Price                 ,
-							@Name                  ,
-							@isUnique              ,
-							@Upgraded              ,
-							@Rank                  ,
-							@Defense,
-							@SpecialAbility)
-END
-go
-
 CREATE PROC insertCosmetic(
             @ID    AS  int,
             @Name AS  varchar(128)  ,
+			@CurrencyType as varchar(128),
             @Price AS  smallmoney  ,
             --@CurrencyType AS   bit,
-            @Rank  AS  int 
+            @Rank  AS  int ,
             @Type   AS      varchar(128)   ,
             @BodyPart  AS    varchar(128)   ,
-            @Gender    AS    varchar(128)   ,
+            @Gender    AS    varchar(128)   
 )
 AS
 	BEGIN
@@ -1193,16 +1336,17 @@ AS
 		VALUES (@ID,@Type,@BodyPart,@Gender)
 	END
 
-
+go
 CREATE PROC insertConsumable(
             @ID    AS  int,
             @Name AS  varchar(128)  ,
             @Price AS  smallmoney  ,
+			@CurrencyType as varchar(128),
             --@CurrencyType AS   bit,
-            @Rank  AS  int 
+            @Rank  AS  int ,
 	-- Consumable
-	@Effect    AS  varchar(128)
-	@Duration  AS    decimal(38,3
+	@Effect    AS  varchar(128),
+	@Duration  AS    decimal(38,3),
 	@Quantity   AS   int         
 )
 AS
