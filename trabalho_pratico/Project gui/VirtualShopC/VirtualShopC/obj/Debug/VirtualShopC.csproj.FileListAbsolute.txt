@@ -20,3 +20,4 @@ C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\
 C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\bin\Debug\VirtualShopC.exe
 C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\bin\Debug\VirtualShopC.pdb
 C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.Form4.resources
+C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.Form5.resources

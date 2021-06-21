@@ -36,6 +36,23 @@ namespace VirtualShopC
         }
 
 
+
+        private void RangedCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            if (RangedCheck.Checked)
+            {
+                rangedQ = "ranged,";
+            }
+            else
+            {
+                rangedQ = "";
+            }
+        }
+        private void WeaponCheck_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
         private void ArmorCheck_CheckedChanged(object sender, EventArgs e)
         {
             if (ArmorCheck.Checked)
@@ -107,5 +124,9 @@ namespace VirtualShopC
             }
         }
 
+        private void Search_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

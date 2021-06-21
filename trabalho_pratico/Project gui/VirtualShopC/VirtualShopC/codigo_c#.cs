@@ -1118,7 +1118,7 @@ namespace ranged
 namespace physical
 {
     [Serializable()]
-    public class physical
+    public class Physical
     {
         private String _item_ID;
         public String item_ID

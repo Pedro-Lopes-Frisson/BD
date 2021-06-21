@@ -194,5 +194,35 @@ namespace VirtualShopC
             Form5 form5 = new Form5(_user);
             form5.ShowDialog();
         }
+
+        private void label30_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label28_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label29_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MagicalSpecialAttributes_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MagicalRadius_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MagicalAccuracy_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
