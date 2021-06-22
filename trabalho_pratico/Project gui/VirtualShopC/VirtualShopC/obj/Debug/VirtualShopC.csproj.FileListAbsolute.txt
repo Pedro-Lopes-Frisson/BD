@@ -21,3 +21,17 @@ C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\
 C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\bin\Debug\VirtualShopC.pdb
 C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.Form4.resources
 C:\Users\fabio\OneDrive\Ambiente de Trabalho\Docs\2o Ano\2S\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.Form5.resources
+C:\Users\pedro\OneDrive - Universidade de Aveiro\Documents\GitHub\ffs\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.csprojAssemblyReference.cache
+C:\Users\pedro\OneDrive - Universidade de Aveiro\Documents\GitHub\ffs\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.Form1.resources
+C:\Users\pedro\OneDrive - Universidade de Aveiro\Documents\GitHub\ffs\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.Form2.resources
+C:\Users\pedro\OneDrive - Universidade de Aveiro\Documents\GitHub\ffs\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.Form3.resources
+C:\Users\pedro\OneDrive - Universidade de Aveiro\Documents\GitHub\ffs\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.Form4.resources
+C:\Users\pedro\OneDrive - Universidade de Aveiro\Documents\GitHub\ffs\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.Form5.resources
+C:\Users\pedro\OneDrive - Universidade de Aveiro\Documents\GitHub\ffs\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.Properties.Resources.resources
+C:\Users\pedro\OneDrive - Universidade de Aveiro\Documents\GitHub\ffs\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.csproj.GenerateResource.cache
+C:\Users\pedro\OneDrive - Universidade de Aveiro\Documents\GitHub\ffs\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.csproj.CoreCompileInputs.cache
+C:\Users\pedro\OneDrive - Universidade de Aveiro\Documents\GitHub\ffs\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.exe
+C:\Users\pedro\OneDrive - Universidade de Aveiro\Documents\GitHub\ffs\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\obj\Debug\VirtualShopC.pdb
+C:\Users\pedro\OneDrive - Universidade de Aveiro\Documents\GitHub\ffs\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\bin\Debug\VirtualShopC.exe.config
+C:\Users\pedro\OneDrive - Universidade de Aveiro\Documents\GitHub\ffs\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\bin\Debug\VirtualShopC.exe
+C:\Users\pedro\OneDrive - Universidade de Aveiro\Documents\GitHub\ffs\BD\trabalho_pratico\Project gui\VirtualShopC\VirtualShopC\bin\Debug\VirtualShopC.pdb

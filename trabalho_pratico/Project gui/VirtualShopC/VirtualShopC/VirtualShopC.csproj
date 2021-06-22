@@ -77,6 +77,23 @@
     <Compile Include="Form5.Designer.cs">
       <DependentUpon>Form5.cs</DependentUpon>
     </Compile>
+    <Compile Include="objectos\Armor.cs" />
+    <Compile Include="objectos\BuyerStash.cs" />
+    <Compile Include="objectos\Cosmetic.cs" />
+    <Compile Include="objectos\Item.cs" />
+    <Compile Include="objectos\Magical.cs" />
+    <Compile Include="objectos\Melee.cs" />
+    <Compile Include="objectos\NormalTab.cs" />
+    <Compile Include="objectos\Physical.cs" />
+    <Compile Include="objectos\Ranged.cs" />
+    <Compile Include="objectos\Shield.cs" />
+    <Compile Include="objectos\SpecialItem.cs" />
+    <Compile Include="objectos\SpecialTab.cs" />
+    <Compile Include="objectos\stash.cs" />
+    <Compile Include="objectos\StashTabs.cs" />
+    <Compile Include="objectos\user.cs" />
+    <Compile Include="objectos\VendorStash.cs" />
+    <Compile Include="objectos\Weapon.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="project_dummyDataSet.Designer.cs">
       <AutoGen>True</AutoGen>

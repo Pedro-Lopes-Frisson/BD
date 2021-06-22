@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ namespace VirtualShopC
     public partial class Form5 : Form
     {
         private string _user = "";
+        string connStr = @"Data Source=localhost;Initial Catalog=project_dummy;Integrated Security=True;";
 
         string weaponQ = "";
         string meleeQ = "";
@@ -29,6 +31,8 @@ namespace VirtualShopC
         public Form5(string user)
         {
             InitializeComponent();
+            setUser(user);
+            MessageBox.Show(user);
         }
         public void setUser(string user)
         {
@@ -50,7 +54,14 @@ namespace VirtualShopC
         }
         private void WeaponCheck_CheckedChanged(object sender, EventArgs e)
         {
-
+            if (WeaponCheck.Checked)
+            {
+                weaponQ = "ranged,";
+            }
+            else
+            {
+                weaponQ = "";
+            }
         }
 
         private void ArmorCheck_CheckedChanged(object sender, EventArgs e)
@@ -67,7 +78,14 @@ namespace VirtualShopC
 
         private void ShieldCheck_CheckedChanged(object sender, EventArgs e)
         {
-
+            if (ShieldCheck.Checked)
+            {
+                shieldQ = "shield,";
+            }
+            else
+            {
+                shieldQ = "";
+            }
         }
 
         private void MeleeCheck_CheckedChanged(object sender, EventArgs e)
@@ -85,7 +103,14 @@ namespace VirtualShopC
 
         private void PhysicalCheck_CheckedChanged(object sender, EventArgs e)
         {
-
+            if (PhysicalCheck.Checked)
+            {
+                physicalQ = "physical,";
+            }
+            else
+            {
+                physicalQ = "";
+            }
         }
 
         private void MagicalCheck_CheckedChanged(object sender, EventArgs e)
@@ -125,6 +150,33 @@ namespace VirtualShopC
         }
 
         private void Search_Click(object sender, EventArgs e)
+        {
+
+            using (SqlConnection sqlConn = new SqlConnection(connStr))
+            {
+                sqlConn.Open();
+                string command = "select [Name], [Upgraded], [Rank] from ";
+                int commandNo = 0;
+                foreach (Control c in FiltersType.Controls)
+                {
+                    CheckBox checkbox = c as CheckBox;
+                    if (checkbox.Checked)
+                    {
+                        commandNo++;
+                    }
+                }
+                if (commandNo == 0) { itemQ = "item"; }
+
+                command += weaponQ + armorQ + shieldQ + meleeQ + rangedQ + physicalQ + magicalQ + itemQ;
+                command = command.TrimEnd(',');
+                SqlCommand query = new SqlCommand(command, sqlConn);
+                query.CommandType = CommandType.Text;
+                SqlDataReader reader = query.ExecuteReader();
+            }
+
+        }
+
+        private void Form5_Load(object sender, EventArgs e)
         {
 
         }

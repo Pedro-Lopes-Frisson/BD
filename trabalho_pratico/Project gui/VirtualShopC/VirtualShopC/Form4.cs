@@ -1,4 +1,5 @@
-﻿using System;
+﻿using VirtualShopC.Objetos;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,12 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VirtualShopC.Objects;
 
 namespace VirtualShopC
 {
     public partial class Form4 : Form
     {
         private string _user = "";
+        private int currentItem;
         string connStr = @"Data Source=localhost;Initial Catalog=project_dummy;Integrated Security=True;";
         string[] baseattr = { "Price", "Weapon_ID", "AttackSpeed", "HandNum", "BaseItem_ID", "Name", "isUnique", "Upgraded",  };
         string currentlyChecked = "";
@@ -119,12 +122,19 @@ namespace VirtualShopC
                 using (SqlConnection sqlConn = new SqlConnection(connStr))
                 {
                     sqlConn.Open();
+                    BaseItems.Items.Clear();
                     string command = "SELECT * FROM melee WHERE BaseItem_ID IS NULL";
                     SqlCommand query = new SqlCommand(command, sqlConn);
                     query.CommandType = CommandType.Text;
                     SqlDataReader reader = query.ExecuteReader();
                     while (reader.Read())
                     {
+                        Melee w = new Melee();
+                        w.Name = reader["Name"].ToString();
+                        w.Rank = reader["Rank"].ToString();
+                        w.Upgraded = reader["Upgraded"].ToString();
+                        w.Weapon_ID = reader["Weapon_ID"].ToString();
+                        BaseItems.Items.Add(w);
                     }
                 }
 
@@ -144,6 +154,25 @@ namespace VirtualShopC
                 Consumable.Visible = false;
 
                 currentlyChecked = "ArmorCheck";
+
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    sqlConn.Open();
+                    BaseItems.Items.Clear();
+                    string command = "SELECT * FROM armor WHERE BaseItem_ID IS NULL";
+                    SqlCommand query = new SqlCommand(command, sqlConn);
+                    query.CommandType = CommandType.Text;
+                    SqlDataReader reader = query.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Armor w = new Armor();
+                        w.Name = reader["Name"].ToString();
+                        w.Rank = reader["Rank"].ToString();
+                        w.Upgraded = reader["Upgraded"].ToString();
+                        w.ID = reader["ID"].ToString();
+                        BaseItems.Items.Add(w);
+                    }
+                }
             }
             else if (ShieldCheck.Checked)
             {
@@ -160,6 +189,25 @@ namespace VirtualShopC
                 Consumable.Visible = false;
 
                 currentlyChecked = "ShieldCheck";
+
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    sqlConn.Open();
+                    BaseItems.Items.Clear();
+                    string command = "SELECT * FROM shield WHERE BaseItem_ID IS NULL";
+                    SqlCommand query = new SqlCommand(command, sqlConn);
+                    query.CommandType = CommandType.Text;
+                    SqlDataReader reader = query.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Shield w = new Shield();
+                        w.Name = reader["Name"].ToString();
+                        w.Rank = reader["Rank"].ToString();
+                        w.Upgraded = reader["Upgraded"].ToString();
+                        w.ID = reader["ID"].ToString();
+                        BaseItems.Items.Add(w);
+                    }
+                }
 
             }
             else if (PhysicalCheck.Checked)
@@ -178,6 +226,26 @@ namespace VirtualShopC
 
                 currentlyChecked = "PhysicalCheck";
 
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    sqlConn.Open();
+                    BaseItems.Items.Clear();
+                    string command = "SELECT * FROM physical WHERE BaseItem_ID IS NULL";
+                    SqlCommand query = new SqlCommand(command, sqlConn);
+                    query.CommandType = CommandType.Text;
+                    SqlDataReader reader = query.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Physical w = new Physical();
+                        w.Name = reader["Name"].ToString();
+                        w.Rank = reader["Rank"].ToString();
+                        w.Upgraded = reader["Upgraded"].ToString();
+                        w.item_ID = reader["item_ID"].ToString();
+
+                        BaseItems.Items.Add(w);
+                    }
+                }
+
             }
             else if (MagicalCheck.Checked)
             {
@@ -195,6 +263,25 @@ namespace VirtualShopC
 
                 currentlyChecked = "MagicalCheck";
 
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    sqlConn.Open();
+                    BaseItems.Items.Clear();
+                    string command = "SELECT * FROM magical WHERE BaseItem_ID IS NULL";
+                    SqlCommand query = new SqlCommand(command, sqlConn);
+                    query.CommandType = CommandType.Text;
+                    SqlDataReader reader = query.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Magical w = new Magical();
+                        w.Name = reader["Name"].ToString();
+                        w.Rank = reader["Rank"].ToString();
+                        w.Upgraded = reader["Upgraded"].ToString();
+                        w.item_ID = reader["item_ID"].ToString();
+                        BaseItems.Items.Add(w);
+                    }
+                }
+
             }
             else if (CosmeticCheck.Checked)
             {
@@ -211,6 +298,8 @@ namespace VirtualShopC
 
                 currentlyChecked = "CosmeticCheck";
 
+                BaseItems.Items.Clear();
+
             }
             else if (ConsumableCheck.Checked)
             {
@@ -226,6 +315,8 @@ namespace VirtualShopC
                 Cosmetic.Visible = false;
 
                 currentlyChecked = "ConsumableCheck";
+
+                BaseItems.Items.Clear();
 
             }
         }
@@ -263,26 +354,143 @@ namespace VirtualShopC
                     using (SqlConnection sqlConn = new SqlConnection(connStr))
                     {
                         sqlConn.Open();
-                        SqlCommand sqlComm = new SqlCommand("Melee_Insert", sqlConn);
+                        SqlCommand sqlComm = new SqlCommand("meleeInsert", sqlConn);
                         sqlComm.CommandType = CommandType.StoredProcedure;
-                        sqlComm.Parameters.AddWithValue("@Username", "dummy");
-                        sqlComm.Parameters.AddWithValue("@Password", "dummypassword");
-                        
+                        Melee m = new Melee();
+                        currentItem = BaseItems.SelectedIndex;
+                        m = (Melee)BaseItems.Items[currentItem];
+                        sqlComm.Parameters.AddWithValue("@AttackSpeed", "");
+                        sqlComm.Parameters.AddWithValue("@HandNum", "");
+                        sqlComm.Parameters.AddWithValue("@MeleeType", "");
+                        sqlComm.Parameters.AddWithValue("@Price", "");
+                        sqlComm.Parameters.AddWithValue("@Name", "");
+                        sqlComm.Parameters.AddWithValue("@isUnique", "");
+                        sqlComm.Parameters.AddWithValue("@Upgraded", "");
+                        sqlComm.Parameters.AddWithValue("@Rank", "");
+                        sqlComm.Parameters.AddWithValue("@TabNumber", "");
+                        sqlComm.Parameters.AddWithValue("@Stash_ID", "");
+                        sqlComm.Parameters.AddWithValue("@SpecialAttributes", "");
+                        sqlComm.Parameters.AddWithValue("@Damage", "");
+                        sqlComm.Parameters.AddWithValue("@DamageType", "");
+                        sqlComm.Parameters.AddWithValue("@CriticalChance", "");
+                        sqlComm.Parameters.AddWithValue("@CriticalMultiplier", "");
+                        sqlComm.Parameters.AddWithValue("@BaseItemID", "");
+
                         sqlComm.ExecuteNonQuery();
 
                     }
                     break;
                 case "ArmorCheck":
+                    using (SqlConnection sqlConn = new SqlConnection(connStr))
+                    {
+                        sqlConn.Open();
+                        SqlCommand sqlComm = new SqlCommand("armorInsert", sqlConn);
+                        sqlComm.CommandType = CommandType.StoredProcedure;
+                        Armor m = new Armor();
+                        currentItem = BaseItems.SelectedIndex;
+                        m = (Armor)BaseItems.Items[currentItem];
+                        sqlComm.Parameters.AddWithValue("@Defense", "");
+                        sqlComm.Parameters.AddWithValue("@HealthBonus", "");
+                        sqlComm.Parameters.AddWithValue("@Price", "");
+                        sqlComm.Parameters.AddWithValue("@Name", "");
+                        sqlComm.Parameters.AddWithValue("@isUnique", "");
+                        sqlComm.Parameters.AddWithValue("@Upgraded", "");
+                        sqlComm.Parameters.AddWithValue("@Rank", "");
+                        sqlComm.Parameters.AddWithValue("@TabNumber", "");
+                        sqlComm.Parameters.AddWithValue("@Stash_ID", "");
+                        sqlComm.Parameters.AddWithValue("@SpecialAttributes", "");
+                        sqlComm.Parameters.AddWithValue("@BaseItemID", "");
 
+                        sqlComm.ExecuteNonQuery();
+
+                    }
                     break;
                 case "ShieldCheck":
+                    using (SqlConnection sqlConn = new SqlConnection(connStr))
+                    {
+                        sqlConn.Open();
+                        SqlCommand sqlComm = new SqlCommand("shieldInsert", sqlConn);
+                        sqlComm.CommandType = CommandType.StoredProcedure;
+                        Shield m = new Shield();
+                        currentItem = BaseItems.SelectedIndex;
+                        m = (Shield)BaseItems.Items[currentItem];
+                        sqlComm.Parameters.AddWithValue("@Defense", "");
+                        sqlComm.Parameters.AddWithValue("@SpecialAbility", "");
+                        sqlComm.Parameters.AddWithValue("@Price", "");
+                        sqlComm.Parameters.AddWithValue("@Name", "");
+                        sqlComm.Parameters.AddWithValue("@isUnique", "");
+                        sqlComm.Parameters.AddWithValue("@Upgraded", "");
+                        sqlComm.Parameters.AddWithValue("@Rank", "");
+                        sqlComm.Parameters.AddWithValue("@TabNumber", "");
+                        sqlComm.Parameters.AddWithValue("@Stash_ID", "");
+                        sqlComm.Parameters.AddWithValue("@SpecialAttributes", "");
+                        sqlComm.Parameters.AddWithValue("@BaseItemID", "");
 
+                        sqlComm.ExecuteNonQuery();
+
+                    }
                     break;
                 case "PhysicalCheck":
+                    using (SqlConnection sqlConn = new SqlConnection(connStr))
+                    {
+                        sqlConn.Open();
+                        SqlCommand sqlComm = new SqlCommand("physicalInsert", sqlConn);
+                        sqlComm.CommandType = CommandType.StoredProcedure;
+                        Physical m = new Physical();
+                        currentItem = BaseItems.SelectedIndex;
+                        m = (Physical)BaseItems.Items[currentItem];
+                        sqlComm.Parameters.AddWithValue("@FireRate", "");
+                        sqlComm.Parameters.AddWithValue("@PiercingRate", "");
+                        sqlComm.Parameters.AddWithValue("@Accuraccy", "");
+                        sqlComm.Parameters.AddWithValue("@Range", "");
+                        sqlComm.Parameters.AddWithValue("@Price", "");
+                        sqlComm.Parameters.AddWithValue("@Name", "");
+                        sqlComm.Parameters.AddWithValue("@isUnique", "");
+                        sqlComm.Parameters.AddWithValue("@Upgraded", "");
+                        sqlComm.Parameters.AddWithValue("@Rank", "");
+                        sqlComm.Parameters.AddWithValue("@TabNumber", "");
+                        sqlComm.Parameters.AddWithValue("@Stash_ID", "");
+                        sqlComm.Parameters.AddWithValue("@SpecialAttributes", "");
+                        sqlComm.Parameters.AddWithValue("@Damage", "");
+                        sqlComm.Parameters.AddWithValue("@DamageType", "");
+                        sqlComm.Parameters.AddWithValue("@CriticalChance", "");
+                        sqlComm.Parameters.AddWithValue("@CriticalMultiplier", "");
+                        sqlComm.Parameters.AddWithValue("@BaseItemID", "");
 
+                        sqlComm.ExecuteNonQuery();
+
+                    }
                     break;
                 case "MagicalCheck":
+                    using (SqlConnection sqlConn = new SqlConnection(connStr))
+                    {
+                        sqlConn.Open();
+                        SqlCommand sqlComm = new SqlCommand("magicalInsert", sqlConn);
+                        sqlComm.CommandType = CommandType.StoredProcedure;
+                        Magical m = new Magical();
+                        currentItem = BaseItems.SelectedIndex;
+                        m = (Magical)BaseItems.Items[currentItem];
+                        sqlComm.Parameters.AddWithValue("@CoolDown", "");
+                        sqlComm.Parameters.AddWithValue("@RadiusOfEffectiveness", "");
+                        sqlComm.Parameters.AddWithValue("@Accuracy", "");
+                        sqlComm.Parameters.AddWithValue("@Range", "");
+                        sqlComm.Parameters.AddWithValue("@Price", "");
+                        sqlComm.Parameters.AddWithValue("@Name", "");
+                        sqlComm.Parameters.AddWithValue("@isUnique", "");
+                        sqlComm.Parameters.AddWithValue("@Upgraded", "");
+                        sqlComm.Parameters.AddWithValue("@Rank", "");
+                        sqlComm.Parameters.AddWithValue("@TabNumber", "");
+                        sqlComm.Parameters.AddWithValue("@Stash_ID", "");
+                        sqlComm.Parameters.AddWithValue("@SpecialAttributes", "");
+                        sqlComm.Parameters.AddWithValue("@Damage", "");
+                        sqlComm.Parameters.AddWithValue("@DamageType", "");
+                        sqlComm.Parameters.AddWithValue("@CriticalChance", "");
+                        sqlComm.Parameters.AddWithValue("@CriticalMultiplier", "");
+                        sqlComm.Parameters.AddWithValue("@BaseItemID", "");
 
+                        sqlComm.ExecuteNonQuery();
+
+                    }
                     break;
                 case "ConsumableCheck":
 
@@ -294,6 +502,16 @@ namespace VirtualShopC
                     MessageBox.Show("Please select an item to register");
                     break;
             }
+        }
+
+        private void label51_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void domainUpDown1_SelectedItemChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

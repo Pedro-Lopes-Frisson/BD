@@ -74,11 +74,12 @@ namespace VirtualShopC
                         commandNo++;
                     }
                 }
-                if (commandNo == 0) { itemQ = "item";}
+                if (commandNo == 0) { itemQ = "item"; } else { itemQ = "" }
 
                 command += weaponQ + armorQ + shieldQ  + meleeQ + rangedQ + physicalQ + magicalQ +itemQ;
                 command = command.TrimEnd(',');
                 SqlCommand query = new SqlCommand(command, sqlConn);
+                MessageBox.Show(command);
                 query.CommandType = CommandType.Text;
                 SqlDataReader reader = query.ExecuteReader();            
         }
@@ -221,6 +222,11 @@ namespace VirtualShopC
         }
 
         private void MagicalAccuracy_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FiltersType_Enter(object sender, EventArgs e)
         {
 
         }
