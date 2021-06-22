@@ -1,7 +1,7 @@
-ALTER PROC dbo.magicalInsert(
-          @ID                AS bigint				,
+CREATE PROC dbo.magicalInsert(
           @Stash_ID          AS bigint				,
           @TabNumber         AS bigint				,
+	      @BaseItem_ID		AS BIGINT,
           @Price             AS decimal(38,3)		,
           @Name              AS varchar(128)		,
           @isUnique          AS bit				,
@@ -15,18 +15,26 @@ ALTER PROC dbo.magicalInsert(
           @Range             AS   int				,
           @Accuraccy         AS   decimal(5,2)		,
           @CoolDown               AS   decimal(6,2)            ,
-          @RadiusOfEffectiveness  AS    int,
+          @RadiusOfEffectiveness  AS    int
           --requiremtns
-          @Level              AS         bigint   ,
-          @Dexterity          AS         DECIMAL(38,3),
-          @Inteligence  		AS         DECIMAL(38,3),
-          @Strength           AS         DECIMAL(38,3),
-          @CharClass          AS         DECIMAL(38,3)
 )
 AS
 	BEGIN
 	BEGIN TRY
 	BEGIN TRANSACTION
+		
+		DECLARE @Item_ID AS BIGINT;
+		select  @Item_ID = count(*) from item;
+		select  @Item_ID = @Item_ID + 1;
+
+	DECLARE @Level              AS         bigint   ;
+	DECLARE @Dexterity          AS         DECIMAL(38,3);
+	DECLARE @Inteligence        AS         DECIMAL(38,3);
+	DECLARE @Strength           AS         DECIMAL(38,3);
+	DECLARE @CharClass          AS         DECIMAL(38,3);
+	SELECT @Level=[Level], @Dexterity=[Dexterity], @Inteligence=[Inteligence], @Strength=[Strength],@CharClass=[CharClass]
+		FROM [item] WHERE [ID]=@BaseItem_ID
+
 		INSERT INTO [item]  (ID       ,
 				     Stash_ID ,
 				     TabNumber,
@@ -35,30 +43,30 @@ AS
 				     isUnique ,
 				     Upgraded ,
 				     Rank        ,
-                     Level       ,      
-                     Dexterity   ,      
-                     Inteligence ,  	
-                     Strength    ,      
-                     CharClass        )
+				     Level       ,      
+				     Dexterity   ,      
+				     Inteligence ,  	
+				     Strength    ,      
+				     CharClass        )
 
+				 VALUES (@Item_ID          ,
+						@Stash_ID    ,
+						@TabNumber   ,
+						@Price       ,
+						@Name      ,
+						@isUnique    ,
+						@Upgraded    ,
+						@Rank        ,
+					    @Level       ,          
+					    @Dexterity   ,      
+					    @Inteligence ,	  
+					    @Strength    ,      
+						    @CharClass     
 
+						);
 
-				 VALUES (@ID          ,
-							@Stash_ID    ,
-							@TabNumber   ,
-							@Price       ,
-							@Name      ,
-							@isUnique    ,
-							@Upgraded    ,
-							@Rank        ,
-                            @Level       ,          
-                            @Dexterity   ,      
-                            @Inteligence ,	  
-                            @Strength    ,      
-                            @CharClass     
-
-                        );
-
+		select  @Item_ID = count(*) from weapon;
+		select  @Item_ID = @Item_ID + 1;
 		INSERT INTO [weapon](item_ID  ,
 				     Stash_ID ,
 				     TabNumber,
@@ -72,7 +80,7 @@ AS
 				     DamageType            ,
 				     CriticalChance        ,
 				     CriticalMutiplier     
-					      ) VALUES (@ID                    ,
+					      ) VALUES (@Item_ID               ,
 							@Stash_ID              ,
 							@TabNumber             ,
 							@Price                 ,
@@ -86,6 +94,8 @@ AS
 							@CriticalChance        ,
 							@CriticalMutiplier     );
 
+		select  @Item_ID = count(*) from ranged;
+		select  @Item_ID = @Item_ID + 1;
 		    INSERT INTO [ranged](item_ID,
 				     Stash_ID   ,
 				     TabNumber  ,
@@ -102,7 +112,7 @@ AS
 				     [Range]               ,
 				     Accuraccy              )                   
 
-						VALUES (@ID          ,
+						VALUES (@Item_ID          ,
 							@Stash_ID    ,
 							@TabNumber   ,
 							@Price       ,
@@ -118,6 +128,8 @@ AS
 							@Range       ,
 							@Accuraccy   );
 
+		select  @Item_ID = count(*) from magical;
+		select  @Item_ID = @Item_ID + 1;
 		    INSERT INTO [magical](item_ID          ,
 				     Stash_ID              ,
 				     TabNumber             ,
@@ -138,7 +150,7 @@ AS
 
 			)                   
 
-						VALUES (@ID                    ,
+						VALUES (@Item_ID                    ,
 							@Stash_ID              ,
 							@TabNumber             ,
 							@Price                 ,
@@ -174,28 +186,28 @@ AS
 		    RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);  
 		END CATCH
 END
-END
-exec magicalInsert
-		  @ID               = 1,
-          @Stash_ID         = NULL	,
-          @TabNumber         = NULL				,
-          @Price             = 120.0,
-          @Name              = N'EspadaLongaQueMandaTiros' ,
-          @isUnique          = 0,
-          @Upgraded          = 1			,
-          @Rank              = 1			,
-          @SpecialAttributes = NULL,
-          @Damage            =200.0      ,
-          @DamageType        = N'Poison'       ,
-          @CriticalChance    = 10.23		,
-          @CriticalMutiplier = 10.2		,
-          @Range             =29,
-          @Accuraccy        = 123 ,
-          @CoolDown         = 10 ,
-          @RadiusOfEffectiveness = 123 ,
-          --requiremtns
-          @Level            = 12,
-          @Dexterity        = 112,
-          @Inteligence  	= 123.3,
-          @Strength         = 123.4 ,
-          @CharClass        = N'Dwarf'
+
+--exec magicalInsert
+--      	  @ID               = 1,
+--        @Stash_ID         = NULL	,
+--        @TabNumber         = NULL				,
+--        @Price             = 120.0,
+--        @Name              = N'EspadaLongaQueMandaTiros' ,
+--        @isUnique          = 0,
+--        @Upgraded          = 1			,
+--        @Rank              = 1			,
+--        @SpecialAttributes = NULL,
+--        @Damage            =200.0      ,
+--        @DamageType        = N'Poison'       ,
+--        @CriticalChance    = 10.23		,
+--        @CriticalMutiplier = 10.2		,
+--        @Range             =29,
+--        @Accuraccy        = 123 ,
+--        @CoolDown         = 10 ,
+--        @RadiusOfEffectiveness = 123 ,
+--        --requiremtns
+--        @Level            = 12,
+--        @Dexterity        = 112,
+--        @Inteligence  	= 123.3,
+--        @Strength         = 123.4 ,
+--        @CharClass        = N'Dwarf'

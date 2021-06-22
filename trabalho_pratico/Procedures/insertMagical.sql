@@ -6,6 +6,7 @@ CREATE PROC magicalInsert(
           @Name              AS varchar(128)		,
           @isUnique          AS bit				,
           @Upgraded          AS int				,
+	      @BaseItem_ID		AS BIGINT,
           @Rank              AS int				,
           @SpecialAttributes AS varchar(128) = NULL,
           @Damage            AS decimal(38,2)      ,
@@ -15,18 +16,24 @@ CREATE PROC magicalInsert(
           @Range             AS   int				,
           @Accuraccy         AS   decimal(5,2)		,
           @CoolDown               AS   decimal(6,2)            ,
-          @RadiusOfEffectiveness  AS    int,
-          --requiremtns
-          @Level              AS         bigint   ,
-          @Dexterity          AS         DECIMAL(38,3),
-          @Inteligence  		AS         DECIMAL(38,3),
-          @Strength           AS         DECIMAL(38,3),
-          @CharClass          AS         DECIMAL(38,3),
+          @RadiusOfEffectiveness  AS    int
 )
 AS
 	BEGIN
 	BEGIN TRY
 		BEGIN TRANSACTION
+			DECLARE @Item_ID AS BIGINT;
+			select  @Item_ID = count(*) from item;
+			select  @Item_ID = @Item_ID + 1;
+
+			DECLARE @Level              AS         bigint   ;
+			DECLARE @Dexterity          AS         DECIMAL(38,3);
+			DECLARE @Inteligence        AS         DECIMAL(38,3);
+			DECLARE @Strength           AS         DECIMAL(38,3);
+			DECLARE @CharClass          AS         DECIMAL(38,3);
+			SELECT @Level=[Level], @Dexterity=[Dexterity], @Inteligence=[Inteligence], @Strength=[Strength],@CharClass=[CharClass]
+				FROM [item] WHERE [ID] = @BaseItem_ID
+
 			INSERT INTO [item]  (ID       ,
 					     Stash_ID ,
 					     TabNumber,
@@ -35,15 +42,13 @@ AS
 					     isUnique ,
 					     Upgraded ,
 					     Rank        ,
-			     Level       ,      
-			     Dexterity   ,      
-			     Inteligence ,  	
-			     Strength    ,      
-			     CharClass        ); 
+					     Level       ,      
+					     Dexterity   ,      
+					     Inteligence ,  	
+					     Strength    ,      
+					     CharClass        )
 
-
-
-					) VALUES (@ID          ,
+		 VALUES (@Item_ID          ,
 								@Stash_ID    ,
 								@TabNumber   ,
 								@Price       ,
@@ -51,13 +56,15 @@ AS
 								@isUnique    ,
 								@Upgraded    ,
 								@Rank        ,
-				    @Level       ,          
-				    @Dexterity   ,      
-				    @Inteligence ,	  
-				    @Strength    ,      
-				    @CharClass   ,      
-
+							    @Level       ,          
+							    @Dexterity   ,      
+							    @Inteligence ,	  
+							    @Strength    ,      
+							    @CharClass        
 				);
+
+			select  @Item_ID = count(*) from weapon;
+			select  @Item_ID = @Item_ID + 1;
 
 			INSERT INTO [weapon](item_ID  ,
 					     Stash_ID ,
@@ -72,7 +79,7 @@ AS
 					     DamageType            ,
 					     CriticalChance        ,
 					     CriticalMutiplier     
-						      ) VALUES (@ID                    ,
+						      ) VALUES (@Item_ID                    ,
 								@Stash_ID              ,
 								@TabNumber             ,
 								@Price                 ,
@@ -85,6 +92,8 @@ AS
 								@DamageType            ,
 								@CriticalChance        ,
 								@CriticalMutiplier     );
+				select  @Item_ID = count(*) from ranged;
+				select  @Item_ID = @Item_ID + 1;
 
 			    INSERT INTO [ranged](item_ID,
 					     Stash_ID   ,
@@ -102,7 +111,7 @@ AS
 					     [Range]               ,
 					     Accuraccy              )                   
 
-							VALUES (@ID          ,
+							VALUES (@Item_ID          ,
 								@Stash_ID    ,
 								@TabNumber   ,
 								@Price       ,
@@ -118,6 +127,8 @@ AS
 								@Range       ,
 								@Accuraccy   );
 
+				select  @Item_ID = count(*) from magical;
+				select  @Item_ID = @Item_ID + 1;
 			    INSERT INTO [magical](item_ID          ,
 					     Stash_ID              ,
 					     TabNumber             ,
@@ -133,12 +144,12 @@ AS
 					     CriticalMutiplier     ,
 					     [Range]               ,
 					     Accuraccy,
-					     CoolDown                
+					     CoolDown                ,
 					     RadiusOfEffectiveness  
 
 				)                   
 
-							VALUES (@ID                    ,
+							VALUES (@Item_ID                    ,
 								@Stash_ID              ,
 								@TabNumber             ,
 								@Price                 ,

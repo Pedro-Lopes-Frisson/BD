@@ -1,7 +1,6 @@
 CREATE FUNCTION dbo.GetItemType(@ItemName as VARCHAR(128))  
 RETURNS VARCHAR(128)  
 AS   
--- Returns the stock level for the product.  
 BEGIN  
 	DECLARE @ret AS VARCHAR(128);
 	IF EXISTS(SELECT * FROM [magical] WHERE [Name]=@ItemName) 

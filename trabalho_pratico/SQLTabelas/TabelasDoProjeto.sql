@@ -34,7 +34,7 @@ go
 create TABLE [user] (
             UserID          INT IDENTITY(1,1) NOT NULL,
             Email           NVARCHAR(320)  UNIQUE,
-            AccName         varchar(128)    NOT NULL,
+            AccName         varchar(128)    UNIQUE,
             Pass            BINARY(64)      NOT NULL,
             RealCurrency    decimal(38,3)          NOT NULL DEFAULT 0,
             GameCurrency    decimal(38,3)          NOT NULL DEFAULT 0,
@@ -98,7 +98,7 @@ go
 
 CREATE TABLE item (
 
-  ID        bigint identity(1,1)            NOT NULL, 
+  ID        bigint            NOT NULL, 
   Stash_ID  bigint            DEFAULT NULL,
   TabNumber bigint            DEFAULT NULL,
   BaseItem_ID bigint		  DEFAULT NULL,
@@ -137,8 +137,8 @@ CREATE TABLE weapon(
   isUnique  bit               NOT NULL DEFAULT 0,
   Upgraded  int               NOT NULL DEFAULT 0,
   [Rank]    int               ,
-  TabNumber bigint            NOT NULL,
-  Stash_ID  bigint            NOT NULL,
+  TabNumber bigint            DEFAULT NULL,
+  Stash_ID  bigint            DEFAULT NULL,
 
   PRIMARY KEY  (item_ID),
   FOREIGN KEY (item_ID) references [item]( ID ),
@@ -161,8 +161,8 @@ CREATE TABLE ranged (
   isUnique  bit               NOT NULL DEFAULT 0,
   Upgraded  int               NOT NULL DEFAULT 0,
   [Rank]    int               ,
-  TabNumber bigint            NOT NULL,
-  Stash_ID  bigint            NOT NULL,
+  TabNumber bigint            DEFAULT NULL,
+  Stash_ID  bigint            DEFAULT NULL,
 	-- weapon specifics
   SpecialAttributes     varchar(128)  ,    --Pode ser um composito ?
   Damage                decimal(38,2)      NOT NULL,
@@ -190,8 +190,8 @@ CREATE TABLE  physical (
   isUnique  bit               NOT NULL DEFAULT 0,
   Upgraded  int               NOT NULL DEFAULT 0,
   [Rank]    int               ,
-  TabNumber bigint            NOT NULL,
-  Stash_ID  bigint            NOT NULL,
+  TabNumber bigint            DEFAULT NULL,
+  Stash_ID  bigint            DEFAULT NULL,
 
 	-- weapon specifics
   SpecialAttributes     varchar(128)  ,    --Pode ser um composito ?
@@ -223,8 +223,8 @@ CREATE TABLE magical (
   isUnique  bit               NOT NULL DEFAULT 0,
   Upgraded  int               NOT NULL DEFAULT 0,
   [Rank]    int               ,
-  TabNumber bigint            NOT NULL,
-  Stash_ID  bigint            NOT NULL,
+  TabNumber bigint            DEFAULT NULL,
+  Stash_ID  bigint            DEFAULT NULL,
 	-- weapon specifics
   SpecialAttributes     varchar(128)  ,    --Pode ser um composito ?
   Damage                decimal(38,2)      NOT NULL,
@@ -255,8 +255,8 @@ CREATE TABLE melee(
     isUnique  bit               NOT NULL DEFAULT 0,
     Upgraded  int               NOT NULL DEFAULT 0,
     [Rank]    int               ,
-    TabNumber bigint            NOT NULL,
-    Stash_ID  bigint            NOT NULL,
+    TabNumber bigint            DEFAULT NULL,
+    Stash_ID  bigint            DEFAULT NULL,
 	-- weapon specifics
     SpecialAttributes     varchar(128)  ,    --Pode ser um composito ?
     Damage                decimal(38,2)      NOT NULL,
@@ -286,8 +286,8 @@ CREATE TABLE armor (
   isUnique  bit               NOT NULL DEFAULT 0,
   Upgraded  int               NOT NULL DEFAULT 0,
   [Rank]    int               ,
-  TabNumber bigint            NOT NULL,
-  Stash_ID  bigint            NOT NULL,
+  TabNumber bigint            DEFAULT NULL,
+  Stash_ID  bigint            DEFAULT NULL,
   
   CHECK (HealthBonus > 0),
   CHECK (Defense <= 100),
@@ -309,8 +309,8 @@ CREATE TABLE shield (
   isUnique  bit               NOT NULL DEFAULT 0,
   Upgraded  int               NOT NULL DEFAULT 0,
   [Rank]    int               ,
-  TabNumber bigint            NOT NULL,
-  Stash_ID  bigint            NOT NULL,
+  TabNumber bigint            DEFAULT NULL,
+  Stash_ID  bigint            DEFAULT NULL,
   
   CHECK (Defense <= 100),
   PRIMARY KEY  (ID),
@@ -344,16 +344,3 @@ CREATE TABLE [character] (
 
 )
 go
-CREATE TABLE [requirements] (
-    Item_id             bigint   NOT NULL,
-    [Level]             bigint   ,
-    Dexterity           DECIMAL(38,3),
-    Inteligence         DECIMAL(38,3),
-    Strength            DECIMAL(38,3),
-    CharClass           DECIMAL(38,3),
-    PRIMARY KEY     (Item_ID),
-    FOREIGN KEY (Item_ID) references [item] (ID) ,
-
-
-
-)

@@ -1,4 +1,4 @@
-alter PROC shieldInsert(
+CREATE PROC shieldInsert(
 	--armor specifics
     @Defense			AS         decimal(6, 3)     ,
     @SpecialAbility     AS         varchar(128)      ,
@@ -10,14 +10,7 @@ alter PROC shieldInsert(
     @BaseItem_ID        AS          bigint            ,
     @Rank				AS         int               ,
     @TabNumber          AS         bigint            ,
-    @Stash_ID           AS         bigint            ,
-    --requiremtns
-    @Level              AS         bigint   ,
-    @Dexterity          AS         DECIMAL(38,3),
-    @Inteligence		AS         DECIMAL(38,3),
-    @Strength           AS         DECIMAL(38,3),
-    @CharClass          AS         DECIMAL(38,3)
-
+    @Stash_ID           AS         bigint            
 )
 as
 BEGIN
@@ -26,14 +19,23 @@ select  @Item_ID = count(*) from item;
 select  @Item_ID = @Item_ID+1;
 	BEGIN TRY
 	BEGIN TRANSACTION
+	DECLARE @Level              AS         bigint   ;
+	DECLARE @Dexterity          AS         DECIMAL(38,3);
+	DECLARE @Inteligence        AS         DECIMAL(38,3);
+	DECLARE @Strength           AS         DECIMAL(38,3);
+	DECLARE @CharClass          AS         DECIMAL(38,3);
+	SELECT @Level=[Level], @Dexterity=[Dexterity], @Inteligence=[Inteligence], @Strength=[Strength],@CharClass=[CharClass]
+		FROM [item] WHERE [ID]=@BaseItem_ID
+
 	INSERT INTO [item]  (ID       ,
-				     Stash_ID ,
-				     TabNumber,
-				     Price    ,
-				     [Name]   ,
-				     isUnique ,
-				     Upgraded ,
-				     [Rank]   ,
+		Stash_ID ,
+		TabNumber,
+		Price    ,
+		[Name]   ,
+		isUnique ,
+		Upgraded ,
+		[Rank]   ,
+		BaseItem_ID ,
              [Level]    ,
              Dexterity  ,
              Inteligence,
@@ -41,13 +43,13 @@ select  @Item_ID = @Item_ID+1;
              CharClass)
 
           VALUES (@Item_ID     ,
-			  @Stash_ID    ,
-			  @TabNumber   ,
-			  @Price       ,
-			  @Name        ,
-			  @isUnique    ,
-			  @Upgraded    ,
-			  @Rank        ,
+		@Stash_ID    ,
+		@TabNumber   ,
+		@Price       ,
+		@Name        ,
+		@isUnique    ,
+		@Upgraded    ,
+		@Rank        ,
               @BaseItem_ID ,
               @Level       ,
               @Dexterity   ,
@@ -55,6 +57,8 @@ select  @Item_ID = @Item_ID+1;
               @Strength    ,
               @CharClass        );
 
+		select  @Item_ID = count(*) from shield;
+		select  @Item_ID = @Item_ID + 1;
 		INSERT INTO [shield](ID  ,
 				     Stash_ID ,
 				     TabNumber,
