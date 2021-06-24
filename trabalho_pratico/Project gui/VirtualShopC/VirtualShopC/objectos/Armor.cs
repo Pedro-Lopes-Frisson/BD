@@ -35,7 +35,7 @@ namespace VirtualShopC.Objetos
         public Armor() { }
         public override string ToString()
         {
-            return SpecialAttributes+ Defense+ HealthBonus+ Price+ Name+ isUnique+ Upgraded+ Rank+ TabNumber+ Stash_ID+ ID;
+            return Rank + " " + Name + " +" + Upgraded;
         }
     }
 }

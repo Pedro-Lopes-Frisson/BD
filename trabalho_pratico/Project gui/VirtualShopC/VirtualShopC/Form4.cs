@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using VirtualShopC.Objects;
+
 
 namespace VirtualShopC
 {
@@ -17,7 +17,7 @@ namespace VirtualShopC
     {
         private string _user = "";
         private int currentItem;
-        string connStr = @"Data Source=localhost;Initial Catalog=project_dummy;Integrated Security=True;";
+        string connStr = @"Data Source = tcp:mednat.ieeta.pt\SQLSERVER,8101; Initial Catalog = p1g4; uid = p1g4; password =Espanc@_R4b4s69";
         string[] baseattr = { "Price", "Weapon_ID", "AttackSpeed", "HandNum", "BaseItem_ID", "Name", "isUnique", "Upgraded",  };
         string currentlyChecked = "";
         public Form4(string user)
@@ -96,12 +96,12 @@ namespace VirtualShopC
                 CheckBox checkbox = c as CheckBox;
                 if (checkbox != null && checkbox.Checked)
                 {
-                    LoadItemProperties(checkbox, MeleeAttributes);
+                    LoadItemProperties();
                 }
             }
         }
 
-        public void LoadItemProperties(CheckBox checkBox, GroupBox group)
+        public void LoadItemProperties()
         {
             if (MeleeCheck.Checked)
             {
@@ -123,7 +123,7 @@ namespace VirtualShopC
                 {
                     sqlConn.Open();
                     BaseItems.Items.Clear();
-                    string command = "SELECT * FROM melee WHERE BaseItem_ID IS NULL";
+                    string command = "SELECT * FROM VirtualShopc.melee WHERE BaseItem_ID IS NULL";
                     SqlCommand query = new SqlCommand(command, sqlConn);
                     query.CommandType = CommandType.Text;
                     SqlDataReader reader = query.ExecuteReader();
@@ -159,7 +159,7 @@ namespace VirtualShopC
                 {
                     sqlConn.Open();
                     BaseItems.Items.Clear();
-                    string command = "SELECT * FROM armor WHERE BaseItem_ID IS NULL";
+                    string command = "SELECT * FROM VirtualShopc.armor WHERE BaseItem_ID IS NULL";
                     SqlCommand query = new SqlCommand(command, sqlConn);
                     query.CommandType = CommandType.Text;
                     SqlDataReader reader = query.ExecuteReader();
@@ -194,7 +194,7 @@ namespace VirtualShopC
                 {
                     sqlConn.Open();
                     BaseItems.Items.Clear();
-                    string command = "SELECT * FROM shield WHERE BaseItem_ID IS NULL";
+                    string command = "SELECT * FROM VirtualShopc.shield WHERE BaseItem_ID IS NULL";
                     SqlCommand query = new SqlCommand(command, sqlConn);
                     query.CommandType = CommandType.Text;
                     SqlDataReader reader = query.ExecuteReader();
@@ -230,7 +230,7 @@ namespace VirtualShopC
                 {
                     sqlConn.Open();
                     BaseItems.Items.Clear();
-                    string command = "SELECT * FROM physical WHERE BaseItem_ID IS NULL";
+                    string command = "SELECT * FROM VirtualShopc.physical WHERE BaseItem_ID IS NULL";
                     SqlCommand query = new SqlCommand(command, sqlConn);
                     query.CommandType = CommandType.Text;
                     SqlDataReader reader = query.ExecuteReader();
@@ -267,7 +267,7 @@ namespace VirtualShopC
                 {
                     sqlConn.Open();
                     BaseItems.Items.Clear();
-                    string command = "SELECT * FROM magical WHERE BaseItem_ID IS NULL";
+                    string command = "SELECT * FROM VirtualShopc.magical WHERE BaseItem_ID IS NULL";
                     SqlCommand query = new SqlCommand(command, sqlConn);
                     query.CommandType = CommandType.Text;
                     SqlDataReader reader = query.ExecuteReader();
@@ -354,27 +354,89 @@ namespace VirtualShopC
                     using (SqlConnection sqlConn = new SqlConnection(connStr))
                     {
                         sqlConn.Open();
-                        SqlCommand sqlComm = new SqlCommand("meleeInsert", sqlConn);
+                        SqlCommand sqlComm = new SqlCommand("VirtualShopc.meleeInsert", sqlConn);
                         sqlComm.CommandType = CommandType.StoredProcedure;
                         Melee m = new Melee();
                         currentItem = BaseItems.SelectedIndex;
                         m = (Melee)BaseItems.Items[currentItem];
-                        sqlComm.Parameters.AddWithValue("@AttackSpeed", "");
-                        sqlComm.Parameters.AddWithValue("@HandNum", "");
-                        sqlComm.Parameters.AddWithValue("@MeleeType", "");
-                        sqlComm.Parameters.AddWithValue("@Price", "");
-                        sqlComm.Parameters.AddWithValue("@Name", "");
-                        sqlComm.Parameters.AddWithValue("@isUnique", "");
-                        sqlComm.Parameters.AddWithValue("@Upgraded", "");
-                        sqlComm.Parameters.AddWithValue("@Rank", "");
-                        sqlComm.Parameters.AddWithValue("@TabNumber", "");
-                        sqlComm.Parameters.AddWithValue("@Stash_ID", "");
-                        sqlComm.Parameters.AddWithValue("@SpecialAttributes", "");
-                        sqlComm.Parameters.AddWithValue("@Damage", "");
-                        sqlComm.Parameters.AddWithValue("@DamageType", "");
-                        sqlComm.Parameters.AddWithValue("@CriticalChance", "");
-                        sqlComm.Parameters.AddWithValue("@CriticalMultiplier", "");
-                        sqlComm.Parameters.AddWithValue("@BaseItemID", "");
+
+
+                        sqlComm.Parameters.AddWithValue("@AttackSpeed1", MeleeAtkSpdText.Value.ToString());
+                        int handnum = 0;
+                        if (OneHandRadio.Checked)
+                        {
+                            handnum = 1; 
+                        }else if(TwoHandRadio.Checked)
+                        {
+                            handnum = 2;
+                        }
+                        sqlComm.Parameters.AddWithValue("@HandNum", handnum);
+                        sqlComm.Parameters.AddWithValue("@MeleeType", MeleeTypeInput.Text);
+                        sqlComm.Parameters.AddWithValue("@Price1", PriceText.Value.ToString());
+                        sqlComm.Parameters.AddWithValue("@Name", NameText.Text);
+                        int unique = 0;
+                        if (UniqueNo.Checked)
+                        {
+                            unique = 0;
+                        }
+                        else if(UniqueYes.Checked)
+                        {
+                            unique = 1;
+                        }
+                        sqlComm.Parameters.AddWithValue("@isUnique", unique);
+                        String upgraded = ItemUpgraded.Text;
+                        MessageBox.Show(upgraded);
+                        sqlComm.Parameters.AddWithValue("@Upgraded", Int32.Parse(upgraded));
+                        int itemRank = 0;
+                        if (CommonRank.Checked)
+                        {
+                            itemRank = 0;
+                        } else if (UncommonRank.Checked)
+                        {
+                            itemRank = 1;
+                        } else if (RareRank.Checked)
+                        {
+                            itemRank = 2;
+                        } else if (LegendaryRank.Checked)
+                        {
+                            itemRank = 3;
+                        }
+
+                        sqlComm.Parameters.AddWithValue("@Rank", itemRank);
+                        sqlComm.Parameters.AddWithValue("@TabNumber", 1);
+                        sqlComm.Parameters.AddWithValue("@Stash_ID", 900);
+                        sqlComm.Parameters.AddWithValue("@SpecialAttributes", MeleeSpecialAttributes.Text);
+                        sqlComm.Parameters.AddWithValue("@Damage1",MeleeDmgText.Value.ToString());
+                        string dmgType = "";
+                        if (SlashDmg.Checked)
+                        {
+                            dmgType = "Slash";
+                        }else if (PenetrationDmg.Checked)
+                        {
+                            dmgType = "Penetration";
+                        }else if (FireDmg.Checked)
+                        {
+                            dmgType = "Fire";
+                        }else if (EarthDmg.Checked)
+                        {
+                            dmgType = "Earth";
+                        }else if (IceDmg.Checked)
+                        {
+                            dmgType = "Ice";
+                        }else if (ConcussionDmg.Checked)
+                        {
+                            dmgType = "Concussion";
+                        }else if (PoisonDmg.Checked)
+                        {
+                            dmgType = "Poison";
+                        }else if (BleedDmg.Checked)
+                        {
+                            dmgType = "Bleed";
+                        }
+                        sqlComm.Parameters.AddWithValue("@DamageType", dmgType);
+                        sqlComm.Parameters.AddWithValue("@CriticalChance1", MeleeCritChanceText.Value.ToString());
+                        sqlComm.Parameters.AddWithValue("@CriticalMutiplier1", MeleeCritMultChance.Value.ToString());
+                        sqlComm.Parameters.AddWithValue("@BaseItem_ID",Convert.ToInt32(m.Weapon_ID));
 
                         sqlComm.ExecuteNonQuery();
 
@@ -384,7 +446,7 @@ namespace VirtualShopC
                     using (SqlConnection sqlConn = new SqlConnection(connStr))
                     {
                         sqlConn.Open();
-                        SqlCommand sqlComm = new SqlCommand("armorInsert", sqlConn);
+                        SqlCommand sqlComm = new SqlCommand("VirtualShopc.armorInsert", sqlConn);
                         sqlComm.CommandType = CommandType.StoredProcedure;
                         Armor m = new Armor();
                         currentItem = BaseItems.SelectedIndex;
@@ -409,7 +471,7 @@ namespace VirtualShopC
                     using (SqlConnection sqlConn = new SqlConnection(connStr))
                     {
                         sqlConn.Open();
-                        SqlCommand sqlComm = new SqlCommand("shieldInsert", sqlConn);
+                        SqlCommand sqlComm = new SqlCommand("VirtualShopc.shieldInsert", sqlConn);
                         sqlComm.CommandType = CommandType.StoredProcedure;
                         Shield m = new Shield();
                         currentItem = BaseItems.SelectedIndex;
@@ -434,7 +496,7 @@ namespace VirtualShopC
                     using (SqlConnection sqlConn = new SqlConnection(connStr))
                     {
                         sqlConn.Open();
-                        SqlCommand sqlComm = new SqlCommand("physicalInsert", sqlConn);
+                        SqlCommand sqlComm = new SqlCommand("VirtualShopc.physicalInsert", sqlConn);
                         sqlComm.CommandType = CommandType.StoredProcedure;
                         Physical m = new Physical();
                         currentItem = BaseItems.SelectedIndex;
@@ -465,7 +527,7 @@ namespace VirtualShopC
                     using (SqlConnection sqlConn = new SqlConnection(connStr))
                     {
                         sqlConn.Open();
-                        SqlCommand sqlComm = new SqlCommand("magicalInsert", sqlConn);
+                        SqlCommand sqlComm = new SqlCommand("VirtualShopc.magicalInsert", sqlConn);
                         sqlComm.CommandType = CommandType.StoredProcedure;
                         Magical m = new Magical();
                         currentItem = BaseItems.SelectedIndex;

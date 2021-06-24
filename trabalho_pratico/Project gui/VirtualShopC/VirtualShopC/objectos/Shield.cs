@@ -1,6 +1,6 @@
 using System;
 
-namespace VirtualShopC.Objects
+namespace VirtualShopC.Objetos
 {
     [Serializable()]
     public class Shield

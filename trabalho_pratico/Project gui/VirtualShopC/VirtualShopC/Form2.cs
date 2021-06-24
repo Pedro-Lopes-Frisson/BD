@@ -13,7 +13,7 @@ namespace VirtualShopC
 {
     public partial class Form2 : Form
     {
-        string connStr = @"Data Source=localhost;Initial Catalog=project_dummy;Integrated Security=True;";
+        string connStr = @"Data Source = tcp:mednat.ieeta.pt\SQLSERVER,8101; Initial Catalog = p1g4; uid = p1g4; password =Espanc@_R4b4s69";
 
         public Form2()
         {
@@ -55,7 +55,7 @@ namespace VirtualShopC
             {
                 using (SqlConnection sqlConn = new SqlConnection(connStr)) { 
                     sqlConn.Open();
-                    SqlCommand sqlComm = new SqlCommand("Create_Acc", sqlConn);
+                    SqlCommand sqlComm = new SqlCommand("VirtualShopc.Create_Acc", sqlConn);
                     sqlComm.Parameters.AddWithValue("@Email", EmailBox.Text);
                     sqlComm.Parameters.AddWithValue("@Username", UsernameBox.Text);
                     sqlComm.Parameters.AddWithValue("@Password", PasswordBox.Text);

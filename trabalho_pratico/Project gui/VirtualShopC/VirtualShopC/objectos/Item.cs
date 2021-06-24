@@ -26,9 +26,10 @@ namespace VirtualShopC.Objetos
             ID = iD;
             Stash_ID = stash_ID;
         }
+        public Item() { }
         public override string ToString()
         {
-            return TabNumber+ Price+ Name+ isUnique+ Upgraded+ Rank+ ID+ Stash_ID;
+            return Rank + " " + Name + " +" + Upgraded;
         }
     }
 }

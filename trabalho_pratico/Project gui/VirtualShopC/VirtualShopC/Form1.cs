@@ -14,7 +14,7 @@ namespace VirtualShopC
 {
     public partial class Form1 : Form
     {
-        string connStr = @"Data Source=localhost;Initial Catalog=project_dummy;Integrated Security=True;";
+        string connStr = @"Data Source = tcp:mednat.ieeta.pt\SQLSERVER,8101; Initial Catalog = p1g4; uid = p1g4; password =Espanc@_R4b4s69";
         string user;
         public Form1()
         {
@@ -57,10 +57,10 @@ namespace VirtualShopC
             using(SqlConnection sqlConn = new SqlConnection(connStr))
             {
                 sqlConn.Open();
-                SqlCommand sqlComm = new SqlCommand("Verify_Login", sqlConn);
+                SqlCommand sqlComm = new SqlCommand("VirtualShopc.Verify_Login", sqlConn);
                 sqlComm.CommandType = CommandType.StoredProcedure;
-                sqlComm.Parameters.AddWithValue("@Username", "dummy");
-                sqlComm.Parameters.AddWithValue("@Password", "dummypassword");
+                sqlComm.Parameters.AddWithValue("@Username", "dummy"); //UsernameBox.Text);
+                sqlComm.Parameters.AddWithValue("@Password", "dummypassword");//PasswordBox.Text);
                 SqlParameter success = new SqlParameter("@Verified", DbType.Binary);
                 success.Direction = System.Data.ParameterDirection.Output;
                 sqlComm.Parameters.Add(success);

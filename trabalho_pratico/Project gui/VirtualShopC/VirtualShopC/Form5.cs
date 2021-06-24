@@ -14,7 +14,7 @@ namespace VirtualShopC
     public partial class Form5 : Form
     {
         private string _user = "";
-        string connStr = @"Data Source=localhost;Initial Catalog=project_dummy;Integrated Security=True;";
+        string connStr = @"Data Source = tcp:mednat.ieeta.pt\SQLSERVER,8101; Initial Catalog = p1g4; uid = p1g4; password =Espanc@_R4b4s69";
 
         string weaponQ = "";
         string meleeQ = "";
